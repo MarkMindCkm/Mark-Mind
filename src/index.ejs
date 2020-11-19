@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>mind</title>
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script> -->
+    <!-- <script src="./renderer/assets/js/html-docx.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css"> -->
+    <% if (htmlWebpackPlugin.options.nodeModules) { %>
+    
+      <!-- Add `node_modules/` to global paths so `require` works properly in development -->
+      <script>
+        window.baseUrl='';
+      
+        require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, '\\\\') %>')
+      
+      </script>
+
+    <% } %>
+    <style>
+      .loading{
+          width:180px;
+          text-align: center;
+          position: fixed;
+          top:50%;
+          left:50%;
+          margin-top:-90px;
+          margin-left:-90px;
+          color:#666;
+          text-align: center;
+          font-size: 12px;
+      }
+      .loading img{
+        width:30px;
+        height: 30px;
+        animation: spin 1s ease infinite;
+      }
+      .loading span{
+        animation: spin 1s ease infinite;
+      }
+      .loading p{
+        margin-top: 10px;
+      }
+            
+      @keyframes spin {
+          from {
+              transform: rotate(0deg);
+          }
+          to {
+              transform: rotate(360deg);
+          }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="loading">
+       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAARVklEQVR4Xu2dW7AcRRmA/3/2nIekBEvKSkkVUl7QUqK+BOEkJudMzy6GS1CjBApQIASIaPkgyoN5AV/gQYQqH1CQcFOiAgJyR85Mz25iEi55sYRSKG5yUR+gLFKFVpKZthr24Mkhe3a6p2d6pvvfp1O1f//d/f39nZnp3Z1BoJd1AmmaXpLn+RoAWIuIbyJikuf53VEUPWp9cJ4PAD2fv/Xpp2n6shDi6BED2coYu9D6ID0eAAlisfhJkvwIEa8cM4TLGGNXWxym112TIJbKzzk/CgBeKdL9kiVLPjg1NfVWkViKMUuABDHLs3C2NE03CCHuKNKg0+ksn56efqZILMWYJUCCmOVZOFscx1cEQXB5wQaMMZYWjKUwgwRIEIMwVVKRICq07MWSIJbYkyCWwCt2S4IoAjMVToKYIlltHhKkWr4js5MglsArdkuCKAIzFU6CmCJZbR4SpFq+dASxxNdUtySIKZKKeegIogjMUjgJYgk8CWIJvGK3JIgiMFPhJIgpktXmIUGq5UvXIJb4muqWBDFFUjEPHUEUgVkKJ0EsgSdBLIFX7JYEUQRmKpwEMUWy2jwkSLV86RrEEl9T3ZIgpkgq5qEjiCIwS+EkiCXwJIgl8IrdkiCKwEyFkyCmSFabhwSpli9dg1jia6pbEsQUScU8dARRBGYpnASxBJ4EsQResVsSRBGYqXASxBTJavNYFWQwGByZZdkKRPx4nuc7oyjaU+10m5OdBBldi8FgcGyWZSsB4L8TExNPrlmz5llblbMmyIi7CsZ5nm/pdrtP2AJSV78kyPtJD8XYAgDnLHj3FsbYxrpqM78fK4JwzjkAhCMmvBcRN4VheKcNIHX1SYIcTJpzfroQ4npEPGJEDaxIUrsgRRcGIp7hsiRFOQwXi9M3jkuS5BuIeNe4f05CiC1RFF01Ls7k+7UKMjyEPl10Ai5LQoK8uwrSNF0vhLi76JoAgI8yxl5ViC8VWqsgnPNNAHCjyohdlYQEAeCcfw0A7mnyeqhbEHnx9WsVIDLWRUl8F6Tf738lz/M/aKyFS8MwvFa1nW58rYJs37790wcOHPibzmBdk8RnQeI4Pi0Igvt01kGWZat6vd4unbY6bWoVRA6Qcy6PIAu38QqN3SVJfBUkSZJTEfGBQgV/f1DMGOtpttVqVrsg8kL9wIED2xfZzlt0Iq5I4qMgSZKcgogPaq1UgL15nvfq/oysdkEknCRJzkDE32mCcuKaxDdBOOcnAcDDbau5FUGGp1pnAsBv2wZMd7wL2/kkSJIk8um9j+iys3nWYE0QCSuO47OCINjWRnC6Y55r54sgaZqeKIT4oy4vm3K8s4OqO3BT7fr9/tl5nt+um882QN1x+yAI51xeUD+my6gJtbUuyPB065sA8Ks2g1Qdu+uCxHEcBUEQq3KZi2+CHI04gswBSdP0W0KI29oOtOj4XRZkdnaWdTqdpCiLhXFNkaNRggyPJOcBwC0ugB03B1cFSZJkBhG1n8jbJDkaJ8hQkvMB4OZxC2zU+00DPGqcLgqSpukaIcTApdo14hpkIdAkSS5AxK0ugV44F875OgC4v+AcP8sY+2vBWCthnPPVALBdt/Om/mNrpCAScr/f35TnudI3f+cXp6nA58Y4/Lnx60UW1OTk5OGrV6/eWyTWRky/31+V5/mfdPtucq0aK4iEnabpRUKIG1wEP5zf7UKIsxebHyJuC8NQ67trutxU2qVpulIIsVOlTZv+kTVaEB8k4Zw/BQArRiywPYyx43QXX9XtkiQ5ARF36/bT5CPH3JwaL4gcqM4Prdr0XypJknMRUV6TyDt5fEAePIUQ90RRpL3trbtoi7aL4/j4IAgeLxq/MK4Ncsgxt0IQOdA4jjcGQXCT6wXRnV+d7Tjn8qj2pG6fbZGjVYLIwfb7/XPzPL/Vh8LozrHqdkmSyPuYydNCrVeb5GidIMPTLe++lqK1Eito5Mtp1UGn5xVwrDxlkiRnI6J3X3CsHOwiHXDOpwBA+6eubTtytOoi/VB16/f7Z+Z57u3vSeqUxeXPOcZxbM1F+qEmkqbpBiHEHeMmOer9tv5X052vTrvZ2dk1nU7Hqa+PqHBotSByokXvykeSqCyLd2Nd++KhOoEWbfMuNrk4jtcHQaByd7756azcDECnWHW24ZzLeyfLeyhrvVw5Orf+CDJXPd0bkQ3b1347Ga1VV1OjHTt2HLZ///4/A8DHdLp0RQ45d2cEkZNR/IbswtrXes9XnYVXV5syRw+X5HBOkOF5s9a9l+q+Y19di12nH8XfqrzXhWtyOCmInNRgMFibZZnSbWayLPtwr9d7Q2dBudZG5wjiohzOCiInpni7mV2MsVWuLXTd+chrkH379v0FEY8uksNVOZwWZHi61UXE2XFFFkJsjqJI+3cn4/K38X3O+WYA+MW4sbssh/OCyAkWuMPGw4yxU8YtBB/f55zLD2E3jJi7F4/Kc2oXa9QiHj7ZShZ7+byY5xHxsjAMlR7g4psovj9s1QtB5KLevXv34W+//bb8eehKRNy1dOnSXVNTU2/5tuB15ss5PwoR5Y+5PuLb47q9EURnYVAbIkCC0BogAosQIEFoeRABEoTWABHQI0BHED1u1MoTAiSIJ4WmaeoRIEH0uFErTwiQIJ4UmqapR4AE0eNGrTwhQIJ4Umiaph4BEkSPG7XyhAAJ4kmhaZp6BEgQPW7UyhMCJIgnhaZp6hEgQfS4UStPCJAgnhSapqlHgATR40atPCFAgnhSaJqmHgESRI8btfKEAAniSaFpmnoESBA9btTKEwIkiCeFpmnqESBB9LhRK08IkCCeFJqmqUeABNHjRq08IUCCeFJomqYeARJEjxu18oTAQYLI+9fu27fvqCzLljV8/v+cnJx8bfXq1XsbPk4a3vC+yG1YV8uWLdu5fPnyffOL9p4gnPMfAsBP2lRRRNwWhuE5bRqzb2Nt2br6j3z6NQBczRhLZa3eEYRzfiMAbGpp8fYwxo5r6didHnbL19VpjLEHMEmStYio9Dy/plVVCHFeFEW3NW1cPo+n7esKEV+fmJj4DKZper0Q4uKWF/Nextj6ls/BqeE7sq4uRM75cwBwTMur82/G2IdaPgenhu/IutoqT7HeQMQjWl4dEqRhBXRkXYEUZBsintUwvqrDoVMsVWIVxzuyrlJ5DXKJEOK6inlVmp4u0ivFq5XchXWV5/mP39nmTdP0ZSFEoYfGa9GqthFt81bLVzt7y9fV04yxz733QeGIx/1qw6mjIX1QWAflcn20cV3JYwZjjMmZH/RVk7nH/WZZNv954uUIVdA6CIKnOp3Onunp6X9UkJ5SGibQlnUFAK8h4mtRFD00h4C+rGh4MVA6twiQIG7Vk2ZjmAAJYhgopXOLAAniVj1pNoYJkCCGgVI6twiQIG7Vk2ZjmAAJYhgopXOLAAniVj1pNoYJkCCGgVI6twiQIG7Vk2ZjmAAJYhgopXOLAAniVj1pNoYJkCCGgVI6twiQIG7Vk2ZjmAAJYhgopXOLAAniVj1pNoYJkCCGgVI6twiQIG7Vk2ZjmAAJYhgopXOLAAniVj1pNoYJkCCGgVI6twiQIG7Vk2ZjmAAJYhgopXOLAAniVj1pNoYJkCCGgVI6twiQIG7Vk2ZjmAAJYhgopXOLgFeCJEmyIgiCVUKIF+nevsUX8o4dOw7bv3//ijzPwyAI0snJyT2+PILbC0HiOD4+CIIrAaA7f1kIIbZEUXRV8aXiXyTnfLPkhIjzH4/xEgBsnHtUsstUnBckTdMNQoitAHDYiELeyRg7w+Ui686Nc34HAGwY1V4IEUZR1NfN34Z2TgsylEMWedzr24yx68cF+fR+0ed6ZFk23ev1trvKxllBFOQAIcTfly5d+vmpqam3XC20yrzk8zwA4JWibYIg+NLMzMzOovFtinNSEBU55oolhDgpiqJH21S8qsaqww8AVjLGdlc1Jlt5nRNEs7ggH9jY7XavsFWIJvWbpun3hBA/Ux1TnucndLvdJ1TbNTneKUF05RgWSD6WLm1yseoam9wOR8SndPoTQhwXRdEenbZNbOOMICXleGlycvILvuztF1mInPPZhdviRdoNY77IGNMSTKGPWkKdEKSkHBI0HT0WLLfhZ0dSklHb44suUFdOt1ovSFk5fNjL1/1Xa4DtVBRFj+v234R2rRakbAFd38M3scDKMkbEVWEY7jIxFhs5WitI2cK5vHdveiH5zLqVgpQtmKt79qbFmJ/PAPM1jLEdVY6xitytE6RsoVy5eKxiMYzLWZY9Ik6HYdiqr6W0SpCyBXJtj37cgq7ifQM1aNUXHFsjSNnCAIAze/NVLHyVnGVrkWVZ1Ov1uEqftmJbIUjZgjT9tCpJki4ibhRCnIyISxBxuxDiN4yxW2wtjHH9GqhJt9vtJuP6sf1+4wUpWwghRKP34jnnNwLAphELYVeWZet7vd6/bC+UQ/VftjYAcCJjTH4Y2dhXowUpW4Cm78HHcbwxCIKbxqyOWxlj5zd1BRmo0ZfDMHysqfNrrCBlwbfhcw7OuSiyMLIs+2Sv13uhSKyNmLK1avJPDRopSFngAND4PXfO+TEA8FyRBS2E+G4URdcVibUVY6BmJzPGHrE1/lH9Nk6QsqDbsteeJMlaRCy0IBDxmjAMf9C0xbNwPGVrJ4Q4NYqih5o0z0YJYgBwa/bYXRRELmwDNVwXRdGDTZGkMYKUBdumvXVZfFcFMSFJnudf6Xa79zdBkkYIUlaOPM9bsac+v+AuC2JCkiAIvjozM3OfbUmsC1JWjjbspR+qyK4LYkISAFjPGLvXpiRWBSkrByI2eg99scL6IIgJSRDx62EY3mNLEmuClJWjyXvnRYrpiyAmJBFCnB5F0e+LcDUdY0WQsnIAQCP3zFWK45MgJiSRt0BljN2lwthEbO2ClL0ZQBP3ynUK4ZsgBiTZm+d5r+77btUuSJnbyQghGrVHriPGXBsfBTEgScwY65Xhrtq2VkFmZ2dXdjodrXu4NmlvXBWyr7tYoziVOcXOsmxVr9er7SYQtQqSpun3hRDXqC6wpuyJq46bdrFGE9CVBBEvDcPwWpO1WCxXrYJwztcBgOonpNb3wqsohq+nWPNZ6khS97ZvrYIMBoMjsyx7veiCqxtG0XGZiCNB3qWoKkme58d0u93nTdSgSI5aBZEDKvpgFpt730XAlY0hQf5PsKgkiPjLMAwvLstepX3tgsjBcc7lD/bDQw1UCPEmIm62seetAq5sLAlyMMGhJIs9Ki+VN1Auy121vRVB5CDjOL4iCILLFwz49k6nc+X09PQzqhNpWzwJ8v6KLfKw1c1RFN1go8bWBJGTHQwGx2ZZtlL+3el0dvkgxlyRSZDRy11+HDAxMTEFAK8KIXYxxl61IYfs06ogtibdhH5JkCZUYfwYSJDxjCqJIEEqwWo8KQliHGmxhCRIMU62o0gQSxUgQSyBV+yWBFEEZiqcBDFFsto8JEi1fEdmJ0EsgVfslgRRBGYqnAQxRbLaPCRItXzpCGKJr6luSRBTJBXz0BFEEZilcBLEEngSxBJ4xW5JEEVgpsJJEFMkq81DglTLl65BLPE11S0JYoqkYh46gigCsxROglgCT4JYAq/YLQmiCMxUOAliimS1eUiQavnSNYglvqa6JUFMkVTMQ0cQRWCWwkkQS+BJEEvgFbslQRSBmQonQUyRrDYPCVItX7oGscTXVLckiCmSinnoCKIIzFI4CWIJPAliCbxitySIIjBT4f1+/1N5nj9bJB8ificMw58XiaUYswRIELM8lbJxzkWRBkEQfGJmZubFIrEUY5YACWKWp1K2JEkuQER5u82RL0S8OQzDC5QSU7AxAiSIMZR6iZIkuQERLxrReneWZet6vd4betmpVVkCJEhZggbax3EcBUGwUT6cFACWAsALiPjTMAxvNpCeUpQg8D8ybarzDUIoEAAAAABJRU5ErkJggg==" alt="">
+       
+       <p>Loading Resources</p>
+     </div>
+    <div id="app"></div>
+    <!-- Set `__static` path to static files in production -->
+    <% if (!process.browser) { %>
+      <script>
+        if (process.env.NODE_ENV !== 'development') window.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+      </script>
+    <% } %>
+
+    <!-- webpack builds are automatically injected -->
+  </body>
+  <script>
+     window.onload=function(){
+         document.querySelector('.loading').style.display="none";
+     }
+  </script>
+</html>

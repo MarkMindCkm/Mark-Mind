@@ -1,0 +1,163 @@
+{
+  "name": "mind",
+  "version": "1.1.5",
+  "author": "",
+  "description": "an mind map and outliner software",
+  "license": null,
+  "main": "./dist/electron/main.js",
+  "scripts": {
+    "build": "node .electron-vue/build.js && electron-builder",
+    "build:dir": "node .electron-vue/build.js && electron-builder --dir",
+    "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
+    "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
+    "dev": "node .electron-vue/dev-runner.js",
+    "pack": "npm run pack:main && npm run pack:renderer",
+    "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
+    "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
+    "postinstall": ""
+  },
+  "build": {
+    "productName": "Mark Mind",
+    "appId": "com.mind",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "dist/electron/**/*"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "build/icons/uu.icns"
+    },
+    "win": {
+      "icon": "build/icons/uu.ico",
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "ia32"
+        ]
+      }
+    },
+    "linux": {
+      "icon": "build/icons"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icons/uu.ico",
+      "uninstallerIcon": "build/icons/uu.ico",
+      "installerHeaderIcon": "build/icons/uu.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "fileAssociations": [
+      {
+        "ext": "mind",
+        "name": "MarkMind文件",
+        "role": "Editor"
+      }
+    ]
+  },
+  "dependencies": {
+    "@iktakahiro/markdown-it-katex": "^3.1.0",
+    "axios": "^0.18.0",
+    "echarts": "^4.7.0",
+    "electron-store": "^5.1.1",
+    "file-saver": "^2.0.2",
+    "flowchart.js": "^1.13.0",
+    "github-markdown-css": "^4.0.0",
+    "html-docx-js": "^0.3.1",
+    "html-to-plaintext": "^0.1.1",
+    "html-to-text": "^5.1.1",
+    "html2canvas": "^1.0.0-rc.5",
+    "jquery": "^3.4.1",
+    "jszip": "^3.2.0",
+    "katex": "^0.11.1",
+    "markdown-it": "^10.0.0",
+    "markdown-it-abbr": "^1.0.4",
+    "markdown-it-attrs": "^3.0.2",
+    "markdown-it-bracketed-spans": "^1.0.1",
+    "markdown-it-container": "^3.0.0",
+    "markdown-it-emoji": "^1.4.0",
+    "markdown-it-footnote": "^3.0.2",
+    "markdown-it-highlight": "^0.2.0",
+    "markdown-it-icons": "^0.4.1",
+    "markdown-it-imsize": "^2.0.1",
+    "markdown-it-katex": "^2.0.3",
+    "markdown-it-latex": "^0.2.0",
+    "markdown-it-latex2img": "0.0.6",
+    "markdown-it-mark": "^3.0.0",
+    "markdown-it-multimd-table": "^4.0.1",
+    "markdown-it-plantuml": "^1.4.1",
+    "markdown-it-sub": "^1.0.0",
+    "markdown-it-sup": "^1.0.0",
+    "markdown-it-underline": "^1.0.1",
+    "markmap": "^0.6.1",
+    "mermaid": "^8.4.8",
+    "node-dropbox": "^0.1.8",
+    "opml-to-json": "0.0.3",
+    "opmlparser": "^0.8.0",
+    "quill": "^1.3.7",
+    "request": "^2.88.2",
+    "svg.js": "^2.7.1",
+    "twemoji": "^12.1.5",
+    "vue": "^2.5.16",
+    "vue-electron": "^1.0.6",
+    "vue-i18n": "^8.17.3",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "vuex-electron": "^1.0.0"
+  },
+  "devDependencies": {
+    "ajv": "^6.5.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-minify-webpack-plugin": "^0.3.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "cfonts": "^2.1.2",
+    "chalk": "^2.4.1",
+    "copy-webpack-plugin": "^4.5.1",
+    "cross-env": "^5.1.6",
+    "css-loader": "^0.28.11",
+    "del": "^3.0.0",
+    "devtron": "^1.4.0",
+    "electron": "^8.2.0",
+    "electron-builder": "^20.19.2",
+    "electron-debug": "^1.5.0",
+    "electron-devtools-installer": "^2.2.4",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "0.4.0",
+    "multispinner": "^0.2.1",
+    "node-loader": "^0.6.0",
+    "style-loader": "^0.21.0",
+    "url-loader": "^1.0.1",
+    "vue-html-loader": "^1.2.4",
+    "vue-loader": "^15.2.4",
+    "vue-style-loader": "^4.1.0",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.15.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-hot-middleware": "^2.22.2",
+    "webpack-merge": "^4.1.3"
+  }
+}

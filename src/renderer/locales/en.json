@@ -1,0 +1,475 @@
+{
+    "node":{
+       "fillColor":"Fill Color",
+       "textColor":"Text Color",
+       "textAlign":"Text Align",
+       "strokeColor":"Stroke Color",
+       "strokeWidth":"Stroke Width",
+       "strokeStyle":"Stroke Style",
+       "nodeShape":"Node Shape",
+       "priority":"Priority",
+       "percent":"Percent",
+       "nodeSize":"Node Size",
+       "topic":"Central Topic",
+       "subTopic":"SubTopic",
+       "summary":"Summary",
+       "boundary":"Boundary",
+       "skin":"Skin",
+       "gotoList":"Jump To List",
+       "gotoMind":"Jump to MinaMap",
+       "style":"Style",
+       "downloadPng":"Download Png",
+       "downloadPdf":"Download Pdf",
+       "downloadWord":"Download Word",
+       "loadData":"Loading Data...",
+       "keyword":"Please enter keywords separated by spaces",
+       "wireFrameFill":"Fill Color",
+       "borderRadius":"Border Radius",
+       "addText":"Add Text",
+       "removeText":"Delete Text",
+       "removeWireFrame":"Delete Boundary",
+       "allTag":"All Tag",
+       "nodeTag":"Node Tag",
+       "tagColor":"Tag Color",
+       "fontSize":"Font Size",
+       "update":"Check For Update",
+       "back":"Back",
+       "sure":"Sure",
+       "open":"Open",
+       "active":"Activated",
+       "end":"End Date",
+       "activeTitle":"Please Enter Activation Code",
+       "activeBtn":"Activate Now",
+       "activeSuccess":"Activate Success",
+       "activeFail":"Activate Fail",
+       "activeuse":"Activate Code Has Already Used",
+       "active404":"Activate Code Is Not Exist",
+       "serverErr":"Server error ,Please Try  Again Later",
+       "offline":"Off Line",
+       "localImage":"Local Image",
+       "openLocalImage":"Open Local Image",
+       "enterLink":"Please Enter Link",
+       "addNode":"subtopic",
+       "needSave":"Need To Save Mindmap",
+       "needSaveBtns":["Save","Leave"],
+       "saveSuccess":"Save Success",
+       "saveFail":"Save Fail",
+       "openDropbox":"Open Your DropBox",
+       "bigFile":"The File Is Large, Please Wait Patiently...",
+       "saveBtn":"Save",
+       "accessBtn":"Access To OneDrive",
+       "openBtn":"Open",
+       "startNode":"StartNode",
+       "endNode":"EndNode",
+       "deleteRelate":"Remove RelateLink",
+       "startPoint":"Start",
+       "endPoint":"End",
+       "beforeEnterSetup":"Please Save Your Data Before Enter Setting Page",
+       "CombineColor":"Combine",
+       "matchText":"<span class='red'>{{matchNum}}</span> Matches,<span class='red'>{{matchNode}}</span> Topics"
+       
+    },
+    "topMenu":[
+        {
+          "id":"New File",
+          "name":"New File",
+          "type":"menu",
+          "shortCut":"Ctrl+N"
+        },
+        {
+          "id":2,
+          "type":"split"
+        },
+        {
+          "id":"Open",
+          "name":"Open File",
+          "type":"menu",
+          "subMenu":[
+            {
+              "id":"Open File",
+              "name":"Open From Local",
+              "type":"menu",
+              "shortCut":"Ctrl+O"
+            },
+            {
+              "id":"Open From Onedrive",
+              "name":"Open From OneDrive",
+              "type":"menu"
+            }
+          ]
+        },
+        {
+           "id":"Save",
+           "name":"Save",
+           "type":"menu",
+           "shortCut":"Ctrl+S"
+         }, 
+          {
+           "id":"Save As",
+           "name":"Save As",
+           "type":"menu",
+           "shortCut":"Ctrl+Shift+S"
+         }, 
+         {
+          "id":"Save To Onedrive",
+          "name":"Save To OneDrive",
+          "type":"menu"
+         }, 
+         {
+           "id":"Import",
+           "name":"Import",
+           "type":"menu",
+           "subMenu":[
+           {
+             "id":"Import-Xmind Zen",
+             "name":"Xmind Zen",
+             "type":"menu"
+           },{
+             "id":"Import-KityMind",
+             "name":"KityMind",
+             "type":"menu"
+           },
+           {
+             "id":"Import-OPML",
+             "name":"OPML",
+             "type":"menu"
+            },
+            {
+             "id":"Import-MarkDown",
+             "name":"MarkDown",
+             "type":"menu"
+            }
+           ]
+         }, 
+         {
+           "id":8,
+           "name":"Export",
+           "type":"menu",
+           "subMenu":[
+             {
+               "id":"Export-FreeMind",
+               "name":"FreeMind",
+               "type":"menu"
+             },
+             {
+               "id":"Export-OPML",
+               "name":"OPML",
+               "type":"menu"
+             },
+              {
+               "id":"Export-MarkDown",
+               "name":"MarkDown",
+               "type":"menu"
+             },
+             {
+               "id":"Export-KityMind",
+               "name":"KityMind",
+               "type":"menu"
+             }
+           ]
+         },
+        
+         {
+          "id":10,
+          "name":"Expand To",
+          "subMenu":[
+           {
+             "id":"Expand-1",
+             "name":"One Level",
+             "type":"menu"
+           },
+           {
+             "id":"Expand-2",
+             "name":"Two Level",
+             "type":"menu"
+           },
+           {
+             "id":"Expand-3",
+             "name":"Three Level",
+             "type":"menu"
+           },
+           {
+             "id":"Expand-4",
+             "name":"Four Level",
+             "type":"menu"
+           },
+           {
+             "id":"Expand-5",
+             "name":"Five Level",
+             "type":"menu"
+           },
+           {
+            "id":"Expand-10000",
+            "name":"All Level",
+            "type":"menu"
+          }
+          
+          ],
+          "type":"menu"
+      },
+     
+      {
+        "id":"Setting",
+        "name":"Setting",
+        "type":"menu"
+      },
+      {
+        "id":"About",
+        "name":"About",
+        "type":"menu"
+      },
+        {
+           "id":10,
+           "type":"split"
+         },
+         {
+           "id":"Exit",
+           "name":"Exit",
+           "type":"menu",
+           "shortCut":"" 
+         }
+      ],
+
+      "contextMenu":[
+        {
+            "id":1,
+            "text":"Add SubTopic",
+            "cmd":"addChildNode",
+            "show":true,
+            "shortCut":"Insert" 
+        },
+        {
+            "id":2,
+            "text":"Add Sibings Topic",
+            "cmd":"addSameNode",
+            "show":true,
+            "shortCut":"Shift+Enter" 
+        },
+        {
+          "id":3,
+          "text":"Add Parent Topic",
+          "cmd":"addParentNode",
+          "show":true,
+          "shortCut":"Shift+Insert" 
+        },
+        {
+            "id":4,
+            "text":"Delete Topic",
+            "cmd":"deleteNode",
+            "show":true,
+            "shortCut":"Delete" 
+        },
+        {
+          "type":"split"
+        },
+        {
+          "id":32,
+          "text":"Copy To Clipboard",
+          "cmd":"copyNode",
+          "show":true
+        },
+        {
+            "id":43,
+            "text":"Paste",
+            "cmd":"paste",
+            "show":true
+        },
+        {
+          "id":"e",
+          "type":"split"
+         },
+
+        {
+            "id":5,
+            "text":"Add RelateLink",
+            "cmd":"addRelateLink",
+            "show":true
+        },
+        {
+          "id":10,
+          "text":"Add Boundary",
+          "cmd":"addWireFrame",
+          "show":true
+      },
+       {
+          "id":11,
+          "text":"Add Summary",
+          "cmd":"addInduce",
+          "show":true
+      },
+       {
+          "id":12,
+          "text":"Add Callout",
+          "cmd":"addCallout",
+          "show":true
+      },
+      {
+        "id":"a",
+        "type":"split"
+       },
+        {
+            "id":6,
+            "text":"Toggle Todo",
+            "cmd":"changeTodo",
+            "show":true
+        },
+        {
+          "id":"b",
+          "type":"split"
+         },
+        {
+            "id":7,
+            "text":"Select All",
+            "cmd":"selectAll",
+            "show":true
+        },
+        {
+            "id":8,
+            "text":"Select Child",
+            "cmd":"selectChild",
+            "show":true
+        },
+        {
+          "id":9,
+          "text":"Select Siblings",
+          "cmd":"selectSameLevelNode",
+          "show":true
+       },
+       {
+        "id":"c",
+        "type":"split"
+       },
+
+       {
+        "id":13,
+      "text":"Layout",
+        "cmd":"layout",
+        "show":true,
+        "submenu":[
+            {
+              "id":1,
+              "text":"Mind Layout",
+              "cmd":"",
+              "show":true,
+              "submenu":[
+                  {
+                    "id":1,
+                    "text":"Mind Layout1",
+                    "cmd":"minder1",
+                    "direct":"right"    
+                  },
+                  {
+                    "id":2,
+                    "text":"Mind Layout2",
+                    "cmd":"minder2",
+                    "direct":"right"
+                  },
+                  {
+                    "id":3,
+                    "text":"Mind Layout3",
+                    "cmd":"minder3",
+                    "direct":"right"
+                  },
+                  {
+                    "id":4,
+                    "text":"Mind Layout4",
+                    "cmd":"minder4",
+                    "direct":"right"
+                  }
+              ]
+            },
+            {
+              "id":2,
+              "text":"Tree Layout",
+              "cmd":"tree",
+               "direct":"down"
+            },
+            {
+              "id":3,
+              "text":"Time Layout",
+               "cmd":"vertical"
+            },
+            {
+              "id":4,
+              "text":"Fish Layout",
+               "cmd":"fish",
+               "direct":"right"
+            },
+            {
+              "id":5,
+              "text":"Multiple Layout",
+              "cmd":"multipleTree"
+            },
+            {
+              "id":7,
+              "text":"Bracket Layout",
+              "cmd":"bracket"
+            },
+            {  "id":"c",
+              "type":"split"
+            },
+            {
+              "id":6,
+              "text":"Delete Layout",
+               "cmd":"removeLayout"
+            }
+
+        ]
+     },
+     {
+      "id":"d",
+      "type":"split"
+     },
+     
+        {
+          "id":15,
+          "text":"Expand Node",
+          "cmd":"expandNode",
+          "show":true,
+          "shortCut":"Ctrl + /" 
+         },
+         {
+            "id":16, 
+            "text":"Collapse Node",
+            "cmd":"collapseNode",
+            "show":true,
+            "shortCut":"Ctrl + /" 
+         },
+         {
+          "type":"split"
+         },
+         {
+          "id":14,
+          "text":"Add PPT Page",
+          "cmd":"addppt",
+          "show":true
+      },
+         {
+            "id":17,
+            "text":"Resize Topic",
+            "cmd":"resizeNode",
+            "show":true
+        }
+    ],
+    "profile":{
+        "theme":"Theme",
+        "lang":"Language",
+        "markdown":"Markdown",
+        "canvasSize":"Canvas Size",
+        "tooltip":"Note",
+        "needMarkdown":"If You Want To Use Markdown, You Need To Activate The Software",
+        "profileBtns":["Buy Activation Code","Leave"],
+        "needVip":"If You Want To Use This Function, You Need To Activate The Software",
+        "newVersion":"New version found",
+        "newVersionBtn":["View new version","Leave"],
+        "plantuml":"Plantuml Server",
+        "shortcut":"Shortcut Model",
+        "shortcutModel1":"Default",
+        "shortcutModel2":"Compatible",
+        "math":"Formula Parse Type",
+        "katex":"Katex",
+        "mathjax":"Mathjax Image",
+        "mathTip":"When Export Mindmap To PNG,Select This Item"
+    }
+   
+}
