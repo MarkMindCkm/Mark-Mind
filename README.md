@@ -1,10 +1,10 @@
-# mind
+# Mark Mind
 
-> An electron-vue project
+> An mind map and outline tool base on electron vue
 
-#### Build Setup
+### Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
@@ -13,10 +13,74 @@ npm run dev
 
 # build electron application for production
 npm run build
-
-
 ```
 
----
 
-This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
+
+### Screenshots
+
+![screen.png](https://i.loli.net/2020/11/19/2EXh9HCOodcQN5G.png)
+
+### Features
+
+##### Mind map
+
+- Boundary
+
+- Summary
+
+- RelateLink
+
+- Callout
+
+- Tag
+
+- Note
+
+- Link
+
+- Image
+
+- MarkDown
+
+- Presenttation
+
+##### Use markdown in node
+
+- Font style
+
+- Emoji
+
+- Link
+
+- Image
+
+- Highlight Code
+
+- List
+
+- Table
+
+- Latex
+
+- Chart
+
+#### Import
+
+- xmind zen
+
+- kitymind
+
+- opml
+
+- markdown
+
+#### Export
+
+- opml
+
+- markdown
+
+- freemind
+
+- kitymind
