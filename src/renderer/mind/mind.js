@@ -566,8 +566,8 @@ class Mind {
             case 'relateHideNode':
                 this.stack.execute(new cmd.RelateHideNode(data.relateLink));
                 break;
-            case 'autoNumber':
-                this.stack.execute(new cmd.AutoNumber(data.parent))
+            // case 'autoNumber':
+            //     this.stack.execute(new cmd.AutoNumber(data.parent))
                 break;
             case 'copyNode':
                 this.stack.execute(new cmd.CopyNode(data.node));
