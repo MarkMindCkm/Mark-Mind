@@ -15,11 +15,11 @@ npm run dev
 npm run build
 ```
 
-
-
 ### Screenshots
 
 ![screen.png](https://i.loli.net/2020/11/19/2EXh9HCOodcQN5G.png)
+
+![mind.png](https://i.loli.net/2020/11/20/P6SQ24gJ5jXHfpi.png)
 
 ### Features
 
