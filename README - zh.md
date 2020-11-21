@@ -29,7 +29,7 @@ npm run build
 
 ![mind.png](https://i.loli.net/2020/11/20/P6SQ24gJ5jXHfpi.png)
 
-截图功能
+功能
 
 ##### 思维导图功能
 
