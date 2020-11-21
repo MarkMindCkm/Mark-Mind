@@ -1,8 +1,6 @@
 # Mark Mind
 
-[English](https://github.com/MarkMindLtd/Mark-Mind)   [中文]()
-
-
+[English](https://github.com/MarkMindLtd/Mark-Mind)   [中文](https://github.com/MarkMindLtd/Mark-Mind/blob/main/README%20-%20zh.md)
 
 > 基于electron vue 开发的思维导图和大纲工具
 

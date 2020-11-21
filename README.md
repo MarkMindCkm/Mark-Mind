@@ -1,5 +1,7 @@
 # Mark Mind
 
+[English](https://github.com/MarkMindLtd/Mark-Mind) [中文](https://github.com/MarkMindLtd/Mark-Mind/blob/main/README%20-%20zh.md)
+
 > An mind map and outline tool base on electron vue
 
 #### Demo
