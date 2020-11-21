@@ -4,7 +4,7 @@
 
 | Skin  | Language | Open Markdown | Canvas Size(px) |
 | ----- | -------- | ------------- | --------------- |
-| White | Chinese  | No            | 8000x8000       |
+| White | English  | No            | 8000x8000       |
 
 ### How To Change Default Setting？
 
