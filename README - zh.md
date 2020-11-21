@@ -1,4 +1,4 @@
-# Mark Mind
+# :wave: Mark Mind—下一代思维导图编辑器
 
 [English](https://github.com/MarkMindLtd/Mark-Mind)   [中文](https://github.com/MarkMindLtd/Mark-Mind/blob/main/README%20-%20zh.md)
 
