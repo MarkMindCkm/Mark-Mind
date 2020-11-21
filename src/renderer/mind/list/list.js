@@ -916,7 +916,7 @@ class Node {
         if (this.list) {
             this.list.selecNode(this);
             this.list._editNode = this;
-           // window.node = this;
+            window.node = this;
            
             this.keepFocusEnd();
             this.list.emit('hide');
