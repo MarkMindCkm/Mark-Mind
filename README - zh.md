@@ -4,6 +4,10 @@
 
 > 基于electron vue 开发的思维导图和大纲工具
 
+### 下载
+
+[window 安装包](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.6/Mark.Mind.Setup.1.1.6.exe)
+
 #### 在线实例
 
 [MarkMind Introduction](http://www.ckminder.cn/minder/share/4033e5c0176911eb9228b57b686e3963)
