@@ -2,6 +2,12 @@
 
 > An mind map and outline tool base on electron vue
 
+#### Demo
+
+[MarkMind Introduction](http://www.ckminder.cn/minder/share/4033e5c0176911eb9228b57b686e3963)
+
+[Latex](http://www.ckminder.cn/minder/share/aea53ae0178711ebb397f5d294d32da7)
+
 ### Build Setup
 
 ```bash
