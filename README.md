@@ -2,19 +2,11 @@
 
 [English](https://github.com/MarkMindLtd/Mark-Mind) [中文](https://github.com/MarkMindLtd/Mark-Mind/blob/main/README%20-%20zh.md)
 
-
-
 > An mind map and outline tool base on electron vue
 
 ### Download
 
 [Download window](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.6/Mark.Mind.Setup.1.1.6.exe)
-
-#### Demo
-
-[MarkMind Introduction](http://www.ckminder.cn/minder/share/4033e5c0176911eb9228b57b686e3963)
-
-[Latex](http://www.ckminder.cn/minder/share/aea53ae0178711ebb397f5d294d32da7)
 
 ### Build Setup
 
@@ -34,6 +26,8 @@ npm run build
 ![screen.png](https://i.loli.net/2020/11/19/2EXh9HCOodcQN5G.png)
 
 ![mind.png](https://i.loli.net/2020/11/20/P6SQ24gJ5jXHfpi.png)
+
+![3.gif](https://i.loli.net/2020/11/22/1zEPFiguDobOI7X.gif)
 
 ### Features
 
