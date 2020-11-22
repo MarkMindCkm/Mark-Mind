@@ -401,6 +401,7 @@ export default {
 
       showSkin: false,
       showInduce: false,
+      ctrl:null,
 
       changeAssist: {
         item: null,
@@ -1019,7 +1020,7 @@ export default {
         var keyCode = e.keyCode || e.which || e.charCode;
         var ctrlKey = e.ctrlKey || e.metaKey;
         var shiftKey = e.shiftKey;
-        ctrl = null;
+        this.ctrl = null;
         this.mind.ctrlKey = null;
         this.mind.shiftKey = null;
 
