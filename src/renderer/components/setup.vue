@@ -2,7 +2,7 @@
   <div nochilddrag class="setup">
        <div class="layout-container">
          <div class="layout-now">
-            <div style="float:left;padding-top:20px;font-weight:bold">结构</div>
+            <div style="float:left;padding-top:20px;font-weight:bold">{{$t('node.layout')}}</div>
             <div class="now-layout" @click.stop="showLayoutList">
                 <img v-if="nowLayout" :src="nowLayout.image"/>
             </div>
@@ -21,12 +21,12 @@
           </ul>
       </div> -->
       <div class="background">
-          <div class="head">背景设置</div>
+          <div class="head">{{$t('node.background')}}</div>
            <ul class="color-list">
                <li v-for="(item,i) in colors" v-bind:key="i" @click.stop="$emit('changeBackground','color',{'color':item})" :style="'background:'+item">
               </li>
           </ul>
-          <div class="head">纹理</div>
+          <div class="head">{{$t('node.texture')}}</div>
           <ul class="grain-list">
              <li @click.stop="$emit('changeBackground','grain',item)" v-for=" item in grains" v-bind:key="item.id">
                 <img :src="item.image"/>
@@ -35,9 +35,9 @@
       </div>
 
       <div class="node-setup">
-        <div class="head">分支设置</div>
+        <div class="head">{{$t('node.branch')}}</div>
         <div class="head">
-             线条颜色
+             {{$t('node.branchColor')}}
            <ul class="color-list">
                <li v-for="(item,i) in colors" v-bind:key="i" @click.stop="$emit('changeStroke','color',{'color':item})" :style="'background:'+item">
               </li>

@@ -66,7 +66,12 @@
        "endPoint":"结束",
        "beforeEnterSetup":"在进入设置页面之前，请先保存您的修改，否则可能丢失数据",
        "CombineColor":"组合",
-       "matchText":"匹配到<span class='red'>{{matchNum}}</span>处,分布在<span class='red'>{{matchNode}}</span>个节点内部"
+       "matchText":"匹配到<span class='red'>{{matchNum}}</span>处,分布在<span class='red'>{{matchNode}}</span>个节点内部",
+       "background":"背景设置",
+       "texture":"纹理",
+       "branch":"分支设置",
+       "branchColor":"分支颜色",
+       "layout":"结构"
     },
     "topMenu":[
         {
