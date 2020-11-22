@@ -50,7 +50,6 @@ if(oneToken){
           }
        },(err,body)=>{
            if(err){
-              //remote.getCurrentWebContents().send('onedrive_err');
               return;
            }
    
@@ -108,15 +107,12 @@ ipcMain.on('saveToOneDrive',(e,arg)=>{
     var pid=arg.pid;
     var name=arg.name;
     var route=arg.route;   
-    if(id){   //更新文件
-    //  if(route){
-             //console.log(route,id,name,data);
+    if(id){    //update file
             updateFile(e,id,'',data,name,route);
-       // }
-    }else if(pid){   //新建文件
-        //if(route){
+     
+    }else if(pid){   //create file
             updateFile(e,'',pid,data,name,route);
-     //   }
+     
      
     }else{
         e.sender.send('onedrive_err')
@@ -200,12 +196,11 @@ function createServer(e){
                         e.sender.send('onedrive_err',err);
                         return;
                      }
-                    // console.log(body);
                      var b=JSON.parse(body.body);
 
                      access_token=b.access_token;
                      var refresh_token=b.refresh_token;
-                  //   console.log(access_token);
+                 
                      if(refresh_token){
                         var str=JSON.stringify({
                             access_token:access_token,
@@ -242,7 +237,7 @@ function createServer(e){
 
 
 
-//获取应用根文件
+//get app root
 function getAppRoot(e){
     if(!access_token){
         e.sender.send('onedeive_err',{error:{msg:'miss accessToken'}})
@@ -281,7 +276,7 @@ function getAppRoot(e){
 }
 
 
-//获取某文件夹下的列表
+//get folder file list
 function getList(e,id){
     var uri=`${rootUrl}/me/drive/items/${id}/children`;
     request({
@@ -314,7 +309,7 @@ function openUrl(url){
     shell.openExternal(url);
 }
 
-//下载内容
+//download
 function getFile(e,id,url){
     var filepath=path.resolve(path.join(uploadFolder,'_oneDrive.mind'));
     if(fs.existsSync(filepath)){
@@ -337,41 +332,35 @@ function getFile(e,id,url){
       e.sender.send('getFile',{id:id,route:filepath});
      
    }).on('error',(err)=>{
-     //  console.log(err)
-       // store.set('oneToken','');
         if(oneTokenObj.refresh_token){
            refreshToken(oneTokenObj.refresh_token);
         }
         e.sender.send('onedrive_err',{error:{msg:'download err'}});
-        //createServer();
+       
    })
 }
 
 
-//捕获异常
+
 process.on('uncaughtException', function(err) {
 
      
 });
 
-//登出
 function logout(){
-  //  console.log('logout');
     var uri=`https://login.microsoftonline.com/common/oauth2/v2.0/logout?post_logout_redirect_uri=${redirect_url}`;
     store.set('oneToken','');
     request.get(uri);
 }
 
 
-//上传小文件，小于4M
+//upload file < 4M
 function updateFile(e,id,pid,data,name,route){
-   // console.log(id);
     var stat=fs.statSync(route);
-    if(id){   //更新文件
+    if(id){  
         if(stat.size<4*1024*1024){
             var uri= `${rootUrl}/me/drive/items/${id}/content`;
             var reader=fs.createReadStream(route);
-          //  console.log(data)
             reader.pipe(request({
                 url:encodeURI(uri),
                 method:'PUT',
@@ -380,13 +369,14 @@ function updateFile(e,id,pid,data,name,route){
                 },
                 json: true
             },(err,res,body)=>{
-                //console.log(res,body);
                 if (err) {
-                   // console.log(err)
-                    return e.sender.send('onedrive_error',{error:{msg:'upload fail'}}) ;
+                     e.sender.send('onedrive_error',{error:{msg:'upload fail'}}) ;
+                    return 
                 }
-                else if (res.statusCode >= 400)
-                return   e.sender.send('onedrive_error',{error:{msg:'upload fail'}}) ;
+                else if (res.statusCode >= 400){
+                     e.sender.send('onedrive_error',{error:{msg:'upload fail'}}) ;
+                     return 
+                }
                 e.sender.send('onedrive_success',{data:{msg:'upload success'}});
             }));
         }else{
@@ -396,10 +386,7 @@ function updateFile(e,id,pid,data,name,route){
     }else{   
        if(stat.size<4*1024*1024){
            var uri= `${rootUrl}/me/drive/items/${pid}:/${name}:/content`;
-          // console.log(pid,name,data);
-          //var reader = Readable.from([data])
             var reader=fs.createReadStream(route);
-          //  console.log(uri,route);
             reader.pipe(request({
                 url:encodeURI(uri),
                 method:'PUT',
@@ -415,7 +402,6 @@ function updateFile(e,id,pid,data,name,route){
                  e.sender.send('onedrive_success',{data:{msg:'upload success'}});
             }));
        }else{
-         //  console.log(name,1111111);
           var pattern=/[`~!@#$^&*()=|{}':;',\\\[\]<>\/?~！《》@#￥……&*（）——|{}【】'；：""'。，、？\s]/g;
           name=name.replace(pattern,'');
           var uri=`${rootUrl}/drive/items/${pid}:/${name}:/createUploadSession`;
@@ -427,12 +413,12 @@ function updateFile(e,id,pid,data,name,route){
 }
 
 
-//创建文件
+//create file
 function createFile(e,pid,filename){
     var uri=`${rootUrl}/me/drive/items/{pid}:/{filename}:/content`;
 
 }
-//创建文件夹
+//create folder
 function createFolder(e,pid,name){
     var uri=`${rootUrl}/me/drive/items/${pid}/children`;
     var options = {
@@ -453,12 +439,8 @@ function createFolder(e,pid,name){
           
       });
 }
-//上传大文件
+//upload file > 4M
 function uploadSession(e,name,route,fileSize,uri){
-   // var pattern=/[`~!@#$^&*()=|{}':;',\\\[\]<>\/?~！《》@#￥……&*（）——|{}【】'；：""'。，、？\s]/g;
-    
-   // return;
-     // var name=""
       var uploadedBytes = 0;
       var chunksToUploadSize = 0;
       var chunks = [];
@@ -548,11 +530,6 @@ function uploadSession(e,name,route,fileSize,uri){
 
       })
 }
-
-
-
-
-
 
 
 function postBuilder(url, data, access_token) {

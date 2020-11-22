@@ -58,7 +58,6 @@ export default class MultipleTreeLayout extends Layout {
         }
 
         this._layoutTow();
-   
         this._updateRootAssist();
     }
 
@@ -183,7 +182,6 @@ export default class MultipleTreeLayout extends Layout {
 
             this.moveNode(node, dx, dy);
             node.direct = 'right';
-
             this._updateNodeAssist(node);
 
             return;
@@ -246,13 +244,9 @@ export default class MultipleTreeLayout extends Layout {
         } else {
             var nodeRect = node.getCBox(true);
             if (flag) {
-                // var nodeBox=mind.getBoundingRect(this.lefts[index-1].getShowNodeList());
-                //var nodeBox=mind.getBBox(this.lefts[index-1]);
-
                 var leftNode = this.lefts[index - 1];
                 if (this.isCache && leftNode.boundingRect) {
                     var nodeBox = leftNode.boundingRect;
-                    // leftNode.boundingRect=null;
                 } else {
                     var nodeBox = mind.getBBox(leftNode);
                     leftNode.boundingRect = nodeBox;
@@ -273,15 +267,12 @@ export default class MultipleTreeLayout extends Layout {
                 var nodeBox = mind.getBBox(leftNode);
                 if (this.isCache && leftNode.boundingRect) {
                     var nodeBox = leftNode.boundingRect;
-                    //leftNode.boundingRect=null;
+                   
                 } else {
                     var nodeBox = mind.getBBox(leftNode);
                     leftNode.boundingRect = nodeBox;
                 }
 
-                //var nodeBox=mind.getBBox(node.parent.children[index-1]);
-                //var b=node.parent.children[index-1].getCBox();
-                //var nodeBox=mind.getBoundingRect(node.parent.children[index-1].getShowNodeList());
                 if (leftNode.layout) {
                     var {
                         x
@@ -289,7 +280,6 @@ export default class MultipleTreeLayout extends Layout {
                     node.setPosition(x - this.levelDis - width, nodeBox.y + nodeBox.height + this.nodeDis + nodeRect.th);
                 } else {
                     var pbox = leftNode.getCBox(true);
-                    //node.setPosition(nodeBox.x+nodeBox.width-width,nodeBox.y+nodeBox.height+this.nodeDis+nodeRect.th);
                     node.setPosition(pbox.x + pbox.width - width, nodeBox.y + nodeBox.height + this.nodeDis + nodeRect.th);
                 }
             }

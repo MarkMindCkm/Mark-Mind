@@ -1,6 +1,6 @@
 var shell=require('electron').shell;
 var app=require('electron').app;
-module.exports = [
+var menus = [
     {
       label: 'MarkMind',
       submenu: [
@@ -30,7 +30,6 @@ module.exports = [
           role: '',
           click: function (item, focusedWindow) {
             if (focusedWindow) {
-              // console.log('111')
               focusedWindow.webContents.send('cmd', { type: 'New File' });
             }
           },
@@ -220,16 +219,54 @@ module.exports = [
           }
         }
       }
+  
       ]
     },
     {
-      label: 'Help ( 帮助 ) ',
+      label: 'Help ',
       role: 'help',
       submenu: [{
-        label: 'FeedBack ( 意⻅反馈 )',
+        label: '',
         click: function () {
-          shell.openExternal('https://forum.iptchain.net')
+          shell.openExternal('https://github.com/MarkMindLtd/Mark-Mind')
         }
       }]
     }
   ];
+
+  if (process.platform === "darwin") {
+    menus[2]=menus[2].concat([
+      {
+        label:'selectAll',
+        accelerator:'CmdOrCtrl+A',
+        visible:false,
+        click:(item,focusedWindow)=>{
+          if(focusedWindow){
+            focusedWindow.webContents.selectAll()
+          }
+        }
+      },
+      {
+        label:'Copy',
+        accelerator:'CmdOrCtrl+C',
+        visible:false,
+        click:(item,focusedWindow)=>{
+          if(focusedWindow){
+            focusedWindow.webContents.copy()
+          }
+        }
+      },
+      {
+        label:'Paste',
+        accelerator:'CmdOrCtrl+V',
+        visible:false,
+        click:(item,focusedWindow)=>{
+          if(focusedWindow){
+            focusedWindow.webContents.paste()
+          }
+        }
+      }
+    ])
+  }
+
+  module.exports = menus;

@@ -24,7 +24,7 @@ export default class MindLayout extends Layout {
             this.root.dom.classList.add('node-root');
             this.root.dom.classList.add('node-down');
         }
-        if (!node.isExpand()) {
+        if (!this.root.isExpand()) {
             return;
         }
 
@@ -41,32 +41,12 @@ export default class MindLayout extends Layout {
         this.lefts = [];
         this.rights = [];
 
-        var root = this.root;
-
-
         this.setDirect();
-        this._layoutSecondLevelNode(root);
+        this._layoutSecondLevelNode(this.root);
 
     }
 
-    _setDirect(n, direct) {
-        n.direct = direct;
-        n.dom.classList = [];
-        n.dom.classList.add('node');
-        n.dom.classList.add('node-' + direct);
-        if (n.isLeaf() && !n.dom.classList.contains('node-leaf')) {
-            n.dom.classList.add('node-leaf');
-        } else {
-            if (n.dom.classList.contains('node-leaf')) {
-                n.dom.classList.remove('node-leaf')
-            }
-        }
-        if (!n.layout && n.isExpand()) {
-            n.children.forEach(c => {
-                this._setDirect(c, direct)
-            });
-        };
-    }
+
 
     setDirect() {
         var me = this;
@@ -98,6 +78,25 @@ export default class MindLayout extends Layout {
                 }
             });
         }
+    }
+
+    _setDirect(n, direct) {
+        n.direct = direct;
+        n.dom.classList = [];
+        n.dom.classList.add('node');
+        n.dom.classList.add('node-' + direct);
+        if (n.isLeaf() && !n.dom.classList.contains('node-leaf')) {
+            n.dom.classList.add('node-leaf');
+        } else {
+            if (n.dom.classList.contains('node-leaf')) {
+                n.dom.classList.remove('node-leaf')
+            }
+        }
+        if (!n.layout && n.isExpand()) {
+            n.children.forEach(c => {
+                this._setDirect(c, direct)
+            });
+        };
     }
 
 
@@ -215,18 +214,6 @@ export default class MindLayout extends Layout {
         this.updateLeft();
         this._doLayout(this.root);
     }
-
-    // _updateAssist(node) {
-    //     if (node.wireFrame) {
-    //         node.wireFrame.refresh();
-    //     }
-    //     if (!node.isExpand()) {
-    //         return;
-    //     }
-    //     node.children.forEach((item) => {
-    //         this._updateAssist(item);
-    //     });
-    // }
 
     _getNodesHeight(nodes) {
         if (nodes[0] && nodes[0].getLevel() == 1) {
@@ -498,7 +485,6 @@ export default class MindLayout extends Layout {
             return;
         }
         var direct = node.direct;
-        // var node = node.getParent();
         while (node && node != this.root) {
             var sibs = node.getSiblings();
             var pos = node.getPosition();
@@ -530,16 +516,8 @@ export default class MindLayout extends Layout {
                     var sibPos = sib.getPosition();
                     if (sibPos.y > pos.y) {
                         this.moveNode(sib, dx, dy2);
-                        // if(sib.callout){
-                        //     sib.callout.root.move(dx,dy2);
-                        //     sib.callout.refresh()
-                        // }
                     } else {
                         this.moveNode(sib, dx, -dy1);
-                        // if(sib.callout){
-                        //     sib.callout.root.move(dx,-dy1)
-                        //     sib.callout.refresh()
-                        // }
                     }
                 }
             })
@@ -547,37 +525,35 @@ export default class MindLayout extends Layout {
         }
     }
 
-    moveNode(node, dx, dy) {
+    // moveNode(node, dx, dy) {
 
-        node && node.move(dx, dy);
+    //     node && node.move(dx, dy);
 
-        if (node.callout) {
-            node.callout.refresh();
-        }
+    //     if (node.callout) {
+    //         node.callout.refresh();
+    //     }
 
-        if (node.wfs) {
-            node.wfs.forEach(wf => {
-                wf.move(dx, dy);
-            });
-        }
+    //     if (node.wfs) {
+    //         node.wfs.forEach(wf => {
+    //             wf.move(dx, dy);
+    //         });
+    //     }
 
-        if (node.induces) {
-            node.induces.forEach((induce) => {
-                induce.move(dx, dy);
-                this.moveNode(induce.root, dx, dy);
-            })
-        }
+    //     if (node.induces) {
+    //         node.induces.forEach((induce) => {
+    //             induce.move(dx, dy);
+    //             this.moveNode(induce.root, dx, dy);
+    //         })
+    //     }
 
-        node && node.children.forEach((child) => {
-            this.moveNode(child, dx, dy);
-        });
-    }
+    //     node && node.children.forEach((child) => {
+    //         this.moveNode(child, dx, dy);
+    //     });
+    // }
 
     refresh(direct) {
         this.layout(this.root, direct || this.direct);
-        //setTimeout(()=>{
         this.createLink();
-        // },100)
     }
 
 

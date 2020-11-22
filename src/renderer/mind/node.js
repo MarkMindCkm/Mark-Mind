@@ -58,7 +58,6 @@ class Node {
             y: 0,
             width: 0,
             height: 0,
-            // borderRadius:0,
             borderTopLeftRadius: 2,
             borderBottomLeftRadius: 2,
             borderTopRightRadius: 2,
@@ -78,7 +77,7 @@ class Node {
             todoDone: false,
             isTodo: false,
             shapeType: 'rect',
-            stroke: '',           //line color
+            stroke: '',         
             marks: [],
             isExpanded: true,
             textAlign: 'left',
@@ -669,7 +668,6 @@ class Node {
             this.imageDom.setAttribute('draggable', false);
             if (this.data.image && this.data.image.startsWith('http')) {
                 getImageBase64(this.data.image).then(res => {
-                    // console.log(res)
                     me.imageDom.src = res;
                     me.data.image = res;
                     if (res.indexOf('data:image/png') > -1) {
@@ -680,13 +678,13 @@ class Node {
                     }
                     else if (res.indexOf('data:image/jpeg') > -1) {
                         me.data.imageName = 'mind.jpg'
-                    } else if (res.indexOf('data:image/svg+xml') > -1) {
+                    } 
+                    else if (res.indexOf('data:image/svg+xml') > -1) {
                         me.data.imageName = 'mind.svg';
-                    } else {
+                    } 
+                    else {
                         me.data.imageName = 'mind.png';
                     }
-                }).catch((e) => {
-
                 });
             }
 
@@ -759,25 +757,11 @@ class Node {
                 $(this.todoDomcheck).prop('checked', false);
             }
 
-            //  this.todoDom.addEventListener('click',(e)=>{
-            //       //e.preventDefault();
-            //       e.stopPropagation();
-            //  });
-            //  this.todoDom.addEventListener('dblclick',(e)=>{
-            //     //e.preventDefault();
-            //     e.stopPropagation();
-            //  });
-            //  this.todoDomcheck.addEventListener('click',(e)=>{ 
-            //     this.toggleTodoState();
-            //  },false);
-
             this.todoDom.onclick = (e) => {
-                //e.preventDefault();
                 e.stopPropagation();
             };
 
             this.todoDom.ondblclick = (e) => {
-                //e.preventDefault();
                 e.stopPropagation();
             };
 
@@ -803,7 +787,6 @@ class Node {
                 this.percentDom.className = "node-percent pie";
                 this.data.todoDone = false;
             }
-            //  this.percentDom.innerText=this.data.percent;
             this.assistDom.appendChild(this.percentDom);
         } else {
             this.percentDom && this.assistDom.removeChild(this.percentDom);
@@ -811,7 +794,6 @@ class Node {
         }
 
         this._refreshTodo();
-
         this.initMark();
 
     }
@@ -847,12 +829,11 @@ class Node {
             }
         }
     }
+
     toggleTodoState() {
         if (this.data.isTodo) {
             this.data.todoDone = !this.data.todoDone;
-            // console.log(this.todoDone);
-            this._refreshTodo()
-
+            this._refreshTodo();
         }
     }
 
@@ -933,7 +914,6 @@ class Node {
 
     resizeNode() {
         this.nodeMark = new Frame(this, this.dom, 'node');
-        //  console.log(111);
     }
 
     cancelResize() {

@@ -1,7 +1,7 @@
 var shell=require('electron').shell;
 var app=require('electron').app;
 
-module.exports = [
+var menus = [
     {
       label: 'MarkMind',
       submenu: [
@@ -31,7 +31,6 @@ module.exports = [
           role: '',
           click: function (item, focusedWindow) {
             if (focusedWindow) {
-              // console.log('111')
               focusedWindow.webContents.send('cmd', { type: 'New File' });
             }
           },
@@ -224,13 +223,50 @@ module.exports = [
       ]
     },
     {
-      label: 'Help ( 帮助 ) ',
+      label: '帮助 ',
       role: 'help',
       submenu: [{
-        label: 'FeedBack ( 意⻅反馈 )',
+        label: '意⻅反馈',
         click: function () {
-          shell.openExternal('https://forum.iptchain.net')
+          shell.openExternal('https://github.com/MarkMindLtd/Mark-Mind')
         }
       }]
     }
   ];
+
+  if (process.platform === "darwin") {
+    menus[2]=menus[2].concat([
+      {
+        label:'全选',
+        accelerator:'CmdOrCtrl+A',
+        visible:false,
+        click:(item,focusedWindow)=>{
+          if(focusedWindow){
+            focusedWindow.webContents.selectAll()
+          }
+        }
+      },
+      {
+        label:'复制',
+        accelerator:'CmdOrCtrl+C',
+        visible:false,
+        click:(item,focusedWindow)=>{
+          if(focusedWindow){
+            focusedWindow.webContents.copy()
+          }
+        }
+      },
+      {
+        label:'粘贴',
+        accelerator:'CmdOrCtrl+V',
+        visible:false,
+        click:(item,focusedWindow)=>{
+          if(focusedWindow){
+            focusedWindow.webContents.paste()
+          }
+        }
+      }
+    ])
+  }
+
+  module.exports=menus;

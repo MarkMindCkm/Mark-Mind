@@ -27,27 +27,26 @@ class Mind {
         this.el = document.getElementById(this.data.el);
         this.el.mind = this;
         this.root = null;
-
         this.themeName = 'blue';
-        //  this.nodes=[];
+
         this.edges = [];
 
         this.induces = [];
         this.wireFrames = [];
         this.relateLinks = [];
-        this.freeNodes = [];
+        this.freeNodes = [];      //free root
+        this.callouts = [];   
+        this.marks = [];          //tags
+        
+        this.induceRoot = [];     //temp store
 
-        this.induceRoot = []; //临时存储
-        this.callouts = [];
-        this.marks = []; //标签
-
-        this.scaleNum = 1; //缩放倍数
+        this.scaleNum = 1;        //scale num
 
         this.useMarkDown = false;
         this.refreshTime = null;
 
         this.stack = new Stack(50);
-        // this.editor=new MediumEditor(this.el);
+
         this.draw = SVG(this.el).size('100%', '100%');
 
         this.wireFrameGroup = this.draw.group();
@@ -76,10 +75,8 @@ class Mind {
         function refresh(node) {
             var mind = node.getMind();
             if (node) {
-
                 var layout = null;
                 var anchor = node;
-
                 while (anchor) {
                     if (anchor.layout) {
                         layout = anchor.layout;
@@ -114,7 +111,6 @@ class Mind {
             }
 
             this.emit('needsave');
-
         });
     }
 
@@ -199,21 +195,21 @@ class Mind {
                 }
 
                 node.stroke = data.parent.stroke;
+
                 node.dom.classList = [];
                 node.dom.classList.add('node');
                 node.dom.classList.add('node-' + node.direct);
                 node.dom.classList.add('node-leaf');
 
-                if (data.parent.dom.classList.contains('node-leaf')) {
-                    data.parent.dom.classList.remove('node-leaf');
-                }
+                // if (data.parent.dom.classList.contains('node-leaf')) {
+                //     data.parent.dom.classList.remove('node-leaf');
+                // }
 
                 if (!data.parent.isExpand()) {
                     data.parent.expand();
                 }
 
                 this.stack.execute(new cmd.AddNode(node, data.parent, this));
-        
                 break;
 
             case 'addSameNode':

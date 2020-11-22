@@ -14,10 +14,9 @@ export default class MindLayout3 extends MindLayout {
 	}
 
 	createLink() {
-		//	return
+		
 		var me = this;
 		var dis = this.levelDis;
-		var directName = this.direct;
 
 		if (!this.group) {
 			return
@@ -25,7 +24,6 @@ export default class MindLayout3 extends MindLayout {
 
 		this.group && this.group.clear();
 		var root = this.root;
-		//	var mind=root.getMinder();
 		var c = theme.use().config;
 		var stroke = c['stroke'] || '#666';
 		var lineWidth = c['lineWidth'];
@@ -45,7 +43,6 @@ export default class MindLayout3 extends MindLayout {
 				return;
 			}
 			var children = node.getChildren();
-			var len = children.length;
 			var pos = node.getPosition();
 			var box = {
 				...node.getBox()

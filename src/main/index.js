@@ -46,7 +46,9 @@ class MarkMind{
          this.setMenu();
          this.addIpcListener();
          this.addAppListener();
+         this.checkSystem();
     }
+ 
 
     setMenu(){
       var profile=this.store.get('config');
@@ -115,6 +117,16 @@ class MarkMind{
       globalShortcut.register('CommandOrControl+Shift+L', () => {
         this.mainWindow && this.mainWindow.toggleDevTools();
       });
+      if (process.platform === "darwin") {
+        let contents = this.mainWindow.webContents;
+        globalShortcut.register("CommandOrControl+C", () => {
+          contents.copy();
+        });
+        globalShortcut.register("CommandOrControl+V", () => {
+          contents.paste();
+        });
+        app.dock.hide();
+      }
 
     }
 
@@ -219,6 +231,10 @@ class MarkMind{
           this.mainWindow.reload();
         }
       })      
+    }
+
+    checkSystem(){
+      
     }
 }
 
