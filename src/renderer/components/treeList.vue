@@ -1739,64 +1739,15 @@ export default {
       this.$parent.message(msg);
     },
     printWord() {
-      if (!this.$store.state.MindData.vip.vip) {
-        dialog
-          .showMessageBox({
-            type: "info",
-            title: i18n.t("profile.tooltip"),
-            defaultId: 0,
-            message: i18n.t("profile.needVip"),
-            buttons: i18n.t("profile.profileBtns"),
-          })
-          .then(({ response }) => {
-            if (response === 0) {
-              if (i18n.locale == "en") {
-                var url = "http://www.ckminder.cn/index/en";
-              } else {
-                var url = "http://www.ckminder.cn/";
-              }
-              shell.openExternal(url);
-            } else {
-            }
-          });
-        return;
-      }
       var me = this;
       $("#copy-list").html($("#list").html()).css("display", "block");
-
       $("#copy-list").wordExport(this.list.showingNode.getTxt());
-
       $("#copy-list").html("").css("display", "none");
     },
     print(e) {
-      if (!this.$store.state.MindData.vip.vip) {
-        dialog
-          .showMessageBox({
-            type: "info",
-            title: i18n.t("profile.tooltip"),
-            defaultId: 0,
-            message: i18n.t("profile.needVip"),
-            buttons: i18n.t("profile.profileBtns"),
-          })
-          .then(({ response }) => {
-            if (response === 0) {
-              if (i18n.locale == "en") {
-                var url = "http://www.ckminder.cn/index/en";
-              } else {
-                var url = "http://www.ckminder.cn/";
-              }
-              shell.openExternal(url);
-            } else {
-            }
-          });
-        return;
-      }
       var me = this;
-
       this.isPrint = true;
-
       document.querySelector("html").classList.add("print");
-
       function printSucess() {
         me.isPrint = false;
         if (document.querySelector("html").classList.contains("print")) {
