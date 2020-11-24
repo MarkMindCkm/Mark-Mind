@@ -96,5 +96,11 @@ npm run build
 ### Author
 
 - Twitter: [@MarkMind](https://twitter.com/MarkMind9)
-  
-  
+
+### 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+### Show your support
+
+Give a ⭐️ if this project helped you!
