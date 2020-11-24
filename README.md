@@ -92,3 +92,9 @@ npm run build
 - freemind
 
 - kitymind
+
+### Author
+
+- Twitter: [@MarkMind](https://twitter.com/MarkMind9)
+  
+  
