@@ -71,7 +71,12 @@
        "texture":"纹理",
        "branch":"分支设置",
        "branchColor":"分支颜色",
-       "layout":"结构"
+       "layout":"结构",
+       "imagePos":"位置",
+       "top":"上",
+       "left":"左",
+       "right":"右",
+       "bottom":"下"
     },
     "topMenu":[
         {

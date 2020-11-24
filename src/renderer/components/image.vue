@@ -2,14 +2,14 @@
   <div class="image-setup" v-bind:style='"left:"+left+"px;top:"+top+"px"'>
         <div class="image-menu">
               
-              <div class="head">位置</div>
+              <div class="head">{{$t('node.imagePos')}}</div>
               <div class="content">
-                  <span @click.stop="setImage('imagePosition','top')">上</span>
-                  <span @click.stop="setImage('imagePosition','right')">右</span>
-                  <span @click.stop="setImage('imagePosition','bottom')">下</span>
-                  <span @click.stop="setImage('imagePosition','left')">左</span>
+                  <span @click.stop="setImage('imagePosition','top')">{{$t('node.top')}}</span>
+                  <span @click.stop="setImage('imagePosition','right')">{{$t('node.right')}}</span>
+                  <span @click.stop="setImage('imagePosition','bottom')">{{$t('node.bottom')}}</span>
+                  <span @click.stop="setImage('imagePosition','left')">{{$t('node.left')}}</span>
               </div>
-              <div class="head">圆角</div>
+              <div class="head">{{$t('node.borderRadius')}}</div>
               <div class="content">
                   <span @click.stop="setImage('imageRadius','0px')">0</span>
                   <span @click.stop="setImage('imageRadius','5px')">5</span>

@@ -71,8 +71,12 @@
        "background":"Background",
        "texture":"Texture",
        "branch":"Branch",
-       "branchColor":"Branch Color"
-
+       "branchColor":"Branch Color",
+       "imagePos":"Position",
+       "top":"top",
+       "left":"left",
+       "right":"right",
+       "bottom":"bottom"
        
     },
     "topMenu":[
