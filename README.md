@@ -6,7 +6,7 @@
 
 ### Download
 
-[Download window](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.6/Mark.Mind.Setup.1.1.6.exe)
+[window](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.6/Mark.Mind.Setup.1.1.6.exe)   [Mac](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.6/MarkMind-1.1.6.dmg)
 
 ### Build Setup
 
