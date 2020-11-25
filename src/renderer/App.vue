@@ -1,12 +1,12 @@
 <template>
   <div id="app" @keydown="shortCut" tabindex="-1">
     <div class="top-bar">
-      <div class="logo">
+      <div :class="'logo ' + (platform!='win32'?'drawin':'')">
         <span class="iconfont icon-sanheng" @click="toggleMenu"></span>
       </div>
 
       <tomato v-if="tomato" />
-      <div class="btn-group">
+      <div :class="'btn-group' + (platform!='win32'?'drawin':'')">
         <div class="iconfont icon-min min" @click="min"></div>
         <div class="iconfont icon-max-two max" @click="max"></div>
         <div class="iconfont icon-searchclose close" @click="close"></div>
@@ -190,6 +190,7 @@ export default {
       showactive: false,
       showSave: false,
       tomato: false,
+      platform:process.platform
     };
   },
 
@@ -1340,6 +1341,9 @@ html.print {
 .theme-dark .btn-group {
   color: #fff;
 }
+.btn-group.drawin{
+  display: none;
+}
 
 .logo {
   float: left;
@@ -1353,6 +1357,9 @@ html.print {
 .logo .iconfont {
   font-size: 12px;
   cursor: pointer;
+}
+.logo.drawin{
+  margin-left:70px;
 }
 
 .theme-dark .logo {

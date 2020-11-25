@@ -1051,14 +1051,6 @@ export default {
           return;
         }
 
-        if (ctrlKey && keyCode == "90") {
-          this.mind.undo();
-        }
-
-        if (ctrlKey && keyCode == "89") {
-          this.mind.redo();
-        }
-
         if (profile && profile.keyModel == "ithoughts") {
           if (!ctrlKey && !shiftKey && keyCode == 13) {
             //enter
@@ -1080,15 +1072,15 @@ export default {
           }
         }
 
-        if (keyCode == 27) {
-          //esc
-          e.preventDefault();
-          var editNode = this.mind.getEditNode();
-          if (editNode) {
-            this.mind.clearEditNode();
-            return;
-          }
-        }
+        // if (keyCode == 27) {
+        //   //esc
+        //   e.preventDefault();
+        //   var editNode = this.mind.getEditNode();
+        //   if (editNode) {
+        //     this.mind.clearEditNode();
+        //     return;
+        //   }
+        // }
 
         if (keyCode == 46) {
           //delete 键值
@@ -1102,10 +1094,7 @@ export default {
           }
         }
 
-        if (ctrlKey && keyCode == 67) {
-          //ctrl + c
-          this.copyNode();
-        }
+       
 
         switch (keyCode) {
           case 38: //up
@@ -1185,6 +1174,27 @@ export default {
             node.edit();
           }
         }
+
+        var editNode = this.mind.getEditNode();
+        if (editNode) {
+          return;
+        }
+        
+        if (ctrlKey && keyCode == "90") {
+          this.mind.undo();
+        }
+
+        if (ctrlKey && keyCode == "89") {
+          this.mind.redo();
+        }
+
+         if (ctrlKey && keyCode == 67) {
+          //ctrl + c
+          this.copyNode();
+        }
+
+
+
       };
 
       document.onmousewheel = (event) => {
