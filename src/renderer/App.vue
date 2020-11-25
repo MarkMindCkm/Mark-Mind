@@ -6,7 +6,7 @@
       </div>
 
       <tomato v-if="tomato" />
-      <div :class="'btn-group' + (platform!='win32'?'drawin':'')">
+      <div :class="'btn-group ' + (platform!='win32'?'drawin':'')">
         <div class="iconfont icon-min min" @click="min"></div>
         <div class="iconfont icon-max-two max" @click="max"></div>
         <div class="iconfont icon-searchclose close" @click="close"></div>

@@ -235,7 +235,7 @@ var menus = [
   ];
 
   if (process.platform === "darwin") {
-    menus[2]=menus[2].concat([
+    menus[2].submenu=menus[2].submenu.concat([
       {
         label:'selectAll',
         accelerator:'CmdOrCtrl+A',
