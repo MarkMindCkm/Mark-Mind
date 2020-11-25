@@ -480,7 +480,6 @@ export default {
       var nodes = $(range.endContainer.parentNode).closest(".text");
       var len = range.cloneContents().childNodes.length;
 
-
       if (nodes.length && len == 1) {
         if (range) {
           if (range.collapsed) {
@@ -522,7 +521,6 @@ export default {
       }
     };
 
-
     var me = this;
     var focusItem = null,
       oldSelection = null,
@@ -543,7 +541,7 @@ export default {
       if (!event) event = window.event;
       if (event.wheelDelta) {
         delta = event.wheelDelta / 120;
-        if (window.opera) delta = -delta; 
+        if (window.opera) delta = -delta;
       } else if (event.detail) {
         delta = -event.detail / 3;
       }
@@ -1762,7 +1760,6 @@ export default {
         }
         alert("导出失败");
       }
-
 
       ipcRenderer.once("export-list-success", printSucess);
 

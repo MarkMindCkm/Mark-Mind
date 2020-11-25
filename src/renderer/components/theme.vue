@@ -1,7 +1,7 @@
 <template>
   <div class="theme-list">
        <ul>
-           <li @click="$emit('changeTheme',item.name)" v-for="item in theme" v-bind:key="item.id">
+           <li @click="$emit('changetheme',item.name)" v-for="item in theme" v-bind:key="item.id">
                <img :src="item.image"/>
            </li>
        </ul>

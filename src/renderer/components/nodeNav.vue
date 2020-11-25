@@ -520,7 +520,6 @@ export default {
       }
     },
     remark(val) {
-      //this.editor.setContents(val);
       this.editor.root.innerHTML = val;
     },
     nodeType: {

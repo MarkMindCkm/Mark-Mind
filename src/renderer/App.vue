@@ -210,9 +210,11 @@ export default {
   mounted() {
     var me = this;
 
+    this.checkVersion();
+
     var openFilePath = this.$store.state.MindData.openFile;
     this.$store.dispatch("vip", {
-      vip:true
+      vip: true,
     });
 
     ipcRenderer.on("cmd", (e, arg) => {
@@ -287,7 +289,7 @@ export default {
     },
     success() {
       this.msg = i18n.t("node.saveSuccess");
-      this.message(this.msg)
+      this.message(this.msg);
     },
     fail() {
       this.msg = i18n.t("node.saveFail");
@@ -309,7 +311,7 @@ export default {
       if (ctrlKey && (keyCode == 80 || keyCode == 45)) {
         this.menu("New Parent Node");
       }
-    
+
       if (ctrlKey && keyCode == 191) {
         this.menu("expand-or-collapse");
       }
@@ -345,6 +347,43 @@ export default {
       pushList(data);
       return list;
     },
+    checkVersion() {
+      var checkTime = localStorage.getItem("checkTime");
+      if (!checkTime) {
+        checkTime = +new Date();
+        localStorage.setItem("checkTime", checkTime);
+        return;
+      }
+
+      var now = +new Date();
+      if (now - checkTime > 24 * 60 * 60 * 1000) {
+        $.ajax({
+          url: "http://www.ckminder.cn/version",
+          type: "get",
+        })
+          .done((res) => {
+            if (res && res.success && res.data.version != this.about.version) {
+              dialog
+                .showMessageBox({
+                  type: "info",
+                  title: i18n.t("profile.tooltip"),
+                  defaultId: 0,
+                  message: i18n.t("profile.newVersion"),
+                  buttons: i18n.t("profile.newVersionBtn"),
+                })
+                .then(({ response }) => {
+                  if (response === 0) {
+                    var url =
+                      "https://github.com/MarkMindLtd/Mark-Mind/releases";
+                    shell.openExternal(url);
+                  }
+                  localStorage.setItem("checkTime", +new Date());
+                });
+            }
+          })
+          .fail((err) => {});
+      }
+    },
     save(isCreate, path, arg) {
       var me = this;
       var path = path || this.$store.state.MindData.folderPath;
@@ -372,11 +411,10 @@ export default {
               n.shoudRender = true;
               n.cancelEdit();
             }
-          
+
             var data = me.listGetData(list, imgFolder);
             !data.scrollLeft && (data.scrollLeft = canvasWidth / 2);
             !data.scrollLeft && (data.scrollTop = canvasHeight / 2);
-         
           }
           if (!data) {
             return;
@@ -493,7 +531,6 @@ export default {
       var rootChild = [];
       var induce = [];
       var freeNode = [];
-      // console.log(children);
       children.forEach((n, i) => {
         if (n.nodeType == "freeNode") {
           freeNode.push(n);
@@ -559,7 +596,7 @@ export default {
       var me = this;
       var p = path;
       if (me.$route.name != "refresh") {
-          me.$router.push("/refresh");
+        me.$router.push("/refresh");
       }
       fs.readFile(p, function (err, data) {
         if (err) {
@@ -632,7 +669,7 @@ export default {
                   me.$store.dispatch("setMindData", mindData).then(() => {
                     if (flag) return;
                     var p = "/";
-                    
+
                     setTimeout(() => {
                       me.$router.push("/list");
                     }, 0);
@@ -662,66 +699,19 @@ export default {
         this.message(i18n.t("node.offline"));
         return;
       }
-
-      try {
-        let decipher = crypto.createDecipher("aes-192-ctr", sa);
-        let decrypted = decipher.update(code, "hex", "utf-8");
-        decrypted += decipher.final("utf-8");
-
-        var data = JSON.parse(decrypted);
-        var endDate = +new Date(data.endDate.substr(0, 10) + " 23:59:59");
-        var now = +new Date();
-        if (now > endDate) {
-          throw "exceed the time limit";
-        }
-
-        $.ajax({
-          url: "http://www.ckminder.cn/active/register",
-          type: "POST",
-          data: {
-            activeCode: code,
-            type: "win",
-          },
-        })
-          .done(function (res) {
-            if (res && res.success) {
-              me.message(i18n.t("node.activeSuccess"));
-              data.vip = true;
-              store.set("activeCode", code);
-              me.$store.dispatch("vip", data);
-            } else {
-              let code = res.data.code;
-              if (code == 500) {
-                me.message(i18n.t("node.serverErr"));
-              } else if (code == 404) {
-                me.message(i18n.t("node.active404"));
-              } else if (code == 305) {
-                me.message(i18n.t("node.activeuse"));
-              } else {
-                me.message(i18n.t("node.activeFail"));
-              }
-            }
-          })
-          .fail(function (err) {
-            me.message(i18n.t("node.activeFail"));
-          });
-      } catch (e) {
-        console.log(e);
-        this.message(i18n.t("node.activeFail"));
-      }
     },
-    getData(){
-         if (this.$route.name == "editor") {
-            var mind = document.getElementById("mind").mind;
-            var data = mind.getData(false);
-          } else {
-            var list = document.getElementById("list").list;
-            var data = this.listGetData(list, null, false);
-          }
-          var m = JSON.parse(JSON.stringify(this.$store.state.MindData));
-          data.scrollTop = m.mindData.scrollTop;
-          data.scrollLeft = m.mindData.scrollLeft;
-          return data
+    getData() {
+      if (this.$route.name == "editor") {
+        var mind = document.getElementById("mind").mind;
+        var data = mind.getData(false);
+      } else {
+        var list = document.getElementById("list").list;
+        var data = this.listGetData(list, null, false);
+      }
+      var m = JSON.parse(JSON.stringify(this.$store.state.MindData));
+      data.scrollTop = m.mindData.scrollTop;
+      data.scrollLeft = m.mindData.scrollLeft;
+      return data;
     },
     menu(id, dataObj) {
       var me = this;
@@ -736,16 +726,17 @@ export default {
             var needSave = list.dirty();
           }
 
-          if (needSave) {    // save file before create new mind file
+          if (needSave) {
+            // save file before create new mind file
             this.saveAs();
             return;
           }
           me.$store.dispatch("setFilePath", { path: "" });
           me.$router.push("/refresh");
           this.$store.dispatch("setMindData", {}).then(() => {
-              me.$router.push("/list");
+            me.$router.push("/list");
           });
-          
+
           break;
         case "Open File":
           dialog
@@ -788,7 +779,7 @@ export default {
           this.$router.push("/profile");
           break;
         case "Export-FreeMind":
-          var data=this.getData();
+          var data = this.getData();
           this.$store.dispatch("setMindData", data).then(() => {
             var listData = JSON.parse(
               JSON.stringify(this.$store.getters.getData)
@@ -809,7 +800,7 @@ export default {
           });
           break;
         case "Export-OPML":
-           var data=this.getData();
+          var data = this.getData();
           this.$store.dispatch("setMindData", data).then(() => {
             var listData = JSON.parse(
               JSON.stringify(this.$store.getters.getData)
@@ -831,7 +822,7 @@ export default {
 
           break;
         case "Export-MarkDown":
-          var data=this.getData();
+          var data = this.getData();
           this.$store.dispatch("setMindData", data).then(() => {
             var listData = JSON.parse(
               JSON.stringify(this.$store.getters.getData)
@@ -854,7 +845,7 @@ export default {
           });
           break;
         case "Export-KityMind":
-          var data=this.getData();
+          var data = this.getData();
           this.$store.dispatch("setMindData", data).then(() => {
             var listData = JSON.parse(
               JSON.stringify(this.$store.getters.getData)
@@ -883,7 +874,7 @@ export default {
             .then(({ filePaths }) => {
               if (filePaths.length) {
                 var p = filePaths[0];
-                 me.$router.push("/refresh");
+                me.$router.push("/refresh");
                 fs.readFile(p, function (err, data) {
                   if (err) throw err;
                   importOPML(data)
@@ -893,7 +884,7 @@ export default {
                       }
 
                       var list = transferDataToList(json);
-                     
+
                       var mindData = {
                         theme: "blue",
                         mindData: [list],
@@ -905,10 +896,9 @@ export default {
                       };
                       me.$store.dispatch("setFilePath", { path: "" });
                       me.$store.dispatch("setMindData", mindData).then(() => {
-                       setTimeout(()=>{
+                        setTimeout(() => {
                           me.$router.push("/list");
-                       },0)
-                       
+                        }, 0);
                       });
                     })
                     .catch((e) => {});
@@ -926,7 +916,7 @@ export default {
             .then(({ filePaths }) => {
               if (filePaths.length) {
                 var p = filePaths[0];
-                 me.$router.push("/refresh");
+                me.$router.push("/refresh");
                 fs.readFile(p, function (err, data) {
                   if (err) throw err;
                   var mdata = importKityMind(JSON.parse(data.toString()));
@@ -943,9 +933,7 @@ export default {
                     marks: mdata.marks,
                   };
                   me.$store.dispatch("setMindData", mindData).then(() => {
-                   
-                     me.$router.push("/list");
-                   
+                    me.$router.push("/list");
                   });
                 });
               }
@@ -961,7 +949,7 @@ export default {
             .then(({ filePaths }) => {
               if (filePaths.length) {
                 var p = filePaths[0];
-                 me.$router.push("/refresh");
+                me.$router.push("/refresh");
                 fs.readFile(p, function (err, data) {
                   if (err) throw err;
                   var zip = JSZip.loadAsync(data);
@@ -1010,7 +998,7 @@ export default {
                                   )
                                   .then(() => {
                                     var p = "/";
-                                     me.$router.push("/list");
+                                    me.$router.push("/list");
                                   });
                               });
                             }
@@ -1053,7 +1041,7 @@ export default {
                   var data = importMarkdown(data.toString("utf-8"));
                   me.$store.dispatch("setFilePath", { path: "" });
                   me.$store.dispatch("setMindData", data).then(() => {
-                      me.$router.push("/list");
+                    me.$router.push("/list");
                   });
                 });
               }
@@ -1069,7 +1057,7 @@ export default {
             .then(({ filePaths }) => {
               if (filePaths.length) {
                 var p = filePaths[0];
-                  me.$router.push("/refresh");
+                me.$router.push("/refresh");
                 fs.readFile(p, function (err, data) {
                   if (err) throw err;
                   var data = importTxt(data.toString("utf-8"));
@@ -1172,7 +1160,6 @@ export default {
 </script>
 
 <style>
-
 @font-face {
   font-family: "bdfont";
   src: url("./assets/logo/bdfont.eot"); /* IE9*/
@@ -1206,7 +1193,6 @@ export default {
   clear: both;
 }
 
-
 html,
 body {
   width: 100%;
@@ -1214,7 +1200,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color:#fff;
+  background-color: #fff;
 }
 
 h1,
@@ -1237,7 +1223,6 @@ svg {
   z-index: 2000;
 }
 
-
 /* emoji */
 .ap,
 .ql-emojiblot {
@@ -1248,7 +1233,6 @@ svg {
   font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC",
     "Microsoft YaHei", sans-serif !important;
 }
-
 
 /* list print pdf */
 html.print {
@@ -1289,7 +1273,6 @@ html.print {
   display: none !important;
 }
 
-
 /* app css */
 #app {
   -webkit-font-smoothing: antialiased;
@@ -1326,8 +1309,6 @@ html.print {
 .top-bar .close:hover {
   background: red;
 }
-
-
 
 .btn-group {
   position: fixed;
@@ -1593,8 +1574,6 @@ html.print {
   border-radius: 6px;
 }
 
-
-
 .mind-editor .node-todo-done {
   text-decoration: line-through;
 }
@@ -1620,8 +1599,6 @@ html.print {
   display: block;
   margin-top: -2px;
 }
-
-
 
 /* node bar */
 .node .node-bar {
@@ -1691,7 +1668,6 @@ html.print {
   line-height: 22px;
 }
 
-
 .theme-white .node-bar {
   color: #333 !important;
 }
@@ -1725,7 +1701,6 @@ html.print {
 .theme-white1 .node-bar {
   color: rgb(40, 53, 147) !important;
 }
-
 
 /* radio checkbox css */
 @keyframes hover-color {
@@ -1871,9 +1846,6 @@ html.print {
   border: 1px solid #6d6d6d;
 }
 
-
-
-
 .text-left {
   text-align: left;
 }
@@ -1965,7 +1937,6 @@ html.print {
   background-color: #333;
 }
 
-
 .mind-editor .markdown-body blockquote,
 .mind-editor .markdown-body details,
 .mind-editor .markdown-body dl,
@@ -1999,7 +1970,6 @@ html.print {
   box-shadow: 0px 0px 6px #f5f5f5;
 } */
 
-
 /* theme-blue */
 .theme-blue {
   background-color: rgb(35, 39, 62);
@@ -2025,8 +1995,6 @@ html.print {
   border-color: rgb(115, 154, 163);
   background-color: rgb(66, 78, 96);
 }
-
-
 
 /* skin */
 .cadmium-light {
@@ -2157,10 +2125,6 @@ html.print {
   margin-bottom: 2px;
 }
 
-
-
-
-
 ::-webkit-scrollbar-track-piece {
   width: 14px;
   background-color: #e0e0e0;
@@ -2212,7 +2176,6 @@ html.print {
   border: 1px solid #333 !important;
   color: #929292 !important;
 }
-
 
 /* menu */
 .mark-list .top-bar .menu {
@@ -2304,10 +2267,6 @@ html.print {
 .markdown-body img {
   background: none !important;
 }
-
-
-
-
 
 .win-content {
   background: #fff;
@@ -2482,7 +2441,6 @@ html.print {
   list-style-type: decimal !important;
 }
 
-
 .node-text > ul,
 .node-text > ol {
   margin-left: 0;
@@ -2551,7 +2509,6 @@ button {
   margin: 2px 0;
 }
 
-
 .cicada-list .markdown-body blockquote {
   line-height: 24px;
   border-left: 0.2em solid #dfe2e5;
@@ -2570,10 +2527,6 @@ button {
   border-left: 0.25em solid #929eab;
 }
 
-
-
-
-
 .tooltip-msg {
   position: fixed;
   padding: 10px;
@@ -2587,10 +2540,6 @@ button {
   font-size: 16px;
   z-index: 6000;
 }
-
-
-
-
 
 .about {
   width: 400px;
@@ -2633,11 +2582,6 @@ button {
 .about .close:hover {
   background: #fff;
 }
-
-
-
-
-
 
 .activeCode {
   position: fixed;
@@ -2683,10 +2627,6 @@ button {
   height: 32px;
   border-radius: 3px;
 }
-
-
-
-
 
 .markdown-it-vue-alter-info {
   border: 1px solid #91d5ff;
@@ -2747,8 +2687,6 @@ button {
   position: absolute;
 }
 
-
-
 .emptytext {
   color: rgba(0, 0, 0, 0);
   background: #f3f3f3;
@@ -2758,7 +2696,4 @@ button {
   color: inherit;
   background: transparent;
 }
-
-
-
 </style>

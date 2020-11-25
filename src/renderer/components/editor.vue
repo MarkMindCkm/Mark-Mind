@@ -52,13 +52,13 @@
             
       </div> -->
 
-    <themeSetup @changeTheme="changeTheme" v-if="showSkin" />
+    <themeSetup @changetheme="changeTheme" v-if="showSkin" />
 
     <setup
       v-if="showSetup"
-      @changeStroke="changeStroke"
-      @changeBackground="changeBackground"
-      @changeLayout="setLayout"
+      @changestroke="changeStroke"
+      @changebackground="changeBackground"
+      @changelayout="setLayout"
       :layoutName="layoutName"
       :layoutDirect="layoutDirect"
       :nodeDirect="nodeDirect"
