@@ -246,7 +246,7 @@
             "text":"Add SubTopic",
             "cmd":"addChildNode",
             "show":true,
-            "shortCut":"Insert" 
+            "shortCut":"Tab" 
         },
         {
             "id":2,

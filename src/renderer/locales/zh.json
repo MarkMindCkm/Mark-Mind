@@ -246,7 +246,7 @@
             "text":"添加子节点",
             "cmd":"addChildNode",
             "show":true,
-            "shortCut":"Insert" 
+            "shortCut":"Tab" 
         },
         {
             "id":2,
