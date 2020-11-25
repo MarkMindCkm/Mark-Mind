@@ -52,6 +52,8 @@
         <img :src="logo" />
         <h1>MarkMind</h1>
         <p>{{ about.version }}</p>
+        <p>Twitter: <a @click="openlink('https://twitter.com/MarkMind9')">@MarkMind</a></p>
+        <p>github: <a @click="openlink('https://github.com/MarkMindLtd/Mark-Mind')">@MarkMindLtd</a></p>
       </div>
     </div>
 
@@ -713,6 +715,9 @@ export default {
       data.scrollTop = m.mindData.scrollTop;
       data.scrollLeft = m.mindData.scrollLeft;
       return data;
+    },
+    openlink(link){
+      shell.openExternal(link);
     },
     menu(id, dataObj) {
       var me = this;
@@ -2576,9 +2581,9 @@ button {
   width: 30px;
 }
 .about p {
-  line-height: 30px;
+  line-height: 24px;
   margin-top: 10px;
-  font-size: 18px;
+  font-size: 14px;
 }
 .about button {
   height: 30px;
@@ -2588,6 +2593,10 @@ button {
 }
 .about .close:hover {
   background: #fff;
+}
+.about a{
+  color: #1890ff;
+  cursor: pointer;
 }
 
 .activeCode {
