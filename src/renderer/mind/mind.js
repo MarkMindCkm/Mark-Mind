@@ -34,21 +34,18 @@ class Mind {
         this.induces = [];
         this.wireFrames = [];
         this.relateLinks = [];
-        this.freeNodes = [];      //free root
-        this.callouts = [];   
-        this.marks = [];          //tags
-        
-        this.induceRoot = [];     //temp store
+        this.freeNodes = []; //free root
+        this.callouts = [];
+        this.marks = []; //tags
 
-        this.scaleNum = 1;        //scale num
+        this.induceRoot = []; //temp store
 
+        this.scaleNum = 1; //scale num
         this.useMarkDown = false;
         this.refreshTime = null;
 
         this.stack = new Stack(50);
-
         this.draw = SVG(this.el).size('100%', '100%');
-
         this.wireFrameGroup = this.draw.group();
         this.edgeGroup = this.draw.group();
         this.shapeGroup = this.draw.group();
@@ -56,7 +53,6 @@ class Mind {
         this.relateGroup = this.draw.group();
         this.calloutGroup = this.draw.group();
         this.fishTailGroup = this.draw.group();
-
 
         this.stackChange();
         this.initEvent();
@@ -72,6 +68,7 @@ class Mind {
 
     stackChange() {
         var me = this;
+
         function refresh(node) {
             var mind = node.getMind();
             if (node) {
@@ -200,10 +197,6 @@ class Mind {
                 node.dom.classList.add('node');
                 node.dom.classList.add('node-' + node.direct);
                 node.dom.classList.add('node-leaf');
-
-                // if (data.parent.dom.classList.contains('node-leaf')) {
-                //     data.parent.dom.classList.remove('node-leaf');
-                // }
 
                 if (!data.parent.isExpand()) {
                     data.parent.expand();
@@ -525,14 +518,12 @@ class Mind {
                 break;
 
             case 'expandNode':
-                //console.log(data)
                 this.stack.execute(new cmd.ExpandNode(data.node || data.parent))
                 break;
             case 'collapseNode':
                 this.stack.execute(new cmd.CollapseNode(data.node || data.parent))
                 break;
                 // case 'changeCallout':
-
                 //     this.stack.execute(new cmd.ChangeCallout(data.callout,data.oldPos,data.newPos));
                 //     break;
             case 'changeLayout':
@@ -562,8 +553,8 @@ class Mind {
             case 'relateHideNode':
                 this.stack.execute(new cmd.RelateHideNode(data.relateLink));
                 break;
-            // case 'autoNumber':
-            //     this.stack.execute(new cmd.AutoNumber(data.parent))
+                // case 'autoNumber':
+                //     this.stack.execute(new cmd.AutoNumber(data.parent))
                 break;
             case 'copyNode':
                 this.stack.execute(new cmd.CopyNode(data.node));
@@ -703,7 +694,7 @@ class Mind {
         this.traverseBF(n => {
             if (n.getLevel() < level) {
                 n.expand();
-                if(n.nodeType=='induce'){
+                if (n.nodeType == 'induce') {
                     console.log(n.nodeType)
                 }
             } else if (n.getLevel() == level) {
@@ -768,12 +759,9 @@ class Mind {
             var p = node.parent;
             var k = p.summaries.indexOf(induce);
             p.summaries.splice(k, 1);
-            //  p.summaries.unique();
-
 
             var j = node.induces.indexOf(induce);
             node.induces.splice(j, 1);
-            //this.dom.removeChild(induce.root.dom);
             this.induces.splice(i, 1);
 
             induce.remove();
@@ -808,9 +796,7 @@ class Mind {
         }
     }
 
-    //深度遍历方法,可以指定node
     traverseDF(callback, node) {
-        // 一个递归，立即执行函数
         function recurse(currentNode) {
             if (currentNode && currentNode.children) {
                 for (var i = 0, length = currentNode.children.length; i < length; i++) {
@@ -875,14 +861,8 @@ class Mind {
         var n = node || this.root;
         var anchor = n;
         while (anchor) {
-            //  console.log(anchor)
             anchor.boundingRect = null;
-            //if(anchor.parent){
             anchor = anchor.parent || (anchor.belongInduce && anchor.belongInduce.node);
-            // }
-            // else if(anchor.induce){
-            //  anchor=anchor.induce.node;
-            // }
         }
 
         var root = this.getRootByNode(node);
@@ -912,7 +892,6 @@ class Mind {
         if (node) {
             this.clearSelectNode();
             node.select();
-           // console.log('select');
         }
     }
     getSelectNodes() {
@@ -974,7 +953,7 @@ class Mind {
             obj.stroke = data.color;
             nodes.push(obj);
         }, node);
-        //console.log(node,11);
+
         var layout = node.getLayout();
         if (node.layout) {
             var topLayout = node.getTopLayout();
@@ -987,17 +966,13 @@ class Mind {
     }
 
     changeBackground(type, data) {
-        // console.log(type);
         if (type == 'grain') {
             this.useImageBg = true;
             this.el.style.background = "url(" + data.image + ") repeat";
-            // this.el.style.filter="blur(8px)";
         } else {
             this.useImageBg = false;
             this.el.style.background = data.color;
-            // this.el.style.filter='';
         }
-
     }
 
     changeTheme(name) {
@@ -1052,13 +1027,6 @@ class Mind {
                 var textPadding = c['node-textPadding'].slice();
             };
 
-            //    style['backgroundColor']=config['main-root-fill'];
-            //    style['color']=config['main-root-textFill'];
-            //    style['fontSize']=config['main-root-fontSize'];
-            //    style['paddingLeft']=config['main-root-textPadding'][0];
-            //    style['paddingRight']=config['main-root-textPadding'][0];
-            //    style['paddingTop']=config['main-root-textPadding'][1];
-            //    style['paddingBottom']=config['main-root-textPadding'][1];
 
             n.setData({
                 backgroundColor: fill,
@@ -1072,16 +1040,11 @@ class Mind {
                 paddingBottom: textPadding[1],
             });
 
-            // if(updateCanvas){
-            //n.data.lineStroke=c['stroke'];
-            //n.stroke=c['stroke'];
-            //}
+
 
         });
 
-        //this.refresh();
 
-        //if(updateCanvas){
         var wf = {
             stroke: c['wireFrame-stroke'],
             fill: c['wireFrame-fill']
@@ -1093,7 +1056,6 @@ class Mind {
                 ...data,
                 ...wf
             });
-            //  item.refresh();
         })
 
         var induce = {
@@ -1109,25 +1071,10 @@ class Mind {
                 ...data,
                 ...induce
             });
-            // console.log(induce)
-            // item.refresh();
+
         });
 
         this.refresh();
-
-        //   var relate={
-        //       stroke:c['relate-stroke'],
-        //       textFill:c['relate-textFill'],
-        //       textBackgroundColor:c['background']
-        //   }
-
-        //   this.relateLinks.forEach((item)=>{
-        //       item.setAttr(relate.stroke,relate.textFill,relate.textBackgroundColor);
-        //   });
-
-        //  $('#mindEditor').css('background',c['background']);
-        // this.updateAssist();
-        //this.el.style.backgroundColor=c['background'];
 
     }
 
@@ -1139,12 +1086,6 @@ class Mind {
                 if (n.callout && n.callout.isShow) {
                     list.push(n.callout)
                 }
-                // if(n.wireFrame){
-                //     list.push(n.wireFrame)
-                // }
-                // if(n.induce){
-                //     list.push(n.induce);
-                // }
                 if (n.wireFrames.length) {
                     n.wireFrames.forEach(w => {
                         if (!w.isHide) {
@@ -1168,7 +1109,6 @@ class Mind {
             }
         })(node);
         list.unique();
-        //  console.log(list);
         return this.getBoundingRect(list);
 
     }
@@ -1182,25 +1122,19 @@ class Mind {
                 leftNode: null,
                 rightNode: null
             };
-            //  console.log(list);
+
             list.forEach((item, i) => {
-                // if(item.boundingRect){
-                //     var b=item.boundingRect;
-                // }else{
+
                 if (!item) {
                     return;
                 }
                 if (item.name == 'wireFrame') {
                     var b = item.getBBox();
                 } else {
-                    // if(item.boundingRect){
-                    // var b=item.boundingRect;
-                    //}else{
                     var b = item.getBox();
-                    //  }
                 }
-                if (i == 0) {
 
+                if (i == 0) {
                     box.x = b.x;
                     box.y = b.y;
                     box.right = b.x + b.width;
@@ -1240,7 +1174,7 @@ class Mind {
                         }
                     }
                 }
-                //  }
+
             });
             box.width = box.right - box.x;
             box.height = box.bottom - box.y;
@@ -1304,14 +1238,10 @@ class Mind {
     }
 
     removeNode(node) {
-        //  if(node.getLevel()==0){
-        //      return -1;
-        //  }
         if (node.parent) {
             var p = node.parent;
             var i = node.parent.removeChild(node);
             this._removeChildDom(node);
-
             this._refreshBounding(p);
             return i;
         } else {
@@ -1344,10 +1274,6 @@ class Mind {
             node.callout.init();
         }
 
-        //  if(node.wireFrame){
-        //      this.addWireFrame(node.wireFrame);
-        //      node.wireFrame.init();
-        //  }
         if (node._wireFrames && node._wireFrames.length) {
             node.wireFrames = node._wireFrames.slice();
             node._wireFrames = [];
@@ -1359,17 +1285,6 @@ class Mind {
             });
         }
 
-        //  if(node.induce){
-        //      this.addInduce(node.induce);
-        //      node.induce.init();
-        //      this.traverseDF(n=>{
-        //        this._addNodeDom(n);
-        //     },node.induce.root)
-        //  }
-        // if(node._summaries&&node._summaries.length){
-        //     node.summaries=node._summaries.slice();
-        //     node._summaries=[];
-        // }
         if (node._summaries && node._summaries.length) {
             node._summaries.forEach(induce => {
                 this.addInduce(induce);
@@ -1388,7 +1303,6 @@ class Mind {
         var that = this;
         var rls = [];
         var layout = [];
-
         this.traverseBF((n) => {
 
             if (n.layout) {
@@ -1409,16 +1323,13 @@ class Mind {
                 n.wireFrames.forEach(wf => {
                     that.removeWireFrame(wf);
                 });
-                // n.wireFrame.remove();
             }
 
             n._summaries = n.summaries.slice();
             if (n.summaries.length) {
-                // console.log(n.summaries.length)
                 n.summaries.forEach(induce => {
                     that._removeChildDom(induce.root);
                     induce.remove();
-                    //console.log(induce);
                 });
                 n.summaries.forEach(induce => {
                     that.removeInduce(induce);
@@ -1443,7 +1354,6 @@ class Mind {
             if (n.shapeSvg) {
                 n.shapeSvg.remove();
                 n.shapeSvg._delete = true;
-                // n.shapeSvg=null;
             }
 
         }, node);
@@ -1464,20 +1374,17 @@ class Mind {
     getData(flag, zip, deleteEvent) {
         var me = this;
         this.imageNodes = [];
-        //  this.marks=[];
         var mindData = [];
         var mdata = [];
         this.traverseBF(function (n) {
             var data = n.getData(flag, deleteEvent);
             mdata.push(data);
-            // me.marks=me.marks.concat(n.data.marks);
             if (zip) {
                 if (n.data.isImageNode) {
                     if (data.image.startsWith('http')) {
                         return;
                     }
                     var imageData = data.image.replace(/^data:image\/(\w|\+)+;base64,/, "");
-                    //console.log(data.image,imageData,111);
                     zip.file(data.id + '-' + data.imageName, imageData, {
                         base64: true
                     });
@@ -1494,7 +1401,6 @@ class Mind {
             me.traverseBF(function (n) {
                 var data = n.getData(flag, deleteEvent);
                 fdata.push(data);
-                // me.marks=me.marks.concat(n.data.marks);
                 if (zip) {
                     if (n.data.isImageNode) {
                         if (data.image.startsWith('http')) {
@@ -1512,7 +1418,7 @@ class Mind {
         });
 
         var induceData = [];
-        var induces = this.getInducesByNode(this.root); //这里必须重新获取induces,按照顺序保存
+        var induces = this.getInducesByNode(this.root);
         induces.unique();
         induces.forEach(induce => {
             var obj = {
@@ -1581,7 +1487,6 @@ class Mind {
         });
 
         this.traverseDF(n => {
-            //console.log(n);
             this.removeNode(n);
             n.removeEvent();
         });
@@ -1636,7 +1541,7 @@ class Mind {
                         var p = me.getNodeById(d.pid)
                         me.addNode(node, p);
                     }
-                   
+
                     if (!d.isExpanded) {
                         waitCollapseNode.push(node);
                     }
@@ -1653,7 +1558,7 @@ class Mind {
                         node.layout.direct = d.layout.direct;
                         node.layout.root = node;
                     }
-                  
+
                 });
 
 
@@ -1675,7 +1580,7 @@ class Mind {
                             node.layout.root = node;
                         }
                         me.addFreeNode(node);
-                      
+
                     } else {
                         var node = new Node(d, me);
                         var p = me.getNodeById(d.pid);
@@ -1776,7 +1681,7 @@ class Mind {
                 var n = me.getNodeById(data.nodeId);
                 var p = n.parent;
                 if (p) {
-                   
+
                     var r = data.range;
                     var ar = r.split(',');
                     var rangeNode = []
@@ -1869,11 +1774,11 @@ class Mind {
             rl.move(box.x + box.width / 2, box.y);
             rl.refresh();
         });
-        
+
         //setTimeout(() => {
-            //load katex font
-            this.initialize = false;
-       // }, 1600);
+        //load katex font
+        this.initialize = false;
+        // }, 1600);
 
     }
 
@@ -1885,20 +1790,20 @@ class Mind {
             this.traverseBF(function (n) {
                 html += n.getHtml();
             }, node);
-           
+
         });
         return html;
     }
 
     refreshLayout(node) {
-      
+
         if (node) {
             var anchor = node;
             var layout = null
             while (anchor) {
                 if (anchor.layout) {
                     layout = anchor.layout;
-                 
+
                 }
                 if (anchor.belongInduce) {
                     anchor = anchor.belongInduce.node;
@@ -1929,9 +1834,9 @@ class Mind {
                 induce.root.layout.createLink();
             }
         });
-       
+
         this.updateRelateLink();
-       
+
 
     }
 
@@ -2043,7 +1948,7 @@ class Mind {
         $(document).off('drop').on('drop', (e) => {
             e.preventDefault();
             var dragNodeId = e.originalEvent.dataTransfer.getData('dragNodeId');
-           
+
             if (!dragNode) {
                 //drop to node,drop to blank
                 var nodeDom = $(e.target).closest('.node');
@@ -2060,7 +1965,7 @@ class Mind {
                 if (!node) {
                     return;
                 }
-                
+
                 if (file) {
                     that.emit('addLocalFile', {
                         node,
@@ -2131,11 +2036,11 @@ class Mind {
                 }
             }
 
-            
+
             var node = that.getNodeById(dragNodeId);
             dragNode = '';
             if ((!node.data.main) && (node && node.nodeType && node.nodeType == 'richText')) {
-            
+
                 if (node == this.root) return;
                 node._refreshBounding();
                 let oldPos = node.getPosition();
@@ -2288,7 +2193,7 @@ class Mind {
                     }
                 }
             }
-            
+
         });
 
         $('body').off('dblclick').on('dblclick', '.node', function (e) {
@@ -2297,7 +2202,7 @@ class Mind {
             if ($(e.target).closest('a').length) {
                 return;
             }
-           
+
             var node = $(this).get(0).node;
             if (that._editNode == node) {
                 return;
@@ -2520,8 +2425,6 @@ class Mind {
         $('body').off('contextmenu')
         $('body').off('blur');
     }
-
-
 }
 
 export default Mind;
