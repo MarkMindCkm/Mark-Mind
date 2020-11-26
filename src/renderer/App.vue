@@ -1,12 +1,12 @@
 <template>
   <div id="app" @keydown="shortCut" tabindex="-1">
     <div class="top-bar">
-      <div :class="'logo ' + (platform!='win32'?'drawin':'')">
+      <div :class="'logo ' + (platform=='drawin'?'drawin':'')">
         <span class="iconfont icon-sanheng" @click="toggleMenu"></span>
       </div>
 
       <tomato v-if="tomato" />
-      <div :class="'btn-group ' + (platform!='win32'?'drawin':'')">
+      <div :class="'btn-group ' + (platform!='drawin'?'drawin':'')">
         <div class="iconfont icon-min min" @click="min"></div>
         <div class="iconfont icon-max-two max" @click="max"></div>
         <div class="iconfont icon-searchclose close" @click="close"></div>
