@@ -435,7 +435,6 @@ class Node {
                     [box.width * 2, box.height],
                     [box.width, box.height * 2],
                 ]
-                break;
             case 'bubble':
 
 
@@ -750,7 +749,6 @@ class Node {
             this.todoDom.appendChild(this.label);
             this.assistDom.appendChild(this.todoDom);
 
-            // console.log(this.data.todoDone);
             if (this.data.todoDone) {
                 $(this.todoDomcheck).prop('checked', true);
             } else {
@@ -845,11 +843,10 @@ class Node {
 
     removeTodo() {
         this.data.isTodo = false;
-        // this.data.todoDone=false;
+        this.todoDom.onclick=null;
+        this.todoDom.ondblclick=null;
+        this.todoDomcheck.onclick=null;
         this.todoDom && this.assistDom.removeChild(this.todoDom);
-        //this.todoDom.removeEventListener('click');
-        // this.todoDom.removeEventListener('dblclick');
-        //this.todoDomcheck.removeEventListener('click');
         this.todoDom = null;
         this.refreshBox();
     }
