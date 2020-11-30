@@ -51,7 +51,7 @@ npm run build
 
 - MarkDown
 
-- Presenttation
+- Presentation
 
 ##### Use markdown in node
 
