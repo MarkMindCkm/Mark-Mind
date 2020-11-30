@@ -389,32 +389,24 @@ export default class FishLayout1 extends Layout {
 	}
 
 	createLink() {
-		//var minder=this.root.getMind()
-		// if(this.gLine){
-		// 	minder.lineGroup.remove(this.gLine);
-		// }
-
 		if (!this.group) {
 			return
 		}
+
 		this.group.clear();
 
 		if (this.root.getChildren().length == 0) {
 			return;
 		}
+
 		if (this.direct == 'right') {
 			this.createLink1();
 			return;
 		}
+		
 		var me = this;
 		var dis = this.dis;
-		// this.gLine=new zrender.Group({
-		// 	z:6
-		// });
-
-		// let config=theme.use().config;
-		// let stroke=config['stroke'];
-		// let lineWidth=config['lineWidth'];
+		
 		var lineWidth = 2;
 
 		function createLine(node, type) {
@@ -428,16 +420,7 @@ export default class FishLayout1 extends Layout {
 					var fromPoint = [(pos.x - me.dis / Math.tan(me.angle)), (pos.y + box.height + me.dis)];
 					var transPoint = [(pos.x), (pos.y + box.height) + 1];
 					var toPoint = [(transPoint[0] + box.width) + 1, (transPoint[1])];
-					//  var line=new zrender.Polyline({
-					//  	style:{
-					//  		stroke,
-					//  		lineWidth
-					//  	},
-					//  	shape:{
-					//  	  points:me.linePoint([fromPoint,transPoint,toPoint],lineWidth)
-					//  	}
-					//  });
-					// me.gLine.add(line);
+					
 					var line = me.group.polyline(me.linePoint([fromPoint, transPoint, toPoint], lineWidth));
 					line.fill('none');
 					line.stroke({
@@ -451,16 +434,7 @@ export default class FishLayout1 extends Layout {
 					var fromPoint = [(pos.x - (me.dis + box.height) / Math.tan(me.angle)), parseInt(pos.y - me.dis)];
 					var transPoint = [(pos.x), (pos.y + box.height) + 1];
 					var toPoint = [(transPoint[0] + box.width) + 1, transPoint[1]];
-					//   var line=new zrender.Polyline({
-					//  	style:{
-					//  		stroke,
-					//  		lineWidth
-					//  	},
-					//  	shape:{
-					//  		points:me.linePoint([fromPoint,transPoint,toPoint],lineWidth)
-					//  	}
-					//  });
-					// me.gLine.add(line);
+					
 					var line = me.group.polyline(me.linePoint([fromPoint, transPoint, toPoint], lineWidth));
 					line.fill('none');
 					line.stroke({
@@ -487,18 +461,7 @@ export default class FishLayout1 extends Layout {
 					var point = [transPoint2, toPoint];
 				}
 
-				// var line=new zrender.Polyline({
-				// 	style:{
-				// 			stroke,
-				// 			lineWidth
-				// 	},
-				// 	shape:{
-				// 		points:me.linePoint(point,lineWidth)
-				// 	},
-				// 	z:9
-				// });
-
-				//me.gLine.add(line);
+				
 
 				var line = me.group.polyline(me.linePoint(point, lineWidth));
 				line.fill('none');
@@ -525,7 +488,6 @@ export default class FishLayout1 extends Layout {
 			createLine(n, 'bottom');
 		});
 
-		// this.root.getMinder().addLine(this.gLine);
 		this.creatBone();
 	}
 
