@@ -124,7 +124,7 @@
           :left="wfleft"
           :top="wftop"
           :wftext="wfText"
-          @removeWireFrame="removeWireFrame"
+          @removewireframe="removeWireFrame"
           @changeWireFrame="changeWireFrame"
         />
 
@@ -1801,6 +1801,7 @@ export default {
       });
     },
     removeWireFrame() {
+      console.log(this.selecWireFrame)
       this.mind.execute("removeWireFrame", { wf: this.selecWireFrame });
       this.showWireFrame = false;
     },
