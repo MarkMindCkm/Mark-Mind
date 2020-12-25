@@ -72,44 +72,7 @@ const importXmind=function(data){
        mind.relateLinkData.push(obj);
    })
 
-    
-    //list=[];
-    // transferData(data.root,null);
-    // var marks=[];
-    // var obj={};
-    // list.forEach(node=>{
-    //     node.resource&&node.resource.forEach(r=>{
-    //       if(!obj[r]){
-    //           var id=parseInt(+new Date())+parseInt(Math.random()*50);
-    //           var tagObj={
-    //             id,
-    //             text:r
-    //           };
-    //           marks.push(tagObj);
-    //           node.marks.push(tagObj);
-    //           obj[r]=true;
-    //       }else{
-    //         marks.forEach(item=>{
-    //             if(item.text==r){
-    //               node.marks.push(item);
-    //             }
-    //         })
-    //       }
-    //   })
-    //   delete node.resource;
-    // });
-    // var len=color.length;
-    // marks.forEach((item,i)=>{
-    //     if(i<len){
-    //         item.fill=color[i];
-    //     }else{
-    //         item.fill=color[parseInt(Math.random()*len)];
-    //     }
-    //     item.checked=false;
-    // });
-
-   // mind.data.push(list);
-   // mind.marks=marks;
+   
     return mind;
 };
 
@@ -146,10 +109,7 @@ function transferData(data,parentId,list,mainFlag){
         x:0,
         y:0
     };
-    // if(data.data.progress==9){
-    //     node.percent='100';
-    //     //node.icon=['wancheng']
-    // }
+
 
     if(!parentId){
         node.layout={};
@@ -167,7 +127,6 @@ function transferData(data,parentId,list,mainFlag){
         node.link=data.href;
     }
     if(data.notes){
-       // console.log(data.notes);
         node.remark=data.notes.plain.content.replace(/\n/g,"<br>").trim();
     }
     if(data.image){
@@ -175,9 +134,6 @@ function transferData(data,parentId,list,mainFlag){
        
         node.image='';
         node.imageName=data.image.src.replace('xap:resources/','');
-
-        // node.imageWidth=data.data.imageSize.width;
-        // node.imageHeight=data.data.imageSize.height;
     }
 
     if(data.labels){
@@ -208,7 +164,7 @@ function transferData(data,parentId,list,mainFlag){
         transferData(c,data.id,list);
     });
 
-    //归纳
+    //induce
     data.summaries&&data.summaries.forEach(sum=>{
           var r=sum.range.substring(1,sum.range.length-1);
          // console.log(r,'induce');
@@ -244,7 +200,7 @@ function transferData(data,parentId,list,mainFlag){
           mind.induceData.push(induceData);
     });
 
-    //外框
+    //wireframe
     data.boundaries&&data.boundaries.forEach(bum=>{
         var r=bum.range.substring(1,bum.range.length-1);
         var s=r.split(',')[0];
