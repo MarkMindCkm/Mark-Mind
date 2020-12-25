@@ -10,7 +10,7 @@
 
 ### Live editor
 
-[live editor](https://www.markmind.org)
+[live editor v1.1.8](https://www.markmind.org)
 
 ### Build Setup
 
