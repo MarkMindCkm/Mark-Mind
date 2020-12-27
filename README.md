@@ -104,7 +104,7 @@ npm run build
 ### 🤝 Contributing
 
 - Contributions, issues and feature requests are welcome!
-- You can donate with me to help the project develop [opencollective](https://opencollective.com/markmindltd)
+- You can donate to me to help the project develop [opencollective](https://opencollective.com/markmindltd)
 
 ### Show your support
 
