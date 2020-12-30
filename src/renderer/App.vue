@@ -232,6 +232,48 @@ export default {
       e.preventDefault();
       var text;
       var clp = (e.originalEvent || e).clipboardData;
+      
+       if(me.$route.name == "list" ){
+              var html=  clp.getData("text/html") || "";
+              if(html){
+                  var md=td.turndown(html);
+                  var mdarr=md.split('\n\n');
+                  if(mdarr.length){
+                        var list=document.getElementById('list').list;
+                        var node=list.getSelectNode();
+
+                        if(node.parent){
+                            var index=node.parent.children.length;
+                        }
+
+                        var prevNode=null;
+                        mdarr.forEach((d,i)=>{
+                            if(i==0||node==list.root){
+                                node.shoudRender=false;
+                                node.textDom.innerHTML=d.replace(/\n/g,'<br/>').trim();
+                                node.shoudRender=true;
+                            }else{
+                                var n=new Node({
+                                    id:uuid(),
+                                    text:d.replace(/\n/g,'<br/>').trim()
+                                });
+
+                               list.execute("addSameNode", {
+                                    node: n,
+                                    focusNode: prevNode?prevNode:node,
+                                    parent: node.parent,
+                                    index: index + i-1,
+                                });
+                            }
+                            prevNode=n?n:node;
+                        });
+                    }
+                    return;
+             }
+        }
+
+      
+      
       if (clp === undefined || clp === null) {
         text = window.clipboardData.getData("text") || "";
 
