@@ -6,7 +6,7 @@
 
 ### Download
 
-[window](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.7/Mark.Mind.Setup.1.1.7.exe)   [Mac](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.7/MarkMind-1.1.7.dmg)  [linux.AppImage](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.7/Mark.Mind.1.1.7.AppImage)
+[window 1.1.8](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.8/Mark.Mind.Setup.1.1.8.exe)   [Mac 1.1.7](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.7/MarkMind-1.1.7.dmg)  [linux.AppImage 1.1.7](https://github.com/MarkMindLtd/Mark-Mind/releases/download/1.1.7/Mark.Mind.1.1.7.AppImage)
 
 ### Live editor
 
