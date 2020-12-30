@@ -109,6 +109,8 @@ import i18n from "./locales/index";
 import Onedrive from "./components/onedrive";
 import tomato from "./components/tomato";
 
+import { Node } from "./mind/list/list";
+
 let Store = require("electron-store");
 var store = new Store();
 var profile = store.get("config");
