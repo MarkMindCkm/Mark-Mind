@@ -118,13 +118,6 @@ class MarkMind{
         this.mainWindow && this.mainWindow.toggleDevTools();
       });
       if (process.platform === "darwin") {
-        let contents = this.mainWindow.webContents;
-        globalShortcut.register("CommandOrControl+C", () => {
-          contents.copy();
-        });
-        globalShortcut.register("CommandOrControl+V", () => {
-          contents.paste();
-        });
         app.dock.hide();
       }
 
