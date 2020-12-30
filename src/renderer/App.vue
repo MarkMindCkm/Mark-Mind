@@ -111,6 +111,9 @@ import tomato from "./components/tomato";
 
 import { Node } from "./mind/list/list";
 
+var TurndownService = require('turndown');
+var turndownPluginGfm = require('turndown-plugin-gfm');
+
 let Store = require("electron-store");
 var store = new Store();
 var profile = store.get("config");
@@ -213,6 +216,11 @@ export default {
     }
   },
   mounted() {
+  
+    var td = new TurndownService();
+    var gfm = turndownPluginGfm.gfm;
+    td.use(gfm);
+    
     var me = this;
 
     this.checkVersion();
