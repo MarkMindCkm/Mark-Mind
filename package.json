@@ -85,7 +85,7 @@
     "html-docx-js": "^0.3.1",
     "html-to-plaintext": "^0.1.1",
     "html-to-text": "^5.1.1",
-    "html2canvas": "^1.0.0-rc.5",
+    "html2canvas": "^1.0.0-rc.7",
     "jquery": "^3.4.1",
     "jszip": "^3.2.0",
     "katex": "^0.11.1",
