@@ -55,25 +55,14 @@ jobs:
         env:
           GH_TOKEN: af9c80cfdf8e52e9ad90bf4532f830cafd3b7957 
 
-      # step5: cleanup artifacts in dist_electron
-      - name: cleanup artifacts for windows
-        if: matrix.os == 'windows-2019'
-        run: |
-          npx rimraf "build/!(*.exe)"
-
-      - name: cleanup artifacts for macosZ
-        if: matrix.os == 'macos-10.15'
-        run: |
-          npx rimraf "build/!(*.dmg)"
-
-      # step6: upload artifacts
+      # step5: upload artifacts
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}
           path: build
 
-      # step7: create release
+      # step6: create release
       - name: release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
