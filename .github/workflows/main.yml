@@ -69,4 +69,4 @@ jobs:
         with:
           files: "build/**"
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN}}
+          GITHUB_TOKEN: 127d7915e8829265813dcbc2b4f7728df5ad9c7b
