@@ -191,7 +191,7 @@ export default {
       msg: "",
       about: {
         show: false,
-        version: "1.1.6",
+        version: "1.1.8",
       },
       logo: logo,
       showactive: false,
