@@ -1,31 +1,81 @@
-name: Build/release
+# Workflow's name
+name: Build Electron App For Win/Mac
 
-on: push
+# Workflow's trigger
+on:
+  push:
+    tags:
+      - "v*.*.*"
 
+# Workflow's jobs
 jobs:
+  # job's id
   release:
+    # job's name
+    name: build and release electron app
+
+    # the type of machine to run the job on
     runs-on: ${{ matrix.os }}
 
+    # create a build matrix for jobs
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-2019, macos-10.15]
 
+    # create steps
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v1
+      # step1: check out repository
+      - name: Check out git repository
+        uses: actions/checkout@v2
 
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+      # step2: install node env
+      - name: Install Node.js
+        uses: actions/setup-node@v2-beta
+
+      # step3: npm install
+      - name: npm install
+        run: |
+          npm install
+
+      # step4: build app for mac/win
+      - name: build windows app
+        if: matrix.os == 'windows-2019'
+        run: |
+          npm run electron:build-win
+        env:
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: build mac app
+        if: matrix.os == 'macos-10.15'
+        run: |
+          npm run electron:build
+        env:
+          GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      # step5: cleanup artifacts in dist_electron
+      - name: cleanup artifacts for windows
+        if: matrix.os == 'windows-2019'
+        run: |
+          npx rimraf "dist_electron/!(*.exe)"
+
+      - name: cleanup artifacts for macosZ
+        if: matrix.os == 'macos-10.15'
+        run: |
+          npx rimraf "dist_electron/!(*.dmg)"
+
+      # step6: upload artifacts
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
         with:
-          node-version: 10
+          name: ${{ matrix.os }}
+          path: dist_electron
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
+      # step7: create release
+      - name: release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
-
-          # If the commit is tagged with a version (e.g. "v1.0.0"),
-          # release the app after building
-          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          files: "dist_electron/**"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
