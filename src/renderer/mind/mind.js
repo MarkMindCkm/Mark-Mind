@@ -247,10 +247,12 @@ class Mind {
                     this.stack.execute(new cmd.RemoveCallout(data.parent.callout));
                     return;
                 }
-                // if(data.parent){
-                //    this.stack.execute(new cmd.RemoveNode(data.parent,this));
-                //    return;
-                // }
+
+                //delete relate link
+                if(data.parent){
+                   this.stack.execute(new cmd.RemoveNode(data.parent,this));
+                   return;
+                }
 
                 var nodes = this.getSelectNodes();
                 nodes.sort(function (a, b) {

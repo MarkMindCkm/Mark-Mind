@@ -1855,7 +1855,7 @@ export default {
     },
     deleteRelate() {
       this.mind.execute("deleteNode", {
-        parent: this.selectRelateShip.textNode,
+        parent: this.selectRelateShip.textNode
       });
       this.selectRelateShip = null;
     },

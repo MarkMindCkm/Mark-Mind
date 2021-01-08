@@ -341,7 +341,7 @@ export default class RelateLink{
     }
 
     calcStroke(p,box){
-        console.log(p,box);
+      
         var mark=''
         if(Math.abs(p.x-box.x+4)<=2){
             mark+= 'left'
@@ -602,7 +602,6 @@ export default class RelateLink{
                var d=this.target.getAttribute('direct');
                this.calcLimit();
                if(d=='start'){
-                   console.log(this.oldBox);
                   this.box.cpx1=this.oldBox.cpx1+this.dx;
                   this.box.cpy1=this.oldBox.cpy1+this.dy;
                   var direct=this.calcStroke({x:this.box.x,y:this.box.y},this.startBox);
