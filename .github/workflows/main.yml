@@ -74,7 +74,7 @@ jobs:
       - name: cleanup artifacts for ubuntu
         if: matrix.os == 'ubuntu-16.04'
         run: |
-          npx rimraf "build/!(*.appimage)"
+          npx rimraf "build/!(*.AppImage)"
 
       # step6: upload artifacts
       - name: upload artifacts
