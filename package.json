@@ -60,16 +60,16 @@
       "oneClick": false,
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
-      "installerIcon": "build/icons/uu.ico",
-      "uninstallerIcon": "build/icons/uu.ico",
-      "installerHeaderIcon": "build/icons/uu.ico",
+      "installerIcon": "build/icons/icon.ico",
+      "uninstallerIcon": "build/icons/icon.ico",
+      "installerHeaderIcon": "build/icons/icon.ico",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true
     },
     "fileAssociations": [
       {
         "ext": "mind",
-        "name": "MarkMind文件",
+        "name": "MarkMind File",
         "role": "Editor"
       }
     ]
