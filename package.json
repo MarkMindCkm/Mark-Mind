@@ -42,10 +42,10 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/uu.icns"
+      "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/uu.ico",
+      "icon": "build/icons/icon.ico",
       "target": {
         "target": "nsis",
         "arch": [
