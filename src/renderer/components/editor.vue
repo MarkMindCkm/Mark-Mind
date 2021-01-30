@@ -1344,23 +1344,24 @@ export default {
 
           if (layoutName == "fish" || layoutName == "time") {
             var iscache = false;
+            var d='right';
           } else {
             iscache = true;
           }
           var newLayout = new layoutMap[layoutName](iscache);
           newLayout.root = node;
-          newLayout.direct = (layout && layout.direct) || e.cmd.direct;
+          newLayout.direct = d||(layout && layout.direct) || e.cmd.direct;
 
           if (layoutName.indexOf("minder") > -1) {
             newLayout.setDirect();
           }
         }
 
-        console.log(iscache,layoutName)
+        //console.log(iscache,layoutName)
 
         this.mind.execute("changeLayout", {
           node: node,
-          layout: newLayout,
+          layout: newLayout
         });
       }
 
@@ -1828,7 +1829,7 @@ export default {
       }
       this.mind.execute("changeLayout", {
         node,
-        layout: newLayout,
+        layout: newLayout
       });
     },
 

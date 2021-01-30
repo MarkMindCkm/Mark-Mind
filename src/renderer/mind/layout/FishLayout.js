@@ -12,7 +12,7 @@ export default class FishLayout extends Layout {
 		this.direct = 'left';
 		this.type = 'fish';
 		this.angle = this.deg = Math.PI * 7 / 18;
-		this.isCache = isCache;
+		this.isCache = false;
 	}
 	layout(node, direct) {
 		this.direct=direct||'right';
