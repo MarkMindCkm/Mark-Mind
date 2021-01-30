@@ -1356,6 +1356,8 @@ export default {
           }
         }
 
+        console.log(iscache,layoutName)
+
         this.mind.execute("changeLayout", {
           node: node,
           layout: newLayout,
