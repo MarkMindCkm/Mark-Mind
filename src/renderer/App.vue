@@ -245,41 +245,48 @@ export default {
       
        if(me.$route.name == "list" ){
               var html=  clp.getData("text/html") || "";
-              if(html){
-                  var md=td.turndown(html);
-                  var mdarr=md.split('\n\n');
-                  if(mdarr.length){
-                        var list=document.getElementById('list').list;
-                        var node=list.getSelectNode();
+              var selection = window.getSelection();
+              var list=document.getElementById('list').list;
+              var node=list.getSelectNode();
+              if(selection&&selection.isCollapsed&&!node.getTxt()){
+                   //var range = selection.getRangeAt(0);
+                   if(html){
+                      var md=td.turndown(html);
+                      var mdarr=md.split('\n\n');
+                      if(mdarr.length){
+                           
 
-                        if(node.parent){
-                            var index=node.parent.children.length;
-                        }
-
-                        var prevNode=null;
-                        mdarr.forEach((d,i)=>{
-                            if(i==0||node==list.root){
-                                node.shoudRender=false;
-                                node.textDom.innerHTML=d.replace(/\n/g,'<br/>').trim();
-                                node.shoudRender=true;
-                            }else{
-                                var n=new Node({
-                                    id:uuid(),
-                                    text:d.replace(/\n/g,'<br/>').trim()
-                                });
-
-                               list.execute("addSameNode", {
-                                    node: n,
-                                    focusNode: prevNode?prevNode:node,
-                                    parent: node.parent,
-                                    index: index + i-1,
-                                });
+                            if(node.parent){
+                                var index=node.parent.children.length;
                             }
-                            prevNode=n?n:node;
-                        });
-                    }
-                    return;
-             }
+
+                            var prevNode=null;
+                            mdarr.forEach((d,i)=>{
+                                if(i==0||node==list.root){
+                                    node.shoudRender=false;
+                                    node.textDom.innerHTML=d.replace(/\n/g,'<br/>').trim();
+                                    node.shoudRender=true;
+                                }else{
+                                    var n=new Node({
+                                        id:uuid(),
+                                        text:d.replace(/\n/g,'<br/>').trim()
+                                    });
+
+                                   list.execute("addSameNode", {
+                                        node: n,
+                                        focusNode: prevNode?prevNode:node,
+                                        parent: node.parent,
+                                        index: index + i-1,
+                                    });
+                                }
+                                prevNode=n?n:node;
+                            });
+                        }
+                        return;
+                 }
+              }
+              
+             
         }
 
       
@@ -1141,6 +1148,7 @@ export default {
             var mind = document.getElementById("mind").mind;
             mind.expandLevel(level);
             mind.refresh();
+            mind.updateAllAssist();
           } else {
             var list = document.getElementById("list").list;
             list.expandLevel(level);

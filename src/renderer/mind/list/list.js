@@ -1689,11 +1689,12 @@ class Node {
     }
 
     getTxt() {
-        return this.textDom.innerText.trim();
+        var txt=this.textDom.textContent;
+        return this.textDom.textContent.trim();
     }
 
     getNodeText() {
-        return this.liDom.innerText.trim();
+        return this.liDom.textContent.trim();
     }
 
 

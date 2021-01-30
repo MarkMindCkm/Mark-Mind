@@ -55,7 +55,7 @@ export default class Frame {
         this.oldh=this.resizeDom.offsetHeight;
         this.node.dom.setAttribute('draggable',false);
         this.resizeDom.setAttribute('draggable',false);
-
+        this.node.dom.style.zIndex=50;
         this.func1=this._mouseMove.bind(this);
         this.func2=this._mouseUp.bind(this);
         document.addEventListener('mousemove',this.func1);

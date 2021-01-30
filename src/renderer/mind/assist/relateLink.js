@@ -552,7 +552,10 @@ export default class RelateLink{
        this.drag=true;
        this.mind.status='changeRelate';
        this.target=e.target;
-       this.oldBox={...this.box};
+       this.oldBox=JSON.parse(JSON.stringify({...{},...this.box}));
+       var oldData=JSON.parse(JSON.stringify(this.data));
+       this.oldBox.data=oldData;
+
        this.func1=this._mouseMove.bind(this);
        this.func2=this._mouseUp.bind(this);
        
@@ -570,12 +573,22 @@ export default class RelateLink{
        this.dy=0;
       
        this.mind=this.startNode.getMind();
-    
+
+       var box=JSON.parse(JSON.stringify({...{},...this.box}));
+       var data=JSON.parse(JSON.stringify(this.data));
+       box.data=data;
+ 
        this.mind.execute('changeRelateLink',{link:this,data:{
            oldBox:this.oldBox,
-           box:this.box,
+           box:box,
            type:'changeRelateLinkBox'
        }});
+    
+       // this.mind.execute('changeRelateLink',{link:this,data:{
+       //     oldBox:this.oldBox,
+       //     box:this.box,
+       //     type:'changeRelateLinkBox'
+       // }});
 
        this.target=null;
 

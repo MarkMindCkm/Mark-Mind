@@ -43,8 +43,9 @@ class Mind {
         this.scaleNum = 1; //scale num
         this.useMarkDown = false;
         this.refreshTime = null;
-
-        this.stack = new Stack(50);
+        
+        //300 history num
+        this.stack = new Stack(300);
         this.draw = SVG(this.el).size('100%', '100%');
         this.wireFrameGroup = this.draw.group();
         this.edgeGroup = this.draw.group();
@@ -101,10 +102,15 @@ class Mind {
             if (me.initialize) {
                 me.refreshTime && clearTimeout(me.refreshTime);
                 me.refreshTime = setTimeout(() => {
-                    refresh(e.detail.node);
+                     if(e&&e.detail){
+                        refresh(e.detail.node);
+                     }
                 }, 100)
             } else {
-                refresh(e.detail.node);
+                if(e&&e.detail){
+                    refresh(e.detail.node);
+                }
+                
             }
 
             this.emit('needsave');
@@ -282,7 +288,7 @@ class Mind {
                 //change Style  ------> occasional change
                 var cmds = [];
                 nodes.forEach(n => {
-                    var oldData = n.getStyle();
+                    var oldData = n.getData();
                     var newData = {
                         ...oldData,
                         ...data.data || {}
@@ -1855,12 +1861,17 @@ class Mind {
             }
         })
         this.wireFrames.forEach(item => {
-            if (!item.isHide)
+            if (!item.isHide){
+                item.refreshItems();
                 item.refresh()
+            }
+                
         })
         this.induces.forEach(item => {
             if (item.isShow()) {
-                item.refresh()
+                item.refreshItems();
+                item.refresh();
+                item.root.layout.createLink();
             }
         });
 

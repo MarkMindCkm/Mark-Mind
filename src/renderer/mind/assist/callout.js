@@ -210,6 +210,11 @@ export default class Callout {
             this.px=e.pageX;
             this.py=e.pageY;
             pos=this.root.getPosition();
+
+            var box={...{},...this.box};
+            pos.direct=this.direct;
+            pos.box=box;
+
             document.addEventListener('mousemove',this._mouseMove);
             document.addEventListener('mouseup',this._mouseUp);
         }
@@ -275,38 +280,26 @@ export default class Callout {
         function _mouseUp(e){
             drag=false;
          
-           // var p=this.root.getBox();
-           this.node._refreshBounding();
-          // this.node.getMind().refresh();
-          // this.calcLimit();
-         // if(p.x<this.limit.x){
-            //     endPos.x=p.x
-            // }
            
-            // if(p.y>this.limit.y-5&&p.y<this.limit.y1+5){
-            //     endPos.y=this.limit.y1+10
-            // }
-
-            // if(p.y+p.height>this.limit.y-5&&p.y+p.height<this.limit.y1+5){
-            //     endPos.y=this.limit.y-10;
-            // }
-
-            // this.root.setPosition(endPos.x,endPos.y);
+            this.node._refreshBounding();
+         
             this.refresh();
             this.node.refreshCBox();
-            // var anchor=this.node;
-            // while(anchor){
-            //     if(anchor.layout){
-            //         anchor.layout.refresh();
-            //     }
-            //     if(anchor.belongInduce){
-            //         anchor=anchor.belongInduce.node;
-            //     }else{
-            //         anchor=anchor.parent;
-            //     }
-            // }
-            this.node.getMind().refresh();
-            this.node.getMind().updateRelateLink();
+           
+            // this.node.getMind().refresh();
+            // this.node.getMind().updateRelateLink();
+             var newPos=this.root.getPosition();
+             newPos.box={...{},...this.box};
+             newPos.direct=this.direct;
+      
+             this.node.getMind().execute('movePos',
+               {
+                 node:this.root,
+                 oldPos:pos,
+                 newPos:newPos
+               }
+             )
+
             document.removeEventListener('mousemove',this._mouseMove);
             document.removeEventListener('mouseup',this._mouseUp);
         }

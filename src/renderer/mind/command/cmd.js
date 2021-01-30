@@ -459,13 +459,15 @@ class ChangeRelateLinkBox extends Command {
     }
 
     execute() {
-        this.relateLink.setBox(this.box);
-        this.relateLink.startNode.getMind().updateRelateLink();
+        this.relateLink.data=this.box.data;
+        this.relateLink.setBox({...this.box});
+        this.relateLink.startNode.getMind().emit('refresh');
     }
 
     undo() {
-        this.relateLink.setBox(this.oldBox);
-        this.relateLink.startNode.getMind().updateRelateLink();
+        this.relateLink.data=this.oldBox.data;
+        this.relateLink.setBox({...this.oldBox});
+        this.relateLink.startNode.getMind().emit('refresh');
     }
 
 }
@@ -1196,12 +1198,33 @@ class MovePos extends Command {
 
     execute() {
         this.node.setPosition(this.newPos.x, this.newPos.y);
-        this.refresh(this.node);
+          if(this.node.callout){
+            this.node.callout.box=this.newPos.box;
+            this.node.callout.direct=this.newPos.direct;
+            this.node.callout.refresh(true);
+            this.node.callout.node._refreshBounding();
+            this.node.callout.node.refreshCBox();
+            this.node.getMind().refresh();
+            this.refresh(this.node.callout.node);
+
+        }else{
+             this.refresh(this.node);
+        }
     }
 
     undo() {
         this.node.setPosition(this.oldPos.x, this.oldPos.y);
-        this.refresh(this.node);
+        if(this.node.callout){
+            this.node.callout.box=this.oldPos.box;
+            this.node.callout.direct=this.oldPos.direct;
+            this.node.callout.refresh(true);
+            this.node.callout.node.refreshCBox();
+            this.node.callout.node._refreshBounding();
+            this.node.getMind().refresh();
+            this.refresh(this.node.callout.node);
+        }else{
+            this.refresh(this.node);
+        }
     }
 }
 

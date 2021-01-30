@@ -1173,6 +1173,8 @@ export default {
             e.preventDefault();
             node.edit();
           }
+
+          return;
         }
 
         var editNode = this.mind.getEditNode();
