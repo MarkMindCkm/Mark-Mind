@@ -6,7 +6,7 @@
 
 > A mind map and outline tool base on electron vue
 
-### Download [](https://img.shields.io/github/downloads/MarkMindLtd/Mark-Mind/total)
+### Download ![](https://img.shields.io/github/downloads/MarkMindLtd/Mark-Mind/total)
 
 [window 1.1.9](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.1.9/Mark.Mind.Setup.1.1.9.exe)   [Mac 1.1.9](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.1.9/Mark.Mind-1.1.9.dmg)  [linux.AppImage 1.1.9](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.1.9/Mark.Mind-1.1.9.AppImage)
 
