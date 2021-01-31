@@ -40,11 +40,11 @@ npm run build
 
 ### Mobile Screenshots
 
-![1](https://user-images.githubusercontent.com/18719494/106353147-6b4ac700-6323-11eb-8fe7-5f5020b7bfa6.jpg)
-
-![4](https://user-images.githubusercontent.com/18719494/106353172-8ddce000-6323-11eb-95ca-b9e9c65a2700.jpg)
-
-![5](https://user-images.githubusercontent.com/18719494/106353177-99300b80-6323-11eb-8a1c-0a731c604e02.jpg)
+<div>
+  <img width="300px" src="https://user-images.githubusercontent.com/18719494/106353147-6b4ac700-6323-11eb-8fe7-5f5020b7bfa6.jpg"/>
+  <img width="300px" src="https://user-images.githubusercontent.com/18719494/106353172-8ddce000-6323-11eb-95ca-b9e9c65a2700.jpg"/>
+  <img width="300px" src="https://user-images.githubusercontent.com/18719494/106353177-99300b80-6323-11eb-8a1c-0a731c604e02.jpg"/>
+</div>
 
 ### Features
 
