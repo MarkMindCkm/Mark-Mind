@@ -142,7 +142,7 @@ var menus = [
           label: '展开至',
           submenu: [
             {
-              label: '1级',
+              label: '1 级',
               click: (item, focusedWindow) => {
                 if (focusedWindow) {
                   focusedWindow.webContents.send('cmd', { type: 'Expand-1' })
@@ -150,7 +150,7 @@ var menus = [
               }
             },
             {
-              label: '2级',
+              label: '2 级',
               click: (item, focusedWindow) => {
                 if (focusedWindow) {
                   focusedWindow.webContents.send('cmd', { type: 'Expand-2' })
@@ -158,7 +158,7 @@ var menus = [
               }
             },
             {
-              label: '3级',
+              label: '3 级',
               click: (item, focusedWindow) => {
                 if (focusedWindow) {
                   focusedWindow.webContents.send('cmd', { type: 'Expand-3' })
@@ -166,7 +166,7 @@ var menus = [
               }
             },
             {
-              label: '4级',
+              label: '4 级',
               click: (item, focusedWindow) => {
                 if (focusedWindow) {
                   focusedWindow.webContents.send('cmd', { type: 'Expand-4' })
@@ -174,7 +174,7 @@ var menus = [
               }
             },
             {
-              label: '5级',
+              label: '5 级',
               click: (item, focusedWindow) => {
                 if (focusedWindow) {
                   focusedWindow.webContents.send('cmd', { type: 'Expand-5' })
@@ -182,7 +182,7 @@ var menus = [
               }
             },
             {
-              label: '6级',
+              label: '6 级',
               click: (item, focusedWindow) => {
                 if (focusedWindow) {
                   focusedWindow.webContents.send('cmd', { type: 'Expand-6' })
@@ -191,7 +191,7 @@ var menus = [
             },
           ]
         }, {
-          label: '首选项',
+          label: '偏好设置',
           click: function (item, focusedWindow) {
             if (focusedWindow) {
               focusedWindow.webContents.send('cmd', { type: 'Setting' })
