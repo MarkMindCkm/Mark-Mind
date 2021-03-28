@@ -24,6 +24,11 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: require('@/components/profile').default
+    },
+    {
+      path:'/signup',
+      name:'signup',
+      component:require('@/components/signup').default
     }
   ]
 })

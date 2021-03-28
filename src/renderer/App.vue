@@ -50,10 +50,9 @@
           @click="about.show = false"
         ></span>
         <img :src="logo" />
-        <h1>MarkMind</h1>
-        <p>{{ about.version }}</p>
-        <p>Twitter: <a @click="openlink('https://twitter.com/MarkMind9')">@MarkMind</a></p>
-        <p>github: <a @click="openlink('https://github.com/MarkMindLtd/Mark-Mind')">@MarkMindLtd</a></p>
+        <h1>MarkMind Pro</h1>
+        <p>v{{ about.version }}</p>
+        
       </div>
     </div>
 
@@ -105,6 +104,7 @@ import importKityMind from "./mind/import/importKityMind";
 import importXmind from "./mind/import/importXmind";
 import importMarkdown from "./mind/import/importMarkdown";
 import importTxt from "./mind/import/importTxt";
+import importMindMaster from "./mind/import/importMindmaster";
 import i18n from "./locales/index";
 import Onedrive from "./components/onedrive";
 import tomato from "./components/tomato";
@@ -117,7 +117,10 @@ var turndownPluginGfm = require('turndown-plugin-gfm');
 let Store = require("electron-store");
 var store = new Store();
 var profile = store.get("config");
-var activeCode = store.get("activeCode");
+var userData = store.get("user");
+var testTime=store.get("testTime");
+
+var allowUse=true;
 
 let canvasWidth = profile.canvasWidth;
 let canvasHeight = profile.canvasHeight;
@@ -169,6 +172,72 @@ function transferDataToList(data) {
   return arr;
 }
 
+function listToTree(list) {
+  var obj = {};
+  var root = null;
+  list.forEach(d => {
+    if (!obj[d.id]) {
+      obj[d.id] = d;
+      d.children = [];
+    }
+    if (d.pid) {
+      if (obj[d.pid]) {
+        obj[d.pid].children.push(d);
+        d.children = [];
+      }
+    } else {
+      root = d;
+    }
+
+  });
+  return root;
+};
+
+function aesEncrypt(data, key) {
+    const cipher = crypto.createCipher('aes-192-ctr', key);
+    var crypted = cipher.update(data, 'utf8', 'hex');
+    crypted += cipher.final('hex');
+    return crypted;
+}
+
+function aesDecrypt(encrypted, key) {
+  try{
+    const decipher = crypto.createDecipher('aes-192-ctr', key);
+    var decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+  }catch(err){
+    console.log(err);
+    return false;
+  }
+}
+
+function InputSecret(vueItem,text,cb){
+
+  vueItem.$dialog.prompt({
+    title: "",
+    body: i18n.t('profile.secretTip'),
+    message:""
+  },{
+     okText: i18n.t('profile.secretConfirm'),
+     cancelText: i18n.t('profile.secretCancel'),
+     promptHelp:''
+  }).then(dialog=>{
+       if(dialog.data){
+          var d= aesDecrypt(text,dialog.data);
+          if(d){
+             cb(d);
+          }else{
+            InputSecret(vueItem,text,cb);
+          }
+       }else{
+         InputSecret(vueItem,text,cb);
+       }
+  }).catch(err=>{
+     vueItem.$router.push('/list');
+  })
+}
+
 export default {
   name: "app",
   components: {
@@ -191,7 +260,7 @@ export default {
       msg: "",
       about: {
         show: false,
-        version: "1.1.9",
+        version: "1.2.0",
       },
       logo: logo,
       showactive: false,
@@ -211,8 +280,11 @@ export default {
     var openFilePath = this.$store.state.MindData.openFile;
     if (openFilePath.trim()) {
       this.$router.push("/refresh");
-      this.$store.dispatch("setMindData", {});
       this.openFile(openFilePath);
+    }
+    if(!testTime){
+      let t=new Date().getTime()+'';
+      store.set('testTime',aesEncrypt(t,'1q2w3e4r!@#'));
     }
   },
   mounted() {
@@ -224,11 +296,11 @@ export default {
     var me = this;
 
     this.checkVersion();
+  
+    
 
     var openFilePath = this.$store.state.MindData.openFile;
-    this.$store.dispatch("vip", {
-      vip: true,
-    });
+   
 
     ipcRenderer.on("cmd", (e, arg) => {
       this.menu(arg["type"]);
@@ -237,6 +309,10 @@ export default {
     } else {
       this.$router.push("/list");
     }
+
+    if(userData&&userData.activeCode){
+         this.activeSoft(userData.activeCode);
+    } 
 
     document.addEventListener("paste", (e) => {
       e.preventDefault();
@@ -398,6 +474,26 @@ export default {
     toggleMenu() {
       this.showMenu = !this.showMenu;
     },
+    exportData(data){
+        var root = null
+        var mindData = data;
+        mindData.mindData.forEach((data, i) => {
+          if (i == 0) {
+            root = listToTree(data);
+          } else {
+            root.children.push(listToTree(data));
+          }
+        });
+
+        if (mindData.induceData && mindData.induceData.length) {
+          mindData.induceData.forEach(d => {
+
+            root.children.push(listToTree(d.mindData));
+          });
+        }
+
+        return root;
+    },
     dataToList(data) {
       var list = [];
       function pushList(data) {
@@ -448,6 +544,7 @@ export default {
     },
     save(isCreate, path, arg) {
       var me = this;
+   //   console.log(this.$store.state.MindData.folderPath);
       var path = path || this.$store.state.MindData.folderPath;
       if (path) {
         try {
@@ -481,7 +578,18 @@ export default {
           if (!data) {
             return;
           }
-          zip.file(file, JSON.stringify(data));
+          data.canvasSize=profile.canvasWidth;
+         // console.log(data);
+          if(profile.secret){
+               var obj={
+                 secret:true,
+                 data:aesEncrypt(JSON.stringify(data),profile.secret)
+               }
+               zip.file(file,JSON.stringify(obj));
+          }else{
+              zip.file(file,JSON.stringify(data));
+          }
+        
           zip.generateAsync({ type: "nodebuffer" }).then(function (content) {
             if (me.$route.name == "editor") {
               var mind = document.getElementById("mind").mind;
@@ -552,8 +660,17 @@ export default {
       if (!data) {
         return;
       }
-
-      zip.file(file, JSON.stringify(data));
+      data.canvasSize=profile.canvasSize;
+       if(profile.secret){
+         console.log(data);          
+          var obj={
+            secret:true,
+            data:aesEncrypt(JSON.stringify(data),profile.secret)
+          }
+          zip.file(file,JSON.stringify(obj));
+       }else{
+          zip.file(file,JSON.stringify(data));
+       }
       zip.generateAsync({ type: "nodebuffer" }).then(function (content) {
         dialog
           .showSaveDialog({
@@ -587,6 +704,7 @@ export default {
           });
       });
     },
+    
     listGetData(list, zip, flag) {
       var data = JSON.parse(JSON.stringify(list.getData(zip, flag)));
       var children = data.children;
@@ -623,7 +741,10 @@ export default {
         });
       }
 
-      var m = JSON.parse(JSON.stringify(this.$store.state.MindData));
+    //  var m = JSON.parse(JSON.stringify(this.$store.state.MindData));
+      var m = {
+        mindData:window.markmindData
+      }
 
       var oldInduceData = m.mindData.induceData;
       var newInduceData = [];
@@ -702,40 +823,75 @@ export default {
               res.forEach((data, i) => {
                 images.image[keys[i]] = types[i] + data;
               });
-              me.$store.dispatch("setImage", images).then(() => {
+            //  me.$store.dispatch("setImage", images).then(() => {
                 for (var k in files) {
                   if (k.endsWith(".json")) {
                     files[k].async("text").then((res) => {
-                      var mindData = JSON.parse(res);
 
-                      me.$store.dispatch("setFilePath", { path: p });
-                      me.$store.dispatch("setMindData", mindData).then(() => {
-                        if (flag) return;
-                        var p = "/";
-                        setTimeout(() => {
-                          me.$router.push("/list");
-                        }, 0);
-                      });
+                      var mindData = JSON.parse(res);
+                      if(mindData.secret){
+                           InputSecret(me,mindData.data,function(data){
+                              if(data){
+                                 me.$store.dispatch("setFilePath", { path: path });
+                                 
+                                 window.markmindData = JSON.parse(data);
+                                 markmindData.images = images;
+                                 if (flag) return;
+                                  var p = "/";
+                                   setTimeout(() => {
+                                      me.$router.push("/list");
+                                   }, 0);
+                                }
+                           });
+                      }else{
+                          
+                            me.$store.dispatch("setFilePath", { path: path });
+                            window.markmindData = mindData;
+                            markmindData.images = images;
+                          
+                            if (flag) return;
+                            var p = "/";
+                            setTimeout(() => {
+                              me.$router.push("/list");
+                            }, 0);
+                      }
+
+                     
+                     
                     });
                   }
                 }
-              });
+             // });
             });
           } else {
             for (var k in files) {
               if (k.endsWith(".json")) {
                 files[k].async("text").then((res) => {
                   var mindData = JSON.parse(res);
-
-                  me.$store.dispatch("setFilePath", { path: p });
-                  me.$store.dispatch("setMindData", mindData).then(() => {
-                    if (flag) return;
-                    var p = "/";
-
-                    setTimeout(() => {
-                      me.$router.push("/list");
-                    }, 0);
-                  });
+                  if(mindData.secret){
+                           InputSecret(me,mindData.data,function(data){
+                              if(data){
+                                 me.$store.dispatch("setFilePath", { path: path });
+                                 window.markmindData = JSON.parse(data);
+                                 markmindData.images = {};
+                                 if (flag) return;
+                                  var p = "/";
+                                   setTimeout(() => {
+                                      me.$router.push("/list");
+                                   }, 0);
+                                }
+                           });
+                      }else{
+                            me.$store.dispatch("setFilePath", { path: path });
+                            window.markmindData = mindData;
+                            markmindData.images = {};
+                          
+                            if (flag) return;
+                            var p = "/";
+                            setTimeout(() => {
+                              me.$router.push("/list");
+                            }, 0);
+                      }
                 });
               }
             }
@@ -752,14 +908,59 @@ export default {
       shell.openExternal(url);
     },
 
-    activeSoft() {
+    activeSoft(code) {
       var me = this;
-      var code = this.$refs.activeCode.value;
       if (!code) return;
 
       if (!navigator.onLine) {
         this.message(i18n.t("node.offline"));
         return;
+      }
+
+      var now =new Date().getTime();
+
+      if(testTime){
+          var _t=aesDecrypt(testTime,'1q2w3e4r!@#');
+          if(_t){
+             if(now>(parseInt(_t) + 86400000*30)){
+                  allowUse=false;
+             }
+          }
+      }
+
+      var salt="whoisyourdaddy!@qwerasdf";
+      var result=aesDecrypt(code,salt);
+
+      if(result){
+         var r = JSON.parse(result);
+         var endDate = new Date(r.endDate).getTime();
+         if(now>endDate){
+            if(!allowUse){
+                 setTimeout(()=>{
+                    me.$router.push('/signup');
+                  },0);
+            }
+            return {
+              flag:false,
+              msg:i18n.t('node.dateLimit')
+            }
+         }else{
+            this.$store.dispatch("vip", {
+              vip: true,
+            });
+            allowUse=true;
+            return {
+              flag:true,
+              endDate:r.endDate
+            }
+         }
+      }else{
+        if(!allowUse){
+            setTimeout(()=>{
+              me.$router.push('/signup');
+            },0);
+        }
+        return false;
       }
     },
     getData() {
@@ -770,9 +971,9 @@ export default {
         var list = document.getElementById("list").list;
         var data = this.listGetData(list, null, false);
       }
-      var m = JSON.parse(JSON.stringify(this.$store.state.MindData));
-      data.scrollTop = m.mindData.scrollTop;
-      data.scrollLeft = m.mindData.scrollLeft;
+     // var m = JSON.parse(JSON.stringify(this.$store.state.MindData));
+      data.scrollTop = window.markmindData.scrollTop;
+      data.scrollLeft = window.markmindData.scrollLeft;
       return data;
     },
     openlink(link){
@@ -783,12 +984,19 @@ export default {
       this.showMenu = false;
       switch (id) {
         case "New File":
+          if(!allowUse){
+            alert(i18n.t('node.allowUse'))
+            return
+          }
           if (this.$route.name == "editor") {
             var mind = document.getElementById("mind").mind;
             var needSave = mind.dirty();
-          } else {
+          } else if(this.$route.name == "list"){
             var list = document.getElementById("list").list;
             var needSave = list.dirty();
+          }else{
+            this.$router.push('/list');
+            return;
           }
 
           if (needSave) {
@@ -798,12 +1006,23 @@ export default {
           }
           me.$store.dispatch("setFilePath", { path: "" });
           me.$router.push("/refresh");
-          this.$store.dispatch("setMindData", {}).then(() => {
-            me.$router.push("/list");
-          });
+          window.markmindData={
+             image:{}
+          };
+          setTimeout(()=>{
+               me.$router.push("/list");
+          },20);
+
+         // this.$store.dispatch("setMindData", {}).then(() => {
+         
+         // });
 
           break;
         case "Open File":
+          if(!allowUse){
+            alert(i18n.t('node.allowUse'))
+            return
+          }
           dialog
             .showOpenDialog({
               properties: ["openFile"],
@@ -825,12 +1044,19 @@ export default {
 
           break;
         case "Setting":
+          if(!allowUse){
+            alert(i18n.t('node.allowUse'))
+            return
+          }
           if (this.$route.name == "editor") {
             var mind = document.getElementById("mind").mind;
             var needSave = mind.dirty();
-          } else {
+          } else if(this.$route.name == "list"){
             var list = document.getElementById("list").list;
             var needSave = list.dirty();
+          }else{
+             this.$router.push("/profile");
+             return;
           }
 
           if (needSave) {
@@ -844,11 +1070,13 @@ export default {
           this.$router.push("/profile");
           break;
         case "Export-FreeMind":
-          var data = this.getData();
-          this.$store.dispatch("setMindData", data).then(() => {
-            var listData = JSON.parse(
-              JSON.stringify(this.$store.getters.getData)
-            );
+           var data = this.getData();
+         //  window.markmindData = data;
+           //markmindData.images = {};
+           var exportData={};
+           $.extend(true,exportData,data);
+         // this.$store.dispatch("setMindData", data).then(() => {
+            var listData = this.exportData(exportData);
             var d = exportFreeMind(listData);
             // this.$store.dispatch("setMindData", m.mindData);
             dialog
@@ -862,14 +1090,14 @@ export default {
                   fs.writeFileSync(filePath, d);
                 }
               });
-          });
+         // });
           break;
         case "Export-OPML":
           var data = this.getData();
-          this.$store.dispatch("setMindData", data).then(() => {
-            var listData = JSON.parse(
-              JSON.stringify(this.$store.getters.getData)
-            );
+           var exportData={};
+           $.extend(true,exportData,data);
+            var listData = this.exportData(exportData);
+         // this.$store.dispatch("setMindData", data).then(() => {
             var d = exportOPML(listData, listData.text || "markmind");
             // this.$store.dispatch("setMindData", m.mindData);
             dialog
@@ -883,17 +1111,16 @@ export default {
                   fs.writeFileSync(filePath, d);
                 }
               });
-          });
+         // });
 
           break;
         case "Export-MarkDown":
           var data = this.getData();
-          this.$store.dispatch("setMindData", data).then(() => {
-            var listData = JSON.parse(
-              JSON.stringify(this.$store.getters.getData)
-            );
-            var md = exportMd(listData);
-            // console.log(m.marks);
+          var exportData={};
+          $.extend(true,exportData,data);
+          var listData = this.exportData(exportData);
+          //this.$store.dispatch("setMindData", data).then(() => {
+          var md = exportMd(listData);
             // this.$store.dispatch("setMindData", m.mindData);
             dialog
               .showSaveDialog({
@@ -907,14 +1134,17 @@ export default {
                 }
               })
               .catch((e) => {});
-          });
+         // });
           break;
         case "Export-KityMind":
           var data = this.getData();
-          this.$store.dispatch("setMindData", data).then(() => {
-            var listData = JSON.parse(
-              JSON.stringify(this.$store.getters.getData)
-            );
+           var exportData={};
+           $.extend(true,exportData,data);
+           var listData = this.exportData(exportData);
+         // this.$store.dispatch("setMindData", data).then(() => {
+            // var listData = JSON.parse(
+            //   JSON.stringify(this.$store.getters.getData)
+            // );
             var d = JSON.stringify(exportKityMind(listData));
             // this.$store.dispatch("setMindData", m.mindData);
             dialog
@@ -928,7 +1158,7 @@ export default {
                   fs.writeFileSync(filePath, d);
                 }
               });
-          });
+         // });
           break;
         case "Import-OPML":
           dialog
@@ -960,11 +1190,13 @@ export default {
                         marks: [],
                       };
                       me.$store.dispatch("setFilePath", { path: "" });
-                      me.$store.dispatch("setMindData", mindData).then(() => {
+                      window.markmindData = mindData;
+                      markmindData.images = {};
+                     // me.$store.dispatch("setMindData", mindData).then(() => {
                         setTimeout(() => {
                           me.$router.push("/list");
                         }, 0);
-                      });
+                      //});
                     })
                     .catch((e) => {});
                 });
@@ -997,9 +1229,11 @@ export default {
                     scrollTop: 3800,
                     marks: mdata.marks,
                   };
-                  me.$store.dispatch("setMindData", mindData).then(() => {
+                  window.markmindData = mindData;
+                  markmindData.images = {};
+                //  me.$store.dispatch("setMindData", mindData).then(() => {
                     me.$router.push("/list");
-                  });
+                 // });
                 });
               }
             });
@@ -1050,25 +1284,28 @@ export default {
                         res.forEach((data, i) => {
                           images.image[keys[i]] = types[i] + data;
                         });
-                        me.$store.dispatch("setImage", images).then(() => {
+                       // me.$store.dispatch("setImage", images).then(() => {
                           for (var k in files) {
                             if (k == "content.json") {
                               files[k].async("text").then((res) => {
                                 var mindData = JSON.parse(res);
                                 me.$store.dispatch("setFilePath", { path: "" });
-                                me.$store
-                                  .dispatch(
-                                    "setMindData",
-                                    importXmind(mindData[0])
-                                  )
-                                  .then(() => {
-                                    var p = "/";
-                                    me.$router.push("/list");
-                                  });
+                                var data = importXmind(mindData[0]);
+                                 window.markmindData = data;
+                                 markmindData.images = images;
+                               // me.$store
+                                 // .dispatch(
+                                   // "setMindData",
+                                  //  importXmind(mindData[0])
+                                 // )
+                                  //.then(() => {
+                                   var p = "/";
+                                   me.$router.push("/list");
+                                 // });
                               });
                             }
                           }
-                        });
+                      //  });
                       });
                     } else {
                       for (var k in files) {
@@ -1076,11 +1313,14 @@ export default {
                           files[k].async("text").then((res) => {
                             var mindData = JSON.parse(res);
                             me.$store.dispatch("setFilePath", { path: "" });
-                            me.$store
-                              .dispatch("setMindData", importXmind(mindData[0]))
-                              .then(() => {
+                             var data = importXmind(mindData[0]);
+                              window.markmindData = data;
+                              markmindData.images = {};
+                           // me.$store
+                            //  .dispatch("setMindData", importXmind(mindData[0]))
+                             // .then(() => {
                                 me.$router.push("/list");
-                              });
+                             // });
                           });
                         }
                       }
@@ -1089,6 +1329,45 @@ export default {
                 });
               }
             });
+          break;
+
+        case 'Import-MindMaster':
+           dialog
+            .showOpenDialog({
+              properties: ["openFile"],
+              filters: [{ name: "MindMaster", extensions: ["emmx"] }],
+            })
+            .then(({ filePaths }) => {
+              if (filePaths.length) {
+                var p = filePaths[0];
+                me.$router.push("/refresh");
+                fs.readFile(p, function (err, data) {
+                  if (err) throw err;
+                  var zip = JSZip.loadAsync(data);
+                  zip.then(function (e) {
+                     e.files['page/page.xml'].async('text').then(res=>{
+                       var xml=$.parseXML(res);
+                       var data=importMindMaster(xml);
+                       window.markmindData = data;
+                       markmindData.images = {};
+                       me.$router.push("/list");
+                     }).catch(err=>{
+
+                     });
+
+                    //  e.files['rels/page_rels.xml'].async('text').then(res=>{
+                    //   var xml=$.parseXML(res);
+                    //   console.log(xml);
+                    //  }).catch(err=>{
+
+                    //  });
+                  
+                  
+                  });
+                });
+              }
+            });
+
           break;
 
         case "Import-MarkDown":
@@ -1105,9 +1384,12 @@ export default {
                   if (err) throw err;
                   var data = importMarkdown(data.toString("utf-8"));
                   me.$store.dispatch("setFilePath", { path: "" });
-                  me.$store.dispatch("setMindData", data).then(() => {
+                  
+                  window.markmindData = data;
+                  markmindData.images = {};
+                 // me.$store.dispatch("setMindData", data).then(() => {
                     me.$router.push("/list");
-                  });
+                 // });
                 });
               }
             });
@@ -1127,9 +1409,11 @@ export default {
                   if (err) throw err;
                   var data = importTxt(data.toString("utf-8"));
                   me.$store.dispatch("setFilePath", { path: "" });
-                  me.$store.dispatch("setMindData", data).then(() => {
+                  window.markmindData = data;
+                  markmindData.images = {};
+                  //me.$store.dispatch("setMindData", data).then(() => {
                     me.$router.push("/list");
-                  });
+                  //});
                 });
               }
             });
@@ -1208,6 +1492,9 @@ export default {
           break;
         case "Activate":
           this.showactive = true;
+          break;
+        case "Login":
+          this.$router.push('/signup');
           break;
         case "Save To Onedrive":
           ipcRenderer.send("refreshToken");
@@ -1983,30 +2270,48 @@ html.print {
 
 .bg-red {
   background-color: red;
+  border-radius:3px;
+  padding: 0 3px;
 }
 .bg-orange {
   background-color: orange;
+  border-radius:3px;
+  padding: 0 3px;
 }
 .bg-green {
   background-color: green;
+  border-radius:3px;
+  padding: 0 3px;
 }
 .bg-yellow {
   background-color: yellow;
+  border-radius:3px;
+  padding: 0 3px;
 }
 .bg-blue {
   background-color: blue;
+  border-radius:3px;
+  padding: 0 3px;
 }
 .bg-gray {
   background-color: gray;
+  border-radius:3px;
+  padding: 0 3px;
 }
 .bg-greenyellow {
   background-color: greenyellow;
+  border-radius:3px;
+  padding: 0 3px;
 }
 .bg-white {
   background-color: white;
+  border-radius:3px;
+  padding: 0 3px;
 }
 .bg-black {
   background-color: #333;
+  border-radius:3px;
+  padding: 0 3px;
 }
 
 .mind-editor .markdown-body blockquote,
@@ -2573,14 +2878,6 @@ html.print {
   background: #fff;
 }
 
-button {
-  width: 100%;
-  height: 24px;
-  border: 1px solid #d6d6d6;
-  background: #fff;
-  margin: 2px 0;
-}
-
 .cicada-list .markdown-body blockquote {
   line-height: 24px;
   border-left: 0.2em solid #dfe2e5;
@@ -2766,10 +3063,23 @@ button {
 .emptytext {
   color: rgba(0, 0, 0, 0);
   background: #f3f3f3;
+  border-radius:3px;
 }
 
 .emptytext:hover {
   color: inherit;
   background: transparent;
+}
+
+.node-note{
+ box-shadow:0 0 0 #ccc!important;
+}
+.node-note .win-content{
+   background: #fbfae5;
+   box-shadow: 0px 0px 6px #e0e0e0;
+}
+mark{
+  padding:0 3px;
+  border-radius:3px;
 }
 </style>

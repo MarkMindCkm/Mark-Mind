@@ -343,7 +343,7 @@ function getFile(e,id,url){
 
 
 process.on('uncaughtException', function(err) {
-
+   console.log(err);
      
 });
 

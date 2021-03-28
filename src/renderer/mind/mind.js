@@ -43,6 +43,9 @@ class Mind {
         this.scaleNum = 1; //scale num
         this.useMarkDown = false;
         this.refreshTime = null;
+
+        //init cache data;
+        // this.initWaitData=[];
         
         //300 history num
         this.stack = new Stack(300);
@@ -57,6 +60,10 @@ class Mind {
 
         this.stackChange();
         this.initEvent();
+        // this.initWaitData.unique();
+        // if(this.initWaitData.length){
+
+        // }
     }
 
     dirty() {
@@ -69,6 +76,17 @@ class Mind {
 
     stackChange() {
         var me = this;
+        // function throttle(fn, wait) {
+        //     let timer = null;
+        //     let start = Date.now();
+        //     return e => {
+        //       if (Date.now() - start >= wait) {
+        //         clearTimeout(timer)
+        //         timer = setTimeout(fn.bind(this, e), wait);
+        //         start = Date.now()
+        //       }
+        //     };
+        //   }
 
         function refresh(node) {
             var mind = node.getMind();
@@ -105,12 +123,11 @@ class Mind {
                      if(e&&e.detail){
                         refresh(e.detail.node);
                      }
-                }, 100)
+                }, 100);
             } else {
                 if(e&&e.detail){
                     refresh(e.detail.node);
                 }
-                
             }
 
             this.emit('needsave');
@@ -699,7 +716,7 @@ class Mind {
     }
 
     expandLevel(level) {
-        this.traverseBF(n => {
+        this.traverseDF(n => {
             if (n.getLevel() < level) {
                 n.expand();
                 if (n.nodeType == 'induce') {
@@ -1389,14 +1406,14 @@ class Mind {
             mdata.push(data);
             if (zip) {
                 if (n.data.isImageNode) {
-                    if (data.image.startsWith('http')) {
-                        return;
+                    if (data.image.startsWith('data:image;')) {
+                        var imageData = data.image.replace(/^data:image\/(\w|\+)+;base64,/, "");
+                        zip.file(data.id + '-' + data.imageName, imageData, {
+                            base64: true
+                         });
+                         data.image = '';
                     }
-                    var imageData = data.image.replace(/^data:image\/(\w|\+)+;base64,/, "");
-                    zip.file(data.id + '-' + data.imageName, imageData, {
-                        base64: true
-                    });
-                    data.image = '';
+                    
                 }
             }
 
@@ -1510,7 +1527,7 @@ class Mind {
     init(data, imgData) {
         this.initialize = true;
         if (imgData) {
-            var images = imgData.img || {};
+            var images = imgData.img || imgData.image|| {};
         }
         var me = this;
         this.themeName = data.theme || 'markdown';
@@ -1618,20 +1635,25 @@ class Mind {
 
         var induceData = data.induceData;
         induceData && induceData.forEach(data => {
-
+            
             if (data.induceData.nodeId) {
                 var n = me.getNodeById(data.induceData.nodeId);
                 var p = n.parent;
                 var r = data.induceData.range;
-                var ar = r.split(',');
-                var rangeNode = []
-                p.children.forEach((c, i) => {
-                    if (i >= ar[0] && i <= ar[1]) {
-                        rangeNode.push(c);
-                    }
-                });
-                rangeNode.unique();
-                var endNode = rangeNode[rangeNode.length - 1];
+                var rangeNode = [];
+                if(r){
+                    var ar = r.split(',');
+                    p.children.forEach((c, i) => {
+                        if (i >= ar[0] && i <= ar[1]) {
+                            rangeNode.push(c);
+                        }
+                    });
+                    rangeNode.unique();
+                    var endNode = rangeNode[rangeNode.length - 1];
+                }else{
+                    var endNode = n;
+                    rangeNode=[n];
+                }
             }
 
             if (n) {
@@ -1689,7 +1711,6 @@ class Mind {
                 var n = me.getNodeById(data.nodeId);
                 var p = n.parent;
                 if (p) {
-
                     var r = data.range;
                     var ar = r.split(',');
                     var rangeNode = []
@@ -1753,25 +1774,30 @@ class Mind {
         relateLinkData && relateLinkData.forEach(data => {
             var startNode = me.getNodeById(data.startNodeId);
             var endNode = me.getNodeById(data.endNodeId);
+         
             if (startNode && endNode) {
 
                 if (!data.gapsx) {
                     var startBox = startNode.getBox();
                     var endBox = endNode.getBox();
-                    data.gapsx = data.box.cpx1 - startBox.x;
-                    data.gapsy = data.box.cpy1 - startBox.y;
-                    data.gapex = data.box.cpx2 - endBox.x;
-                    data.gapey = data.box.cpy2 - endBox.y;
+                    
+                    if(data.box && data.box.cpx1){
+                        data.gapsx = data.box.cpx1 - startBox.x;
+                        data.gapsy = data.box.cpy1 - startBox.y;
+                        data.gapex = data.box.cpx2 - endBox.x;
+                        data.gapey = data.box.cpy2 - endBox.y;
+                    }
                 }
 
-                var rl = new RelateLink(startNode, data);
-                rl.endNode = endNode;
-
-                rl.setBox(data.box);
-                me.addRelateLink(rl);
-                rl.unactive();
-                if (!data.box) {
-                    waitRefreshRelateLink.push(rl);
+                if(data.gapsx){
+                    var rl = new RelateLink(startNode, data);
+                    rl.endNode = endNode;
+                    rl.setBox(data.box);
+                    me.addRelateLink(rl);
+                    rl.unactive();
+                    if (!data.box) {
+                        waitRefreshRelateLink.push(rl);
+                    }
                 }
             }
         });
@@ -1782,6 +1808,10 @@ class Mind {
             rl.move(box.x + box.width / 2, box.y);
             rl.refresh();
         });
+
+        this.updateRelateLink();
+
+      
 
         //setTimeout(() => {
         //load katex font

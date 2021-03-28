@@ -37,6 +37,7 @@
        "sure":"确定",
        "open":"打开",
        "active":"已激活",
+       "expired":"已过期",
        "end":"结束日期",
        "activeTitle":"请输入激活码",
        "activeBtn":"立即激活",
@@ -76,7 +77,10 @@
        "top":"上",
        "left":"左",
        "right":"右",
-       "bottom":"下"
+       "bottom":"下",
+       "register":"没有账号，去注册",
+       "dateLimit":"激活码已过期,请重新购买",
+       "allowUse":"试用期结束，需要购买激活码才能继续使用"
     },
     "topMenu":[
         {
@@ -134,7 +138,13 @@
              "id":"Import-Xmind Zen",
              "name":"Xmind Zen",
              "type":"menu"
-           },{
+           },
+           {
+            "id":"Import-MindMaster",
+            "name":"MindMaster",
+            "type":"menu"
+           },
+           {
              "id":"Import-KityMind",
              "name":"百度脑图",
              "type":"menu"
@@ -225,6 +235,11 @@
          {
           "id":"About",
           "name":"关于",
+          "type":"menu"
+         },
+         {
+          "id":"Login",
+          "name":"用户登录",
           "type":"menu"
          },
          {
@@ -479,7 +494,13 @@
         "math":"解析公式",
         "katex":"Katex",
         "mathjax":"Mathjax To Image",
-        "mathTip":"当导出思维导图为图片时，选择该项可以导出比较美观的公式"
+        "mathTip":"当导出思维导图为图片时，选择该项可以导出比较美观的公式",
+        "secret":"保存文件时的加密密码",
+        "secretTip":"文件已加密，请输入密码：",
+        "secretBtns":["确认","取消"],
+        "secretConfirm":"确认",
+        "secretCancel":"取消"
+
     }
    
 }
