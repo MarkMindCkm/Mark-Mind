@@ -8,7 +8,7 @@
 
 ### Download ![](https://img.shields.io/github/downloads/MarkMindLtd/Mark-Mind/total)
 
-[window 1.1.9](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.1.9/Mark.Mind.Setup.1.1.9.exe)   [Mac 1.1.9](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.1.9/Mark.Mind-1.1.9.dmg)  [linux.AppImage 1.1.9](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.1.9/Mark.Mind-1.1.9.AppImage)
+[window 1.2.0](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.0/Mark.Mind.Setup.1.2.0.exe)   [Mac 1.2.0](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.0/Mark.Mind-1.2.0.dmg)  [linux.AppImage 1.2.0](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.0/Mark.Mind-1.2.0.AppImage)
 
 [andriod beta app ](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.1.9/markmind.andriod.apk)
 
