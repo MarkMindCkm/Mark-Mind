@@ -84,7 +84,7 @@ npm run build
 
 - xmind zen
 
-- MindMaster
+- mindmaster
 
 - 百度脑图
 
