@@ -6,9 +6,9 @@
 
 ### 下载
 
-[window 安装包](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.1/Mark.Mind-1.2.1.exe)
-[mac 安装包](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.1/Mark.Mind-1.2.1.dmg)
-[linux 安装包](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.1/Mark.Mind-1.2.1.AppImage)
+[window 1.2.2](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.2/Mark.Mind.Setup.1.2.2.exe)
+[mac 1.2.2](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.2/Mark.Mind-1.2.2.dmg)
+[linux 1.2.2](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.2/Mark.Mind-1.2.2.AppImage)
 
 
 #### 在线实例
