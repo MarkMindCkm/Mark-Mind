@@ -1,12 +1,12 @@
 <template>
   <div id="app" @keydown="shortCut" tabindex="-1">
     <div class="top-bar">
-      <div :class="'logo ' + (platform=='drawin'?'drawin':'')">
+      <div :class="'logo ' + (platform=='darwin'?'darwin':'')">
         <span class="iconfont icon-sanheng" @click="toggleMenu"></span>
       </div>
 
       <tomato v-if="tomato" />
-      <div :class="'btn-group ' + (platform=='drawin'?'drawin':'')">
+      <div :class="'btn-group ' + (platform=='darwin'?'darwin':'')">
         <div class="iconfont icon-min min" @click="min"></div>
         <div class="iconfont icon-max-two max" @click="max"></div>
         <div class="iconfont icon-searchclose close" @click="close"></div>
@@ -1406,7 +1406,7 @@ html.print {
 .theme-dark .btn-group {
   color: #fff;
 }
-.btn-group.drawin{
+.btn-group.darwin{
   display: none;
 }
 
@@ -1423,8 +1423,8 @@ html.print {
   font-size: 12px;
   cursor: pointer;
 }
-.logo.drawin{
-  margin-left:70px;
+.logo.darwin{
+  margin-left:80px;
 }
 
 .theme-dark .logo {
