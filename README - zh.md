@@ -4,11 +4,6 @@
 
 > 基于electron vue 开发的思维导图和大纲工具
 
-### 下载
-
-[window 1.2.3](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.3/Mark.Mind.Setup.1.2.3.exe)
-[mac 1.2.3](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.3/Mark.Mind-1.2.3.dmg)
-[linux 1.2.3](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.3/Mark.Mind-1.2.3.AppImage)
 
 
 #### 在线实例
