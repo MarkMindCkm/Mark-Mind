@@ -8,16 +8,6 @@
 
 ### Download ![](https://img.shields.io/github/downloads/MarkMindLtd/Mark-Mind/total)
 
-[window 1.2.3](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.3/Mark.Mind.Setup.1.2.3.exe)
-[mac 1.2.3](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.3/Mark.Mind-1.2.3.dmg)
-[linux 1.2.3](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.2.3/Mark.Mind-1.2.3.AppImage)
-
-[andriod beta app ](https://github.com/MarkMindLtd/Mark-Mind/releases/download/v1.1.9/markmind.andriod.apk)
-
-### Live editor
-
-[live editor v1.1.8](https://www.markmind.org)
-
 ### Build Setup
 
 ```bash
