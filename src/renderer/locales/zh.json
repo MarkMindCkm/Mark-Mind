@@ -18,8 +18,8 @@
        "gotoList":"转至大纲页",
        "gotoMind":"转至思维导图页",
        "style":"格式",
-       "downloadPng":"下载PNG",
-       "downloadPdf":"下载为PDF",
+       "downloadPng":"下载为 PNG",
+       "downloadPdf":"下载为 PDF",
        "downloadWord":"下载为 Word",
        "loadData":" 加载数据中...",
        "keyword":"请输入关键词，以空格相隔",
@@ -54,10 +54,10 @@
        "needSaveBtns":["保存","不保存"],
        "saveSuccess":"已保存",
        "saveFail":"保存失败",
-       "openDropbox":"授权DropBox",
+       "openDropbox":"授权 DropBox",
        "bigFile":"文件较大，请耐心等待...",
        "saveBtn":"保存",
-       "accessBtn":"授权OneDrive",
+       "accessBtn":"授权 OneDrive",
        "openBtn":"打开",
        "startNode":"开始节点",
        "endNode":"结束节点",
@@ -102,7 +102,7 @@
             },
             {
               "id":"Open From Onedrive",
-              "name":"从OneDrive打开",
+              "name":"从 OneDrive 打开",
               "type":"menu"
             }
           ]
@@ -122,7 +122,7 @@
          }, 
          {
           "id":"Save To Onedrive",
-          "name":"保存至Onedrive",
+          "name":"保存至 Onedrive",
           "type":"menu"
         }, 
          {
@@ -314,7 +314,7 @@
       },
       {
         "id":6,
-        "text":"切换Todo项",
+        "text":"切换 TODO 项",
         "cmd":"changeTodo",
         "show":true
       },
@@ -431,14 +431,14 @@
       
         {
           "id":15,
-          "text":"展开",
+          "text":"展开节点",
           "cmd":"expandNode",
           "show":true,
           "shortCut":"Ctrl + /" 
          },
          {
             "id":16, 
-            "text":"收缩",
+            "text":"收缩节点",
             "cmd":"collapseNode",
             "show":true,
             "shortCut":"Ctrl + /" 
@@ -450,7 +450,7 @@
          },
          {
           "id":14,
-          "text":"添加PPT页面",
+          "text":"添加 PPT 页面",
           "cmd":"addppt",
           "show":true
       },
@@ -464,21 +464,21 @@
     "profile":{
         "theme":"皮肤",
         "lang":"语言",
-        "markdown":"开启Markdown",
+        "markdown":"开启 MarkDown",
         "canvasSize":"画布大小",
         "tooltip":"提示",
-        "needMarkdown":"要使用markdown,需要激活软件",
+        "needMarkdown":"要使用 MarkDown,需要激活软件",
         "profileBtns":["购买激活码","取消"],
         "needVip":"使用该功能需要激活软件",
         "newVersion":"发现新版本",
         "newVersionBtn":["查看新版本","取消"],
-        "plantuml":"Plantuml服务器",
+        "plantuml":"Plantuml 服务器",
         "shortcut":"快捷键模式",
         "shortcutModel1":"默认",
         "shortcutModel2":"兼容模式",
         "math":"解析公式",
         "katex":"Katex",
-        "mathjax":"Mathjax To Image",
+        "mathjax":"Mathjax 至图片",
         "mathTip":"当导出思维导图为图片时，选择该项可以导出比较美观的公式"
     }
    
