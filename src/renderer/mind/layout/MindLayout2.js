@@ -26,8 +26,9 @@ export default class MindLayout1 extends MindLayout {
 		if (!this.root.isExpand()) {
 			return;
 		}
-		var lineWidth = theme.use().config['lineWidth'] || 2;
-		var stroke = theme.use().config['stroke'];
+		var config=theme.use().config;
+		var lineWidth =config['lineWidth'] || 1;
+		var stroke = config['stroke'];
 
 		var rights = root.children.filter((item) => {
 			return item.direct == 'right'
@@ -60,7 +61,6 @@ export default class MindLayout1 extends MindLayout {
 
 			rt.forEach((child, i) => {
 				var childBox = child.getBox();
-
 				var childPos = child.getPosition();
 
 				var toy = childBox.height / 2 + childPos.y;
@@ -68,23 +68,44 @@ export default class MindLayout1 extends MindLayout {
 				var p1 = [rootPos.x + rootBox.width / 2 + 6 + rtd * i, rootPos.y + rootBox.height / 2];
 
 				if (Math.abs(c) > 2) {
-					var p2 = [p1[0], toy - 2 * c / Math.abs(c)];
-					var p3 = [p1[0] + 2, toy]
+					var p2 = [p1[0], toy - 5 * c / Math.abs(c)];
+					var p3 = [p1[0] + 5, toy]
 				} else {
 					var p2 = [p1[0], toy - c / 2];
 					var p3 = [p1[0] + Math.abs(c) / 2, toy];
 				}
+
 				var p4 = [childPos.x, toy];
 			
 				let _stroke = child.stroke || stroke || 'rgb(160,160,160)';
-				var line = me.group.polyline(me.linePoint([p1, p2, p3, p4], lineWidth + 2)).stroke({
+				    var zs= me.linePoint([
+                        p2
+                    ], lineWidth)[0];
+                    var ze= me.linePoint([
+                        p3
+                    ], lineWidth)[0];
+
+					var path = `M${zs[0]} ${zs[1]},Q${zs[0]} ${ze[1]},${ze[0]} ${ze[1]}`;
+				    var bsline = me.group.path().stroke({
+                       color: _stroke,
+                       width: lineWidth+2,
+                       linecap: 'round',
+                       linejoin: 'round'
+                     });
+                     bsline.plot(path);
+                     bsline.fill('none');
+				  var line = me.group.line(me.linePoint([p1, p2], lineWidth + 2)).stroke({
 					color: _stroke,
 					width: lineWidth + 2,
 					linecap: 'round',
 					linejoin: 'round'
 				}).fill('none');
-				child.line = line;
-			
+				  var line = me.group.line(me.linePoint([p3, p4], lineWidth + 2)).stroke({
+					color: _stroke,
+					width: lineWidth + 2,
+					linecap: 'round',
+					linejoin: 'round'
+				}).fill('none');
 			});
 
 			rb.reverse().forEach((child, i) => {
@@ -96,8 +117,8 @@ export default class MindLayout1 extends MindLayout {
 				var p1 = [rootPos.x + rootBox.width / 2 + 6 + rbd * i, rootPos.y + rootBox.height / 2];
 
 				if (Math.abs(c) > 2) {
-					var p2 = [p1[0], toy - 2 * c / Math.abs(c)];
-					var p3 = [p1[0] + 2, toy]
+					var p2 = [p1[0], toy - 5 * c / Math.abs(c)];
+					var p3 = [p1[0] + 5, toy]
 				} else {
 					var p2 = [p1[0], toy - c / 2];
 					var p3 = [p1[0] + Math.abs(c) / 2, toy];
@@ -105,13 +126,39 @@ export default class MindLayout1 extends MindLayout {
 				var p4 = [childPos.x, toy];
 				
 				let _stroke = child.stroke || stroke || 'rgb(160,160,160)';
-				var line = me.group.polyline(me.linePoint([p1, p2, p3, p4], lineWidth + 2)).stroke({
+                
+                 var zs= me.linePoint([
+                        p2
+                    ], lineWidth)[0];
+                    var ze= me.linePoint([
+                        p3
+                    ], lineWidth)[0];
+
+					var path = `M${zs[0]} ${zs[1]},Q${zs[0]} ${ze[1]},${ze[0]} ${ze[1]}`;
+				    var bsline = me.group.path().stroke({
+                       color: _stroke,
+                       width: lineWidth+2,
+                       linecap: 'round',
+                       linejoin: 'round'
+                     });
+                     bsline.plot(path);
+                     bsline.fill('none');
+
+
+				var line = me.group.line(me.linePoint([p1, p2], lineWidth + 2)).stroke({
 					color: _stroke,
 					width: lineWidth + 2,
 					linecap: 'round',
 					linejoin: 'round'
 				}).fill('none');
-				child.line = line;
+
+				var line = me.group.line(me.linePoint([p3, p4], lineWidth + 2)).stroke({
+					color: _stroke,
+					width: lineWidth + 2,
+					linecap: 'round',
+					linejoin: 'round'
+				}).fill('none');
+			
 				
 			});
 
@@ -139,8 +186,8 @@ export default class MindLayout1 extends MindLayout {
 				var p1 = [rootPos.x + rootBox.width / 2 - 6 - ltd * i, rootPos.y + rootBox.height / 2];
 
 				if (Math.abs(c) > 2) {
-					var p2 = [p1[0], toy - 2 * c / Math.abs(c)];
-					var p3 = [p1[0] - 2, toy]
+					var p2 = [p1[0], toy - 5 * c / Math.abs(c)];
+					var p3 = [p1[0] - 5, toy]
 				} else {
 					var p2 = [p1[0], toy - c / 2];
 					var p3 = [p1[0] - Math.abs(c) / 2, toy];
@@ -148,13 +195,36 @@ export default class MindLayout1 extends MindLayout {
 				var p4 = [childPos.x + childBox.width, toy];
 		
 				let _stroke = child.stroke || stroke || 'rgb(160,160,160)';
-				var line = me.group.polyline(me.linePoint([p1, p2, p3, p4], lineWidth + 2)).stroke({
+				 var zs= me.linePoint([
+                        p2
+                    ], lineWidth)[0];
+                    var ze= me.linePoint([
+                        p3
+                    ], lineWidth)[0];
+
+					var path = `M${zs[0]} ${zs[1]},Q${zs[0]} ${ze[1]},${ze[0]} ${ze[1]}`;
+				    var bsline = me.group.path().stroke({
+                       color: _stroke,
+                       width: lineWidth+2,
+                       linecap: 'round',
+                       linejoin: 'round'
+                     });
+                     bsline.plot(path);
+                     bsline.fill('none');
+				var line = me.group.line(me.linePoint([p1, p2], lineWidth + 2)).stroke({
 					color: _stroke,
 					width: lineWidth + 2,
 					linecap: 'round',
 					linejoin: 'round'
 				}).fill('none');
-				child.line = line;
+				
+				var line = me.group.line(me.linePoint([p3, p4], lineWidth + 2)).stroke({
+					color: _stroke,
+					width: lineWidth + 2,
+					linecap: 'round',
+					linejoin: 'round'
+				}).fill('none');
+				
 			
 			});
 
@@ -166,8 +236,8 @@ export default class MindLayout1 extends MindLayout {
 				var c = toy - (rootBox.height / 2 + rootPos.y);
 				var p1 = [rootPos.x + rootBox.width / 2 - 6 - lbd * i, rootPos.y + rootBox.height / 2];
 				if (Math.abs(c) > 2) {
-					var p2 = [p1[0], toy - 2 * c / Math.abs(c)];
-					var p3 = [p1[0] - 2, toy]
+					var p2 = [p1[0], toy - 5 * c / Math.abs(c)];
+					var p3 = [p1[0] - 5, toy]
 				} else {
 					var p2 = [p1[0], toy - c / 2];
 					var p3 = [p1[0] - Math.abs(c) / 2, toy];
@@ -175,13 +245,38 @@ export default class MindLayout1 extends MindLayout {
 				var p4 = [childPos.x + childBox.width, toy];
 				
 				let _stroke = child.stroke || stroke || 'rgb(160,160,160)';
-				var line = me.group.polyline(me.linePoint([p1, p2, p3, p4], lineWidth + 2)).stroke({
+                 
+                  var zs= me.linePoint([
+                        p2
+                    ], lineWidth)[0];
+                    var ze= me.linePoint([
+                        p3
+                    ], lineWidth)[0];
+
+					var path = `M${zs[0]} ${zs[1]},Q${zs[0]} ${ze[1]},${ze[0]} ${ze[1]}`;
+				    var bsline = me.group.path().stroke({
+                       color: _stroke,
+                       width: lineWidth+2,
+                       linecap: 'round',
+                       linejoin: 'round'
+                     });
+                     bsline.plot(path);
+                     bsline.fill('none');
+
+				var line = me.group.line(me.linePoint([p1, p2], lineWidth + 2)).stroke({
 					color: _stroke,
 					width: lineWidth + 2,
 					linecap: 'round',
 					linejoin: 'round'
 				}).fill('none');
-				child.line = line;
+
+				var line = me.group.line(me.linePoint([p3, p4], lineWidth + 2)).stroke({
+					color: _stroke,
+					width: lineWidth + 2,
+					linecap: 'round',
+					linejoin: 'round'
+				}).fill('none');
+				
 			
 			});
 
@@ -246,12 +341,20 @@ export default class MindLayout1 extends MindLayout {
 							var p2 = [from.x + dis / 2, from.y];
 							var p5 = [to.x, to.y];
 							if (child.isFirst()) {
-								var p3 = [from.x + dis / 2, to.y + 2];
-								var p4 = [from.x + dis / 2 + 2, to.y];
+								var p3 = [from.x + dis / 2, to.y + 5];
+								var p4 = [from.x + dis / 2 + 5, to.y];
 								var point = [p1, p2, p3, p4, p5];
 							} else {
-								var p4 = [from.x + dis / 2, to.y];
-								var point = [p1, p2, p4, p5];
+								var d=Math.abs(to.y-from.y);
+								if(d<3){
+                                     var p4 = [from.x + dis / 2, to.y];
+								     var point = [p1, p2, p4, p5];
+								}else{
+									var p3 = [from.x + dis / 2, to.y + 5];
+								    var p4 = [from.x + dis / 2 + 5, to.y];
+								    var point = [p1, p2, p3, p4, p5];
+								}
+								
 							}
 
 						} else {
@@ -259,12 +362,20 @@ export default class MindLayout1 extends MindLayout {
 							var p2 = [from.x + dis / 2, from.y];
 							var p5 = [to.x, to.y];
 							if (child.isLast()) {
-								var p3 = [from.x + dis / 2, to.y - 2];
-								var p4 = [from.x + dis / 2 + 2, to.y];
+								var p3 = [from.x + dis / 2, to.y - 5];
+								var p4 = [from.x + dis / 2 + 5, to.y];
 								var point = [p1, p2, p3, p4, p5];
 							} else {
-								var p4 = [from.x + dis / 2, to.y];
-								var point = [p1, p2, p4, p5];
+								var d=Math.abs(to.y-from.y);
+								if(d<3){
+									var p4 = [from.x + dis / 2, to.y];
+								    var point = [p1, p2, p4, p5];
+								}else{
+									var p3 = [from.x + dis / 2, to.y - 5];
+								    var p4 = [from.x + dis / 2 + 5, to.y];
+								    var point = [p1, p2, p3, p4, p5];
+								}
+								
 							}
 
 						}
@@ -275,12 +386,19 @@ export default class MindLayout1 extends MindLayout {
 							var p2 = [from.x - dis / 2, from.y];
 							var p5 = [to.x, to.y];
 							if (child.isFirst()) {
-								var p3 = [from.x - dis / 2, to.y + 2];
-								var p4 = [from.x - dis / 2 - 2, to.y];
+								var p3 = [from.x - dis / 2, to.y + 5];
+								var p4 = [from.x - dis / 2 - 5, to.y];
 								var point = [p1, p2, p3, p4, p5];
 							} else {
-								var p4 = [from.x - dis / 2, to.y];
-								var point = [p1, p2, p4, p5];
+								var d=Math.abs(to.y-from.y);
+								if(d<3){
+									var p4 = [from.x - dis / 2, to.y];
+									var point = [p1, p2, p4, p5];
+								}else{
+                                    var p3 = [from.x - dis / 2, to.y + 5];
+							    	var p4 = [from.x - dis / 2 - 5, to.y];
+								    var point = [p1, p2, p3, p4, p5];
+								}
 							}
 
 
@@ -289,27 +407,70 @@ export default class MindLayout1 extends MindLayout {
 							var p2 = [from.x - dis / 2, from.y];
 							var p5 = [to.x, to.y];
 							if (child.isLast()) {
-								var p3 = [from.x - dis / 2, to.y - 2];
-								var p4 = [from.x - dis / 2 - 2, to.y];
+								var p3 = [from.x - dis / 2, to.y - 5];
+								var p4 = [from.x - dis / 2 - 5, to.y];
 								var point = [p1, p2, p3, p4, p5];
 							} else {
-								var p4 = [from.x - dis / 2, to.y];
-								var point = [p1, p2, p4, p5];
+								var d=Math.abs(to.y-from.y);
+								if(d<3){
+									var p4 = [from.x - dis / 2, to.y];
+								    var point = [p1, p2, p4, p5];
+								}else{
+									var p3 = [from.x - dis / 2, to.y - 5];
+							    	var p4 = [from.x - dis / 2 - 5, to.y];
+								    var point = [p1, p2, p3, p4, p5];
+								}
+								
 							}
 
 						}
 					}
 				}
-			
-				var line = me.group.polyline(me.linePoint(point, lineWidth));
-				line.fill('none');
-				line.stroke({
-					color: _stroke,
-					width: lineWidth,
-					linecap: 'round',
-					linejoin: 'round'
-				});
-				child.line = line;
+			    if(p3){
+                   	var line = me.group.polyline(me.linePoint([p1,p2,p3], lineWidth));
+                   	line.fill('none');
+					line.stroke({
+						color: _stroke,
+						width: lineWidth,
+						linecap: 'round',
+						linejoin: 'round'
+					});
+
+					var zs= me.linePoint([
+                        p3
+                    ], lineWidth)[0];
+                    var ze= me.linePoint([
+                        p4
+                    ], lineWidth)[0];
+
+					var path = `M${zs[0]} ${zs[1]},Q${zs[0]} ${ze[1]},${ze[0]} ${ze[1]}`;
+				    var bsline = me.group.path().stroke({
+                       color: _stroke,
+                       width: lineWidth,
+                       linecap: 'round',
+                       linejoin: 'round'
+                     });
+                     bsline.plot(path);
+                     bsline.fill('none');
+                     var line = me.group.line(me.linePoint([p4,p5], lineWidth));
+                     line.fill('none');
+					 line.stroke({
+						color: _stroke,
+						width: lineWidth,
+						linecap: 'round',
+						linejoin: 'round'
+					 });
+			    }else{
+                   	var line = me.group.polyline(me.linePoint(point, lineWidth));
+					line.fill('none');
+					line.stroke({
+						color: _stroke,
+						width: lineWidth,
+						linecap: 'round',
+						linejoin: 'round'
+					});
+			    }
+
 			
 				createLine(child);
 			});

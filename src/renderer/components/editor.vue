@@ -103,7 +103,7 @@
         <win
           v-if="showAssist"
           style="padding: 0"
-          class="ql-container"
+          class="node-note ql-container"
           @mousedown.stop="remarkMousDown"
           @click.stop="assistClick"
           :left="winLeft"
@@ -477,10 +477,6 @@ export default {
         document.body.classList.add("mark-mind");
       }
 
-      document.getElementById("mind").style.width = profile.canvasWidth + "px";
-      document.getElementById("mind").style.height =
-        profile.canvasHeight + "px";
-
       this.mind = new Mind({ el: "mind" });
       this.mind.useMarkDown = profile.useMarkDown;
 
@@ -489,9 +485,21 @@ export default {
 
       dragscroll();
 
-      var data = JSON.parse(JSON.stringify(this.$store.state.MindData));
-      var images = data.images;
+      //var data = JSON.parse(JSON.stringify(this.$store.state.MindData));
+      var data  =  {
+            mindData:window.markmindData
+      };
+      var images = window.markmindData.images;
       data.themeName = "dark";
+      // console.log(data);
+      if(data.mindData.canvasSize){
+           this.mind.el.style.width = data.mindData.canvasSize + "px";
+           this.mind.el.style.height = data.mindData.canvasSize + "px";
+      }else{
+            this.mind.el.style.width = profile.canvasWidth + "px";
+            this.mind.el.style.height = profile.canvasHeight + "px";
+      }
+   
 
       if (
         data.mindData &&
@@ -1168,6 +1176,9 @@ export default {
         }
         if (keyCode == 32) {
           //space
+          if(this.navStatus == "remark") {
+             return;
+          }
           var node = this.mind.getSelectNode();
           if (!node.isEdit) {
             e.preventDefault();
@@ -1262,7 +1273,12 @@ export default {
       var data = this.mind.getData(null, null, true);
       data.scrollTop = this._scrollTop;
       data.scrollLeft = this._scrollLeft;
-      return this.$store.dispatch("setMindData", data);
+     // return this.$store.dispatch("setMindData", data);
+      if(window.markmindData.images){
+         data.images=window.markmindData.images
+      };
+      window.markmindData ={};
+      $.extend(true,markmindData,data);
     },
     //tab status of node bar
     setStatus(status) {
@@ -1270,9 +1286,8 @@ export default {
     },
     //go to tree list
     enterList() {
-      this.storeData().then(() => {
-        this.$router.push("/list");
-      });
+      this.storeData();
+      this.$router.push("/list");
     },
     //context menu
     command(e) {
@@ -1476,6 +1491,10 @@ export default {
         // canvas.width = width * scale;
         // canvas.height = height * scale;
         // canvas.getContext("2d").scale(scale, scale);
+        if(width>16000){
+          alert('Image size is too large');
+          return
+        }
 
         var box = that.mind.getMindBox();
         if (profile.canvasWidth == 8000) {
@@ -1806,7 +1825,7 @@ export default {
       });
     },
     removeWireFrame() {
-      console.log(this.selecWireFrame)
+      //console.log(this.selecWireFrame)
       this.mind.execute("removeWireFrame", { wf: this.selecWireFrame });
       this.showWireFrame = false;
     },
@@ -2522,4 +2541,6 @@ a {
 .relate-ship h3 {
   line-height: 28px !important;
 }
+
+
 </style>

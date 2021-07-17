@@ -37,6 +37,7 @@
        "sure":"Sure",
        "open":"Open",
        "active":"Activated",
+       "expired":"Expired",
        "end":"End Date",
        "activeTitle":"Please Enter Activation Code",
        "activeBtn":"Activate Now",
@@ -76,8 +77,10 @@
        "top":"top",
        "left":"left",
        "right":"right",
-       "bottom":"bottom"
-       
+       "bottom":"bottom",
+       "register":"Sign Up",
+       "dateLimit":"Active Code Expired",
+       "allowUse":"You Should To Purchase An Activation Code To Continue To Use"
     },
     "topMenu":[
         {
@@ -228,6 +231,11 @@
         "name":"About",
         "type":"menu"
       },
+       {
+        "id":"Login",
+        "name":"Login",
+        "type":"menu"
+       },
         {
            "id":10,
            "type":"split"
@@ -479,7 +487,12 @@
         "math":"Formula Parse Type",
         "katex":"Katex",
         "mathjax":"Mathjax Image",
-        "mathTip":"When Export Mindmap To PNG,Select This Item"
+        "mathTip":"When Export Mindmap To PNG,Select This Item",
+        "secret":"Use This Password When Save File",
+        "secretTip":"Enter Your Password:",
+        "secretBtns":["Confirm","Cancel"],
+        "secretConfirm":"Confirm",
+        "secretCancel":"Cancel"
     }
    
 }

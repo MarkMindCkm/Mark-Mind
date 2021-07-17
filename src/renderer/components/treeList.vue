@@ -428,8 +428,6 @@ import uuid from "../mind/uuid";
 import $ from "jquery";
 import theme from "../mind/theme";
 
-import { saveAs } from "file-saver";
-
 import List, { Node } from "../mind/list/list";
 
 function debounce(func, wait) {
@@ -444,7 +442,33 @@ function debounce(func, wait) {
       func.apply(context, args);
     }, wait);
   };
-}
+};
+
+function listToTree(list) {
+  var obj = {};
+  var root = null;
+  list.forEach(d => {
+    if (!obj[d.id]) {
+      obj[d.id] = d;
+      d.children = [];
+    }
+  });
+
+  list.forEach(d => {
+    if(d.isRoot||d.nodeType=='induce'||d.nodeType=='freeNode'||d.rootType=='induce'){
+      root = d;
+    }
+
+    if (d.pid) {
+      if (obj[d.pid]) {
+        obj[d.pid].children.push(d);
+        d.children = [];
+      }
+    } 
+  });
+  return root;
+};
+
 var store = new Store();
 var profile = store.get("config");
 
@@ -662,7 +686,7 @@ export default {
             focusItem.shoudRender = true;
           }, 0);
         }
-        console.log("shiftTabCtrl");
+      
         return;
       }
 
@@ -762,7 +786,7 @@ export default {
         if (focusItem) {
           if (focusItem == me.list.showingNode) {
             var n = new Node({
-              id: +new Date(),
+              id: uuid(),
               text: "",
             });
 
@@ -1176,6 +1200,8 @@ export default {
     document.onmousewheel = null;
     $(document).off("click");
     $("body").off("click");
+    $("#list").off("focus");
+    $("#list").off("blur");
     if (this.list) {
       this.list.off("showLink", this.showLinkEvent);
       this.list.off("showNode", this.showNodeEvent);
@@ -1190,18 +1216,22 @@ export default {
   },
 
   mounted() {
-    var mindData = JSON.parse(JSON.stringify(this.$store.state.MindData));
-    var images = mindData.images;
+    var mindData = window.markmindData;
     var me = this;
 
     try {
-      var data = JSON.parse(JSON.stringify(this.$store.getters.getData));
+      var data = this.getData(mindData);
       if (mindData) {
         if (mindData.theme) {
           theme.use(mindData.theme);
         }
+        var images = mindData.images||{};
       }
     } catch (e) {
+      window.markmindData={
+        image:{}
+      };
+     // console.log(markmindData)
       theme.use("blue");
       this.$store.dispatch("setFilePath", { path: "" });
       this.$store.dispatch("setTag", "local");
@@ -1222,6 +1252,8 @@ export default {
         marks: [],
       };
     }
+
+   
 
     this.el = document.getElementById("list");
 
@@ -1304,6 +1336,10 @@ export default {
     this.list.on("mounted", this.mountedEvent);
 
     this.list.init(data, images);
+
+    if(!this.list.root.isExpand){
+      this.list.root.expand();
+    }
 
     $("body").off("click");
     $("body").on("click", ".li-node .node-priority", function (e) {
@@ -1395,9 +1431,50 @@ export default {
     window.onresize = () => {
       this.hidden();
     };
+
+   $("#list").off('focus').on("focus", ".li-node .text", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var node =$(this).closest(".li-node").get(0).node;
+   
+      if (node.shoudRender) {
+            node._oldMdText = node.data.mdText;
+            node.textDom.innerHTML = node.data.mdText;
+            node.focus();
+      }
+    });
+
+     $("#list").off('blur').on("blur", ".li-node .text", function (e) {
+       e.preventDefault();
+       e.stopPropagation();
+       var node =$(this).closest(".li-node").get(0).node;
+       node.cancelEdit();
+    });
+
+
   },
 
   methods: {
+    getData(d){
+        var root = null
+        var mindData={};
+        var mindData = $.extend(true, mindData, d);
+       // console.log(d);
+        mindData.mindData.forEach((data, i) => {
+          if (i == 0) {
+            root = listToTree(data);
+          } else {
+            root.children.push(listToTree(data));
+          }
+        });
+
+        if (mindData.induceData && mindData.induceData.length) {
+          mindData.induceData.forEach(da => {
+            root.children.push(listToTree(da.mindData));
+          });
+        }
+        return root;
+    },
     showColorList() {
       this.showColor = true;
     },
@@ -1675,7 +1752,10 @@ export default {
         });
       }
 
-      var m = JSON.parse(JSON.stringify(this.$store.state.MindData));
+     // var m = JSON.parse(JSON.stringify(this.$store.state.MindData));
+      var m = {
+        mindData:window.markmindData
+      }
 
       var oldInduceData = m.mindData.induceData;
       var newInduceData = [];
@@ -1704,16 +1784,19 @@ export default {
         m.mindData.relateLinkData = [];
       }
 
-      return this.$store.dispatch("setMindData", m.mindData);
+      //return this.$store.dispatch("setMindData", m.mindData);
+      if(window.markmindData.images){
+         m.mindData.images=window.markmindData.images
+      };
+      window.markmindData = m.mindData;
     },
     enterMind() {
       if (!this.list.stack.dirty()) {
         this.$router.push("/");
         return;
       }
-      this.saveToStore(true).then(() => {
-        this.$router.push("/");
-      });
+      this.saveToStore(true);
+      this.$router.push("/");
     },
 
     refresh(e) {
@@ -2047,10 +2130,11 @@ export default {
 .li-node .node-remark {
   background: #f5f5f5;
   outline: transparent solid 2px;
-  padding: 2px 4px;
+  padding: 2px 6px;
   color: inherit;
   font-size: 12px;
-  line-height: 24px;
+  line-height: 20px;
+  border-radius:3px
 }
 .theme-dark .li-node .node-remark {
   background: #2d2d2d;
@@ -2419,6 +2503,8 @@ export default {
   user-select: none;
   box-shadow: 0 0 6px #ccc;
   max-width: 260px;
+  z-index:4000;
+  border-radius:4px;
 }
 
 .win-toolbar > span {

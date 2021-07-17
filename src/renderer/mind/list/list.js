@@ -166,7 +166,7 @@ class List {
         }
 
         if (imgData) {
-            var images = imgData.img || {};
+            var images = imgData.img || imgData.image||{};
         }
 
 
@@ -177,10 +177,13 @@ class List {
             if (ndata.isImageNode) {
                 if (!ndata.image) {
                     var key = 'images/' + ndata.id + '-' + ndata.imageName;
-                    ndata.image = images[key] || images['resources/' + ndata.imageName];
-                    if (!ndata.imageWidth) ndata.imageWidth = 200;
-                    if (!ndata.imageHeight) ndata.imageHeight = 200;
-
+                    if(images[key]||images['resources/' + ndata.imageName]){
+                        ndata.image = images[key] || images['resources/' + ndata.imageName];
+                        if (!ndata.imageWidth) ndata.imageWidth = 200;
+                        if (!ndata.imageHeight) ndata.imageHeight = 200;
+                    }else{
+                        ndata.isImageNode=false;
+                    }
                 }
             }
             var n = new Node(ndata, parent, me);
@@ -536,7 +539,11 @@ class List {
                 }
             }
             n.children.forEach(node => {
-                node.data.pid = n.getId();
+                if(node.isRoot||node.nodeType=='induce'||node.rootType=='induce'){
+                   
+                }else{
+                    node.data.pid = n.getId();
+                }
                 getData(node, d.children);
             });
 
@@ -1412,20 +1419,20 @@ class Node {
         //     }
         // };
 
-        this.textDom.onfocus = () => {
+        // this.textDom.onfocus = () => {
           
-            if (this.shoudRender) {
-                this._oldMdText = this.data.mdText;
-                this.textDom.innerHTML = this.data.mdText;
+        //     if (this.shoudRender) {
+        //         this._oldMdText = this.data.mdText;
+        //         this.textDom.innerHTML = this.data.mdText;
               
-                me.focus();
-            }
+        //         me.focus();
+        //     }
 
-        };
+        // };
 
-        this.textDom.onblur = (e) => {
-            this.cancelEdit();
-        }
+        // this.textDom.onblur = (e) => {
+        //     this.cancelEdit();
+        // }
 
     }
 

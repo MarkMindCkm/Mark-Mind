@@ -1,6 +1,6 @@
 {
   "name": "mind",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "author": "",
   "description": "an mind map and outliner software",
   "license": null,
@@ -116,15 +116,16 @@
     "quill": "^1.3.7",
     "request": "^2.88.2",
     "svg.js": "^2.7.1",
+    "turndown": "^7.0.0",
+    "turndown-plugin-gfm": "^1.0.2",
     "twemoji": "^12.1.5",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-i18n": "^8.17.3",
     "vue-router": "^3.0.1",
+    "vuejs-dialog": "^1.4.2",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0",
-     "turndown": "^7.0.0",
-    "turndown-plugin-gfm": "^1.0.2"
+    "vuex-electron": "^1.0.0"
   },
   "devDependencies": {
     "ajv": "^6.5.0",

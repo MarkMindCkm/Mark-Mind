@@ -1,7 +1,15 @@
 import Node from '../node'
 
 export default class Callout {
-    constructor(node,data={text:'callout',nodeType:'callout'},color='#f06'){
+    constructor(node,data={ 
+                           text:'callout',
+                           nodeType:'callout', 
+                           paddingLeft: 6,
+                           paddingRight: 6,
+                           paddingBottom: 2,
+                           paddingTop: 2,
+                           fontSize:12
+        },color='#f06'){
       this.node=node;
       this.data=data;
       this.color=color;
