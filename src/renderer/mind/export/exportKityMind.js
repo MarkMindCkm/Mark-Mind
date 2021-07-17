@@ -34,7 +34,7 @@ const createJson=(arr)=>{
           var obj={
             data:{
                 id:ele.id,
-                text:ele.text,
+                text:htmlToText(ele.text),
                 priority:ele.priority,
                 progress:ele.percent?(parseInt(ele.percent/10)-1):'',
                 hyperlink:ele.link,

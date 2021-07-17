@@ -4,7 +4,7 @@ const exportOPML=(data,title)=>{
     var nodeXml= createXml(data);
     console.log(nodeXml);
     var xml=`<?xml version="1.0" encoding="UTF-8"?>
-               <opml version="2.0">
+               <opml version="1.0">
                  <head>
                     <tilte>${title}</title>
                  </head>
@@ -22,7 +22,7 @@ const createXml=(data)=>{
     var text=htmlToText(data.text);
     var html='<outline text="'+text+'"  id="'+data.id+'" ';
     if(data.link){
-       html+='href='+data.link;
+       html+='xmlUrl='+data.link;
     }
     html+='>';
     data.children.forEach(c=>{

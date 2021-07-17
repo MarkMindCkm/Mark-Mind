@@ -126,7 +126,7 @@ function transferData(data,parentId,list,mainFlag){
     if(data.href){
         node.link=data.href;
     }
-    if(data.notes){
+    if(data.notes && data.notes.plain && data.notes.plain.content){
         node.remark=data.notes.plain.content.replace(/\n/g,"<br>").trim();
     }
     if(data.image){
@@ -166,7 +166,7 @@ function transferData(data,parentId,list,mainFlag){
 
     //induce
     data.summaries&&data.summaries.forEach(sum=>{
-          var r=sum.range.substring(1,sum.range.length-1);
+         var r=sum.range.substring(1,sum.range.length-1);
          // console.log(r,'induce');
          var s=r.split(',')[0];
          var e=r.split(',')[1];
@@ -242,7 +242,12 @@ function transferData(data,parentId,list,mainFlag){
            color:'#f06',
            rootData:{
                text:c.title,
-               id:c.id
+               id:c.id,
+               paddingLeft: 6,
+                paddingRight: 6,
+                paddingBottom: 2,
+                paddingTop: 2,
+                fontSize:12
            }
        }
        mind.calloutData.push(callout);

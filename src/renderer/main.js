@@ -8,6 +8,9 @@ import store from './store'
 
 import i18n from './locales/index'
 import '../renderer/exportWord/exportword'
+import 'vuejs-dialog/dist/vuejs-dialog.min.css';
+import VuejsDialog from 'vuejs-dialog';
+Vue.use(VuejsDialog);
 
 var path =require('path');
 let ipcRenderer=require('electron').ipcRenderer;

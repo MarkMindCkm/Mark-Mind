@@ -30,7 +30,7 @@
 
       <div class="language">
         {{ $t("profile.lang") }}：
-        <select name="lang" id="lang" v-model="lang" @change="changeLang">
+        <select name="lang" id="lang" v-model="lang">
           <option value="zh">简体中文</option>
           <option value="en">English</option>
         </select>
@@ -46,6 +46,14 @@
           name="useMarkDown"
         />
         <label for="useMarkdown">{{ $t("node.open") }}</label>
+      </div>
+
+      <div class="secret">
+        {{ $t("profile.secret") }}：<input
+          type="password"
+          v-model="secret"
+          class="form-input"
+        />
       </div>
 
       <div class="shortcut">
@@ -100,6 +108,7 @@
         />
       </div>
 
+
       <div class="canvas-size">
         {{ $t("profile.canvasSize") }}
         <br />
@@ -145,6 +154,11 @@ export default {
         "12000x12000",
         "14000x14000",
         "16000x16000",
+        "18000x18000",
+        "20000x20000",
+        "24000x24000",
+        "28000x28000",
+        "30000x30000",
       ],
       theme: profile.theme,
       lang: profile.language,
@@ -155,6 +169,7 @@ export default {
       plantuml: profile.plantumlServer || "",
       keyModel: profile.keyModel || "default",
       math: profile.math,
+      secret:profile.secret||''
     };
   },
   mounted() {
@@ -184,6 +199,7 @@ export default {
           plantumlServer: this.plantuml,
           keyModel: this.keyModel,
           math: this.math,
+          secret:this.secret
         },
       };
       store.set("config", config);
@@ -195,6 +211,11 @@ export default {
         2: 12000,
         3: 14000,
         4: 16000,
+        5: 18000,
+        6: 20000,
+        7: 24000,
+        8: 28000,
+        9: 30000
       };
       this.size = i;
       this.width = obj[i];
@@ -209,6 +230,13 @@ export default {
 };
 </script>
 <style scoped>
+button {
+  width: 100%;
+  height: 24px;
+  border: 1px solid #d6d6d6;
+  background: #fff;
+  margin: 2px 0;
+}
 .profile button {
   max-width: 200px;
   padding: 4px 6px;
