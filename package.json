@@ -109,7 +109,7 @@
     "markdown-it-sup": "^1.0.0",
     "markdown-it-underline": "^1.0.1",
     "markmap": "^0.6.1",
-    "mermaid": "^8.4.8",
+    "mermaid": "^8.13.8",
     "node-dropbox": "^0.1.8",
     "opml-to-json": "0.0.3",
     "opmlparser": "^0.8.0",
